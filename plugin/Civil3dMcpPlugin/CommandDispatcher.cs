@@ -55,6 +55,9 @@ public static class CommandDispatcher
       "addSurfaceBoundary" => SurfaceCommands.AddSurfaceBoundaryAsync(parameters),
       "extractSurfaceContours" => SurfaceCommands.ExtractSurfaceContoursAsync(parameters),
       "computeSurfaceVolume" => SurfaceCommands.ComputeSurfaceVolumeAsync(parameters),
+      "getSurfaceAreaElevationTable" => SurfaceCommands.GetSurfaceAreaElevationTableAsync(parameters),
+      "computeContourVolume" => SurfaceCommands.ComputeContourVolumeAsync(parameters),
+      "closeContoursAgainstBoundary" => SurfaceCommands.CloseContoursAgainstBoundaryAsync(parameters),
 
       // Alignments
       "listAlignments" => AlignmentCommands.ListAlignmentsAsync(),
