@@ -285,27 +285,8 @@ public static class SurfaceCommands
         if (ent == null || !string.Equals(ent.Layer, layerName, StringComparison.OrdinalIgnoreCase))
           continue;
 
-        var pts = new List<Point3d>();
-
-        if (ent is Polyline3d p3d)
-        {
-          foreach (ObjectId vId in p3d)
-          {
-            var v = tr.GetObject(vId, OpenMode.ForRead) as PolylineVertex3d;
-            if (v != null) pts.Add(v.Position);
-          }
-        }
-        else if (ent is Polyline p2d)
-        {
-          for (int i = 0; i < p2d.NumberOfVertices; i++)
-            pts.Add(p2d.GetPoint3dAt(i));
-        }
-        else
-        {
-          continue; // otro tipo de entidad, ignorar
-        }
-
-        if (pts.Count < 3) continue;
+        var pts = ReadEntityVertices(ent, tr);
+        if (pts.Count < 3) continue; // ni polilínea soportada ni suficientes vértices
 
         double elevation = pts[0].Z; // curva de nivel: Z constante
         if (minElevation.HasValue && elevation < minElevation.Value) continue;
@@ -343,13 +324,9 @@ public static class SurfaceCommands
 
       if (!string.IsNullOrEmpty(outputCsvPath))
       {
-        using var writer = new StreamWriter(outputCsvPath, false, System.Text.Encoding.UTF8);
-        writer.WriteLine("Elevacion_m;Area_m2;Handle");
-        foreach (var r in rows)
-          writer.WriteLine($"{r.elevation:F3};{r.area:F4};{r.handle}");
-        writer.WriteLine();
-        writer.WriteLine($"Volumen_trapezoidal_m3;{totalVolume:F4}");
-        writer.WriteLine($"Volumen_metodo_simple_m3;{simpleVolume:F4}");
+        WriteCsv(outputCsvPath, "Elevacion_m;Area_m2;Handle",
+          rows.Select(r => $"{r.elevation:F3};{r.area:F4};{r.handle}"),
+          new[] { $"Volumen_trapezoidal_m3;{totalVolume:F4}", $"Volumen_metodo_simple_m3;{simpleVolume:F4}" });
       }
 
       return new
@@ -389,6 +366,14 @@ public static Task<object?> CloseContoursAgainstBoundaryAsync(JsonObject? parame
   var snapTolerance = PluginRuntime.GetOptionalDouble(parameters, "snapTolerance") ?? 0.5;
   var outputCsvPath = PluginRuntime.GetOptionalString(parameters, "outputCsvPath");
   var outputLayerName = PluginRuntime.GetOptionalString(parameters, "outputLayerName") ?? (contourLayerName + "-CERRADAS");
+  var forceMinElev = PluginRuntime.GetOptionalDouble(parameters, "forceMinElevation");
+  var forceMaxElev = PluginRuntime.GetOptionalDouble(parameters, "forceMaxElevation");
+  var forceTramo = PluginRuntime.GetOptionalString(parameters, "forceTramo"); // "tramo_corto" o "tramo_largo"
+  var closeMethod = PluginRuntime.GetOptionalString(parameters, "closeMethod") ?? "boundary"; // "boundary", "straight" o "fixedWindow"
+  var fixedPoint1X = PluginRuntime.GetOptionalDouble(parameters, "fixedPoint1X");
+  var fixedPoint1Y = PluginRuntime.GetOptionalDouble(parameters, "fixedPoint1Y");
+  var fixedPoint2X = PluginRuntime.GetOptionalDouble(parameters, "fixedPoint2X");
+  var fixedPoint2Y = PluginRuntime.GetOptionalDouble(parameters, "fixedPoint2Y");
 
   return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
   {
@@ -396,14 +381,7 @@ public static Task<object?> CloseContoursAgainstBoundaryAsync(JsonObject? parame
     var btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
     // ── 0. Asegurar que exista la capa de salida ──
-    var lt = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForRead);
-    if (!lt.Has(outputLayerName))
-    {
-      lt.UpgradeOpen();
-      var newLayer = new LayerTableRecord { Name = outputLayerName };
-      lt.Add(newLayer);
-      tr.AddNewlyCreatedDBObject(newLayer, true);
-    }
+    GenericObjectCommands.EnsureLayerId(db, tr, outputLayerName);
 
     // ── 1. Leer el boundary (una sola polilínea en su propia capa) ──
     List<Point3d>? boundaryPts = null;
@@ -534,9 +512,86 @@ public static Task<object?> CloseContoursAgainstBoundaryAsync(JsonObject? parame
         polyLong.AddRange(segmentLong);
         double areaLong = ShoelaceArea(polyLong);
 
-        double area = Math.Min(areaShort, areaLong);
-        string chosen = areaShort <= areaLong ? "tramo_corto" : "tramo_largo";
-        var finalPolygon = areaShort <= areaLong ? polyShort : polyLong;
+        double area;
+        string chosen;
+        List<Point3d> finalPolygon;
+
+        bool overrideAplica = forceMinElev.HasValue && forceMaxElev.HasValue &&
+                               elev >= forceMinElev.Value && elev <= forceMaxElev.Value &&
+                               !string.IsNullOrEmpty(forceTramo);
+
+        if (closeMethod == "fixedWindow" && fixedPoint1X.HasValue && fixedPoint1Y.HasValue &&
+            fixedPoint2X.HasValue && fixedPoint2Y.HasValue)
+        {
+          // Usa siempre el mismo tramo fijo del boundary, definido por dos
+          // puntos de coordenadas dados por el usuario, en vez de dejar
+          // que el algoritmo decida automáticamente (que falla en formas
+          // de boundary irregulares tipo horquilla).
+          var fixedP1 = new Point3d(fixedPoint1X.Value, fixedPoint1Y.Value, 0);
+          var fixedP2 = new Point3d(fixedPoint2X.Value, fixedPoint2Y.Value, 0);
+
+          double sFixed1 = ProjectOntoBoundary(fixedP1, boundaryPts, boundaryArc);
+          double sFixed2 = ProjectOntoBoundary(fixedP2, boundaryPts, boundaryArc);
+
+          var fixedSegment = GetBoundaryArcBetween(boundaryPts, boundaryArc, sFixed1, sFixed2);
+
+          finalPolygon = new List<Point3d>(chain);
+          finalPolygon.AddRange(fixedSegment);
+          area = ShoelaceArea(finalPolygon);
+          chosen = "ventana_fija";
+        }
+        else if (closeMethod == "straight")
+        {
+          // Cierre directo: conecta los dos extremos abiertos con una
+          // línea recta, sin depender del boundary. Útil cuando el
+          // boundary tiene una forma irregular (horquilla) que confunde
+          // la elección automática de tramo corto/largo.
+          finalPolygon = new List<Point3d>(chain);
+          area = ShoelaceArea(finalPolygon);
+          chosen = "cierre_directo";
+        }
+        else if (overrideAplica && forceTramo == "tramo_largo")
+        {
+          area = areaLong;
+          chosen = "tramo_largo (forzado)";
+          finalPolygon = polyLong;
+        }
+        else if (overrideAplica && forceTramo == "tramo_corto")
+        {
+          area = areaShort;
+          chosen = "tramo_corto (forzado)";
+          finalPolygon = polyShort;
+        }
+        else
+        {
+          // Criterio principal: preferir el tramo cuyo polígono cerrado resultante
+          // NO se autointerseca (polígono simple) — el área mínima por sí sola falla
+          // en boundaries irregulares tipo horquilla (el hairpin de sotavento), donde
+          // el tramo geométricamente correcto no siempre es el de menor área.
+          bool shortIsSimple = IsSimplePolygon(polyShort);
+          bool longIsSimple = IsSimplePolygon(polyLong);
+
+          if (shortIsSimple && !longIsSimple)
+          {
+            area = areaShort;
+            chosen = "tramo_corto (simple)";
+            finalPolygon = polyShort;
+          }
+          else if (longIsSimple && !shortIsSimple)
+          {
+            area = areaLong;
+            chosen = "tramo_largo (simple)";
+            finalPolygon = polyLong;
+          }
+          else
+          {
+            // Ambos son simples o ambos se autointersecan: desempate por área mínima,
+            // igual que antes.
+            area = Math.Min(areaShort, areaLong);
+            chosen = areaShort <= areaLong ? "tramo_corto (area)" : "tramo_largo (area)";
+            finalPolygon = areaShort <= areaLong ? polyShort : polyLong;
+          }
+        }
 
         DrawClosedPolyline(finalPolygon, outputLayerName, btr, tr);
 
@@ -553,10 +608,8 @@ public static Task<object?> CloseContoursAgainstBoundaryAsync(JsonObject? parame
 
     if (!string.IsNullOrEmpty(outputCsvPath))
     {
-      using var writer = new StreamWriter(outputCsvPath, false, System.Text.Encoding.UTF8);
-      writer.WriteLine("Elevacion_m;Area_m2;Origen");
-      foreach (dynamic r in resultRows)
-        writer.WriteLine($"{r.elevation:F3};{r.areaSqM:F4};{r.source}");
+      WriteCsv(outputCsvPath, "Elevacion_m;Area_m2;Origen",
+        resultRows.Select(r => { dynamic d = r; return $"{d.elevation:F3};{d.areaSqM:F4};{d.source}"; }));
     }
 
     return new
@@ -571,6 +624,248 @@ public static Task<object?> CloseContoursAgainstBoundaryAsync(JsonObject? parame
     };
   });
 }
+
+// ─────────────────────────────────────────────
+// Edición de definición (Mes 3.5 — techo de TinSurface, pedido explícito del
+// usuario). delete_points y los accesos a triángulos están confirmados por
+// investigación real (ver plan). paste_surface, get_operations, delete_boundary
+// y build options son intentos de mejor esfuerzo — build-verify único, se
+// documenta si el compilador los rechaza.
+// ─────────────────────────────────────────────
+
+// delete_points: TinSurface.DeleteVertices(...) confirmado real (código
+// funcional citado en foro de Autodesk). Sin "points" borra TODOS los vértices
+// (caso 100% confirmado); con "points" filtra por cercanía XY dentro de
+// "tolerance" antes de borrar (extensión razonable, no verificada aparte).
+public static Task<object?> DeleteSurfacePointsAsync(JsonObject? parameters)
+{
+  var name = PluginRuntime.GetRequiredString(parameters, "name");
+  var pointsNode = parameters?["points"] as JsonArray;
+  var tolerance = PluginRuntime.GetOptionalDouble(parameters, "tolerance") ?? 0.01;
+
+  return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+  {
+    var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+      ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+    surface.UpgradeOpen();
+
+    var toDelete = new List<TinSurfaceVertex>();
+
+    if (pointsNode != null && pointsNode.Count > 0)
+    {
+      var targets = new List<(double x, double y)>();
+      foreach (var pt in pointsNode)
+        targets.Add((pt!["x"]!.GetValue<double>(), pt["y"]!.GetValue<double>()));
+
+      foreach (TinSurfaceVertex vertex in surface.Vertices)
+      {
+        var loc = vertex.Location;
+        if (targets.Any(t => Math.Abs(t.x - loc.X) <= tolerance && Math.Abs(t.y - loc.Y) <= tolerance))
+          toDelete.Add(vertex);
+      }
+    }
+    else
+    {
+      foreach (TinSurfaceVertex vertex in surface.Vertices)
+        toDelete.Add(vertex);
+    }
+
+    // Civil3D exige una lista no vacía ("The vertices can't be empty") — confirmado en pruebas
+    // en vivo que el filtro XY puede no encontrar coincidencias (ej. contra un punto recién
+    // agregado sin rebuild), así que se evita la llamada en vez de dejarla fallar.
+    if (toDelete.Count == 0)
+      return new
+      {
+        success = true,
+        surfaceName = name,
+        deletedCount = 0,
+        note = "No vertices matched the given XY filter (within tolerance)."
+      };
+
+    surface.DeleteVertices(toDelete);
+
+    return new { success = true, surfaceName = name, deletedCount = toDelete.Count };
+  });
+}
+
+// list_triangles: mismo patrón (triangle.VertexN.Location) ya probado y
+// funcionando en GetSurfaceAreaElevationTableAsync de este mismo archivo.
+public static Task<object?> ListSurfaceTrianglesAsync(JsonObject? parameters)
+{
+  var name = PluginRuntime.GetRequiredString(parameters, "name");
+  var limit = PluginRuntime.GetOptionalInt(parameters, "limit") ?? 500;
+
+  return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+  {
+    var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+      ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+    var triangles = new List<object>();
+    int total = 0;
+
+    foreach (var triangle in surface.GetTriangles(false))
+    {
+      total++;
+      if (triangles.Count >= limit) continue;
+
+      triangles.Add(new
+      {
+        v1 = new { x = triangle.Vertex1.Location.X, y = triangle.Vertex1.Location.Y, z = triangle.Vertex1.Location.Z },
+        v2 = new { x = triangle.Vertex2.Location.X, y = triangle.Vertex2.Location.Y, z = triangle.Vertex2.Location.Z },
+        v3 = new { x = triangle.Vertex3.Location.X, y = triangle.Vertex3.Location.Y, z = triangle.Vertex3.Location.Z },
+      });
+    }
+
+    return new { surfaceName = name, total, truncated = total > triangles.Count, triangles };
+  });
+}
+
+// get_triangle_at_point: TinSurface.FindTriangleAtXY confirmado real (uso
+// real citado en foro de Autodesk).
+public static Task<object?> GetSurfaceTriangleAtPointAsync(JsonObject? parameters)
+{
+  var name = PluginRuntime.GetRequiredString(parameters, "name");
+  var x = PluginRuntime.GetRequiredDouble(parameters, "x");
+  var y = PluginRuntime.GetRequiredDouble(parameters, "y");
+
+  return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+  {
+    var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+      ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+    var triangle = surface.FindTriangleAtXY(x, y);
+    if (triangle == null)
+      throw new JsonRpcDispatchException("CIVIL3D.NOT_FOUND", $"No triangle found at ({x}, {y}) on surface '{name}'.");
+
+    return new
+    {
+      surfaceName = name,
+      x,
+      y,
+      v1 = new { x = triangle.Vertex1.Location.X, y = triangle.Vertex1.Location.Y, z = triangle.Vertex1.Location.Z },
+      v2 = new { x = triangle.Vertex2.Location.X, y = triangle.Vertex2.Location.Y, z = triangle.Vertex2.Location.Z },
+      v3 = new { x = triangle.Vertex3.Location.X, y = triangle.Vertex3.Location.Y, z = triangle.Vertex3.Location.Z },
+    };
+  });
+}
+
+// paste_surface: TinSurface.PasteSurface confirmado que existe (página
+// oficial de Autodesk), firma exacta no verificable (503 en todos los
+// intentos de lectura). Intento de mejor esfuerzo con un solo ObjectId.
+public static Task<object?> PasteSurfaceAsync(JsonObject? parameters)
+{
+  var name = PluginRuntime.GetRequiredString(parameters, "name");
+  var pasteSurfaceName = PluginRuntime.GetRequiredString(parameters, "pasteSurfaceName");
+
+  return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+  {
+    var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+      ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+    var pasteSurface = FindSurfaceByName(civilDoc, tr, pasteSurfaceName);
+
+    surface.UpgradeOpen();
+    surface.PasteSurface(pasteSurface.ObjectId);
+
+    return new { success = true, surfaceName = name, pastedSurfaceName = pasteSurfaceName };
+  });
+}
+
+// get_operations: TinSurface no contiene un método "GetOperations" —
+// confirmado por el compilador. Se deja como stub en vez de seguir
+// adivinando el nombre real del historial de build.
+public static Task<object?> GetSurfaceOperationsAsync(JsonObject? parameters)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "TinSurface.GetOperations() does not exist — confirmed by the compiler. The real build-history accessor needs to be confirmed against a live Civil 3D drawing."
+  });
+
+// delete_boundary: TinSurface no contiene "DeleteBoundaries" — confirmado
+// por el compilador. Stub en vez de seguir adivinando.
+public static Task<object?> DeleteSurfaceBoundaryAsync(JsonObject? parameters)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "TinSurface.DeleteBoundaries() does not exist — confirmed by the compiler. The real boundary-removal member needs to be confirmed against a live Civil 3D drawing."
+  });
+
+// get_build_options: surface.BuildOptions SÍ existe (confirmado por el
+// compilador) — se lee genéricamente por reflexión para exponer sus
+// propiedades reales sin tener que adivinarlas una por una.
+public static Task<object?> GetSurfaceBuildOptionsAsync(JsonObject? parameters)
+{
+  var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+  return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+  {
+    var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+      ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+    return new
+    {
+      surfaceName = name,
+      buildOptions = GenericObjectCommands.SerializeSimpleProperties(surface.BuildOptions!),
+    };
+  });
+}
+
+// set_build_options: "MinimumTriangleArea" no es el nombre real de la
+// propiedad en SurfaceBuildOptions — confirmado por el compilador. Usa
+// get_build_options (arriba) para ver los nombres reales de propiedad vía
+// reflexión antes de intentar escribir uno específico.
+public static Task<object?> SetSurfaceBuildOptionsAsync(JsonObject? parameters)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "SurfaceBuildOptions.MinimumTriangleArea does not exist under that name — confirmed by the compiler. Use get_build_options to see the real property names via reflection, then this can be implemented for the confirmed name."
+  });
+
+// ─────────────────────────────────────────────
+// Stubs documentados: sin evidencia encontrada en la investigación de esta
+// ronda (ver tabla del plan). No se adivina una firma a ciegas.
+// ─────────────────────────────────────────────
+public static Task<object?> AddSurfaceContourDataAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "No real API member found for adding contour data as a definition source. Needs confirmation against a live Civil 3D drawing."
+  });
+
+public static Task<object?> SwapSurfaceEdgeAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "No real API member found for swapping a TIN edge. Needs confirmation against a live Civil 3D drawing."
+  });
+
+public static Task<object?> MinimizeFlatTrianglesAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "No real API member found for the 'minimize flat triangles by swapping edges' build option. Needs confirmation against a live Civil 3D drawing."
+  });
+
+public static Task<object?> MinimizeConvexTrianglesAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "No real API member found for minimizing convex triangles. Needs confirmation against a live Civil 3D drawing."
+  });
+
+public static Task<object?> DeleteSurfaceBreaklineAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "Autodesk's own documentation indicates breaklines that still define the surface cannot be cleanly removed via the API — this isn't a naming guess, the operation itself appears unsupported. Needs confirmation against a live Civil 3D drawing before attempting a workaround."
+  });
+
+public static Task<object?> DeleteSurfaceOperationAsync(JsonObject? p)
+  => Task.FromResult<object?>(new
+  {
+    status = "planned",
+    note = "No real API member found for removing a specific build operation from a surface's history. Needs confirmation against a live Civil 3D drawing."
+  });
 
 // ── Helpers ──
 
@@ -595,6 +890,19 @@ private static List<Point3d> ReadEntityVertices(Autodesk.AutoCAD.DatabaseService
   return pts;
 }
 
+private static void WriteCsv(string path, string header, IEnumerable<string> rows, IEnumerable<string>? trailer = null)
+{
+  using var writer = new StreamWriter(path, false, System.Text.Encoding.UTF8);
+  writer.WriteLine(header);
+  foreach (var row in rows) writer.WriteLine(row);
+
+  if (trailer != null)
+  {
+    writer.WriteLine();
+    foreach (var line in trailer) writer.WriteLine(line);
+  }
+}
+
 private static double Distance2D(Point3d a, Point3d b)
 {
   double dx = a.X - b.X;
@@ -613,6 +921,50 @@ private static double ShoelaceArea(List<Point3d> pts)
     area += (a.X * b.Y) - (b.X * a.Y);
   }
   return Math.Abs(area) / 2.0;
+}
+
+// Orientación de la terna ordenada (a, b, c) en 2D: >0 antihorario, <0 horario, 0 colineal.
+private static double Orientation2D(Point3d a, Point3d b, Point3d c)
+  => (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
+
+private static bool SegmentsIntersect(Point3d p1, Point3d p2, Point3d p3, Point3d p4)
+{
+  double d1 = Orientation2D(p3, p4, p1);
+  double d2 = Orientation2D(p3, p4, p2);
+  double d3 = Orientation2D(p1, p2, p3);
+  double d4 = Orientation2D(p1, p2, p4);
+
+  return ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) &&
+         ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0));
+}
+
+// Detecta si el polígono cerrado (implícito: último punto se une al primero) se
+// autointerseca — usado para elegir el tramo de boundary correcto en boundaries
+// irregulares tipo horquilla, donde el criterio de "área mínima" por sí solo elige
+// mal (el hairpin de sotavento). Compara cada arista contra las no adyacentes.
+private static bool IsSimplePolygon(List<Point3d> pts)
+{
+  int n = pts.Count;
+  if (n < 4) return true;
+
+  for (int i = 0; i < n; i++)
+  {
+    var a1 = pts[i];
+    var a2 = pts[(i + 1) % n];
+
+    for (int j = i + 1; j < n; j++)
+    {
+      // Aristas adyacentes (comparten un vértice) no cuentan como autointersección.
+      if (j == i || (j + 1) % n == i) continue;
+
+      var b1 = pts[j];
+      var b2 = pts[(j + 1) % n];
+
+      if (SegmentsIntersect(a1, a2, b1, b2)) return false;
+    }
+  }
+
+  return true;
 }
 
 // Devuelve el parámetro de longitud de arco (a lo largo del boundary) del punto
@@ -729,30 +1081,140 @@ private static List<Point3d> GetBoundaryArcBetweenLongWay(List<Point3d> boundary
     Transaction tr,
     string name)
   {
-    foreach (ObjectId id in civilDoc.GetSurfaceIds())
-    {
-      var surface = tr.GetObject(id, OpenMode.ForRead)
-        as Autodesk.Civil.DatabaseServices.Surface;
-
-      if (surface != null &&
-          string.Equals(surface.Name, name, StringComparison.OrdinalIgnoreCase))
-      {
-        return surface;
-      }
-    }
-
-    throw new JsonRpcDispatchException("CIVIL3D.NOT_FOUND", $"Surface '{name}' not found");
+    var ids = (ObjectIdCollection)civilDoc.GetSurfaceIds();
+    return CivilObjectLookup.FindByName<Autodesk.Civil.DatabaseServices.Surface>(ids.Cast<ObjectId>(), tr, name);
   }
 
   // ─────────────────────────────────────────────
-  // FIX PARA COMMAND DISPATCHER (OBLIGATORIO)
+  // Mes 9 — implementación real (antes eran stubs mudos sin ningún intento).
+  // Investigación: Autodesk Civil3D .NET Developer Guide, "Adding A Breakline to
+  // a TIN Surface" / "Adding a Boundary" / "Extracting Contours" — cada TinSurface
+  // expone BreaklinesDefinition/BoundariesDefinition con overloads que aceptan
+  // Point3dCollection directamente (no requieren una polilínea ya dibujada), y
+  // ExtractMinorContours/ExtractMajorContours vía la interfaz ITerrainSurface.
+  // Build-verify único: lo que el compilador rechace vuelve a stub con la firma
+  // exacta intentada, no un stub mudo.
   // ─────────────────────────────────────────────
-  public static Task<object?> AddSurfaceBreaklineAsync(JsonObject? p)
-    => Task.FromResult<object?>(new { status = "planned" });
+  public static Task<object?> AddSurfaceBreaklineAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+    var breaklineType = (PluginRuntime.GetOptionalString(parameters, "breaklineType") ?? "standard").ToLowerInvariant();
+    var pointsNode = parameters?["points"] as JsonArray;
 
-  public static Task<object?> AddSurfaceBoundaryAsync(JsonObject? p)
-    => Task.FromResult<object?>(new { status = "planned" });
+    if (pointsNode == null || pointsNode.Count < 2)
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "At least 2 points required for a breakline.");
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+        ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+      surface.UpgradeOpen();
+
+      var pts = new Point3dCollection();
+      foreach (var pt in pointsNode)
+      {
+        pts.Add(new Point3d(
+          pt!["x"]!.GetValue<double>(),
+          pt["y"]!.GetValue<double>(),
+          pt["z"]!.GetValue<double>()
+        ));
+      }
+
+      // Solo "standard" está confirmado: TinSurface.BreaklinesDefinition.AddStandardBreaklines(
+      // Point3dCollection, double, double, double, int) compila tal cual. "wall"/"proximity"
+      // se intentaron con la misma forma de 4 argumentos (points + 3 doubles) y el compilador
+      // rechazó ambas por sobrecarga inexistente (CS1501) — sus firmas reales necesitan
+      // confirmarse contra una sesión de Civil3D en vivo antes de reintentar.
+      if (breaklineType != "standard")
+      {
+        return new
+        {
+          status = "planned",
+          note = $"breaklineType '{breaklineType}' not implemented — AddWallBreaklines/AddProximityBreaklines " +
+                 "don't accept the (Point3dCollection, double, double, double) overload (CS1501: no overload " +
+                 "takes 4 arguments). Only 'standard' (AddStandardBreaklines) is confirmed working. Needs the " +
+                 "real signature confirmed against a live Civil 3D session."
+        };
+      }
+
+      // Pruebas en vivo confirmaron el error "midOrdinateDistance should be greater than zero"
+      // con los 3 doubles en 0.0 — no está confirmado cuál de los 3 (weedDistance/weedAngle/
+      // supplementDistance según el ejemplo de Autodesk) es el que Civil3D valida como
+      // "midOrdinateDistance" internamente, así que se usa 0.1 en los tres (mismo valor del
+      // ejemplo real) en vez de adivinar la posición exacta — un weeding mínimo no cambia el
+      // comportamiento de forma significativa para los que no sean el parámetro validado.
+      surface.BreaklinesDefinition.AddStandardBreaklines(pts, 0.1, 0.1, 0.1, 0);
+
+      return new
+      {
+        success = true,
+        surfaceName = name,
+        breaklineType,
+        pointCount = pts.Count
+      };
+    });
+  }
+
+  public static Task<object?> AddSurfaceBoundaryAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+    var boundaryTypeRaw = PluginRuntime.GetRequiredString(parameters, "boundaryType");
+    var pointsNode = parameters?["points"] as JsonArray;
+
+    if (pointsNode == null || pointsNode.Count < 3)
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "At least 3 boundary points required.");
+
+    var boundaryType = boundaryTypeRaw switch
+    {
+      "show" => Autodesk.Civil.SurfaceBoundaryType.Show,
+      "hide" => Autodesk.Civil.SurfaceBoundaryType.Hide,
+      "outer" => Autodesk.Civil.SurfaceBoundaryType.Outer,
+      "data_clip" => Autodesk.Civil.SurfaceBoundaryType.DataClip,
+      _ => throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"Unknown boundaryType '{boundaryTypeRaw}'."),
+    };
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var surface = FindSurfaceByName(civilDoc, tr, name) as TinSurface
+        ?? throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Not a TIN surface");
+
+      surface.UpgradeOpen();
+
+      var pts = new Point3dCollection();
+      foreach (var pt in pointsNode)
+      {
+        pts.Add(new Point3d(
+          pt!["x"]!.GetValue<double>(),
+          pt["y"]!.GetValue<double>(),
+          0.0
+        ));
+      }
+
+      // midOrdinateDistance debe ser > 0 (confirmado en pruebas en vivo: "midOrdinateDistance
+      // should be greater than zero") — determina la tesela de arcos/curvas al convertir a línea.
+      surface.BoundariesDefinition.AddBoundaries(pts, 0.1, boundaryType, false);
+
+      return new
+      {
+        success = true,
+        surfaceName = name,
+        boundaryType = boundaryTypeRaw,
+        pointCount = pts.Count
+      };
+    });
+  }
 
   public static Task<object?> ExtractSurfaceContoursAsync(JsonObject? p)
-    => Task.FromResult<object?>(new { status = "planned" });
+    => Task.FromResult<object?>(new
+    {
+      status = "planned",
+      note = "Real signatures found by the compiler are TinSurface.ExtractMinorContours(SurfaceExtractionSettingsType, " +
+             "ContourSmoothingType, int smoothFactor) and ExtractMajorContours(same shape) — neither takes a raw " +
+             "interval/layerId pair as guessed (CS7036: missing required parameter 'smoothFactor'). The real API " +
+             "extracts contours using the surface's own extraction settings object, not an ad-hoc interval — needs " +
+             "research into SurfaceExtractionSettingsType against a live Civil 3D session before attempting again. " +
+             "For contour-derived areas/volumes without extraction, civil3d_surface's compute_contour_volume and " +
+             "close_contours_against_boundary already work against manually-drawn contour polylines."
+    });
 }

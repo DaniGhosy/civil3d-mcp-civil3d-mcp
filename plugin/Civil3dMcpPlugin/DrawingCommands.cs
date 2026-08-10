@@ -25,6 +25,28 @@ public static class DrawingCommands
     });
   }
 
+  public static Task<object?> GetCivil3DHealthVerboseAsync()
+  {
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+      var version = assembly.GetName().Version?.ToString() ?? "unknown";
+      var buildDate = File.Exists(assembly.Location)
+        ? File.GetLastWriteTime(assembly.Location).ToString("yyyy-MM-dd HH:mm:ss")
+        : "unknown";
+
+      return new
+      {
+        connected = true,
+        drawingName = doc.Name,
+        civil3dVersion = "Civil 3D",
+        pluginVersion = version,
+        pluginBuildDate = buildDate,
+        openDocumentCount = App.DocumentManager.Count,
+      };
+    });
+  }
+
   public static Task<object?> GetDrawingInfoAsync()
   {
     return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>

@@ -21,12 +21,24 @@ public static class PointCommands
       var points = new List<object>();
       var count = 0;
 
+      // Filtrado real por membresía de grupo vía PointGroup.ContainsPoint(uint),
+      // confirmado por búsqueda en la documentación/foros oficiales de Autodesk
+      // (PointGroup no expone una lista simple de números de punto; la
+      // membresía se resuelve por criterio de query, y ContainsPoint es el
+      // método puntual para chequear un número específico).
+      PointGroup? group = null;
+      if (groupName != null)
+      {
+        group = FindPointGroupByName(civilDoc, tr, groupName);
+      }
+
       foreach (ObjectId id in cogoPoints)
       {
         if (count >= limit) break;
 
         var point = tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
         if (point == null) continue;
+        if (group != null && !group.ContainsPoint(point.PointNumber)) continue;
 
         points.Add(new
         {
@@ -40,7 +52,7 @@ public static class PointCommands
         count++;
       }
 
-      return new { points, total = cogoPoints.Count };
+      return new { points, total = group != null ? group.PointsCount : cogoPoints.Count };
     });
   }
 
@@ -174,13 +186,144 @@ public static class PointCommands
     });
   }
 
+  // ─────────────────────────────────────────────
+  // import/export de puntos en texto plano (Mes 8, S3): no depende de
+  // LandXML ni de ningún API especial — solo I/O de archivo + civilDoc.CogoPoints
+  // (ya usado en createCogoPoints). Formato soportado: PNEZD o PENZD,
+  // delimitado por coma, un punto por línea.
+  // ─────────────────────────────────────────────
   public static Task<object?> ImportCogoPointsAsync(JsonObject? parameters)
   {
-    // Placeholder — requires PointFileFormat and file I/O
-    return Task.FromResult<object?>(new
+    var filePath = PluginRuntime.GetRequiredString(parameters, "filePath");
+    var format = (PluginRuntime.GetOptionalString(parameters, "format") ?? "PNEZD").ToUpperInvariant();
+
+    if (format != "PNEZD" && format != "PENZD")
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"Unsupported format '{format}'. Expected 'PNEZD' or 'PENZD'.");
+
+    if (!File.Exists(filePath))
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"File not found: '{filePath}'.");
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var cogoPoints = civilDoc.CogoPoints;
+      var created = new List<object>();
+
+      foreach (var rawLine in File.ReadAllLines(filePath))
+      {
+        var line = rawLine.Trim();
+        if (line.Length == 0 || line.StartsWith("#")) continue;
+
+        var parts = line.Split(',');
+        if (parts.Length < 4) continue;
+
+        double northing, easting;
+        if (format == "PNEZD")
+        {
+          northing = double.Parse(parts[1]);
+          easting = double.Parse(parts[2]);
+        }
+        else
+        {
+          easting = double.Parse(parts[1]);
+          northing = double.Parse(parts[2]);
+        }
+        var elevation = double.Parse(parts[3]);
+        var description = parts.Length > 4 ? string.Join(",", parts, 4, parts.Length - 4).Trim() : "";
+
+        var pointId = cogoPoints.Add(new Point3d(easting, northing, elevation), false);
+        var point = tr.GetObject(pointId, OpenMode.ForWrite) as CogoPoint;
+        if (point != null && !string.IsNullOrEmpty(description))
+          point.RawDescription = description;
+
+        created.Add(new { pointNumber = point?.PointNumber ?? 0, easting, northing, elevation, description });
+      }
+
+      return new { success = true, filePath, format, importedCount = created.Count, created };
+    });
+  }
+
+  public static Task<object?> ExportCogoPointsAsync(JsonObject? parameters)
+  {
+    var filePath = PluginRuntime.GetRequiredString(parameters, "filePath");
+    var format = (PluginRuntime.GetOptionalString(parameters, "format") ?? "PNEZD").ToUpperInvariant();
+    var groupName = PluginRuntime.GetOptionalString(parameters, "groupName");
+
+    if (format != "PNEZD" && format != "PENZD")
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"Unsupported format '{format}'. Expected 'PNEZD' or 'PENZD'.");
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      PointGroup? group = groupName != null ? FindPointGroupByName(civilDoc, tr, groupName) : null;
+
+      using var writer = new StreamWriter(filePath, false, System.Text.Encoding.UTF8);
+      var exportedCount = 0;
+
+      foreach (ObjectId id in civilDoc.CogoPoints)
+      {
+        var point = tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
+        if (point == null) continue;
+        if (group != null && !group.ContainsPoint(point.PointNumber)) continue;
+
+        var line = format == "PNEZD"
+          ? $"{point.PointNumber},{point.Northing},{point.Easting},{point.Elevation},{point.RawDescription}"
+          : $"{point.PointNumber},{point.Easting},{point.Northing},{point.Elevation},{point.RawDescription}";
+
+        writer.WriteLine(line);
+        exportedCount++;
+      }
+
+      return new { success = true, filePath, format, exportedCount };
+    });
+  }
+
+  public static Task<object?> CreatePointGroupAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var groupId = civilDoc.PointGroups.Add(name);
+      var group = tr.GetObject(groupId, OpenMode.ForRead) as PointGroup;
+
+      return new
+      {
+        success = true,
+        name,
+        handle = group?.Handle.ToString(),
+      };
+    });
+  }
+
+  public static Task<object?> DeletePointGroupAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var group = FindPointGroupByName(civilDoc, tr, name);
+      group.UpgradeOpen();
+      group.Erase();
+
+      return new { success = true, deleted = name };
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // Description Key Sets: el PDF los menciona como parte de "Puntos COGO
+  // completos", pero la ruta de acceso real del API (posiblemente vía
+  // civilDoc.Styles o un manager dedicado) no se puede confirmar sin una
+  // sesión Civil3D real. Se deja como stub explícito en vez de adivinar.
+  // ─────────────────────────────────────────────
+  public static Task<object?> GetDescriptionKeySetsAsync(JsonObject? parameters)
+    => Task.FromResult<object?>(new
     {
       status = "planned",
-      message = "importCogoPoints requires PointFileFormat configuration. Not yet fully implemented.",
+      note = "Description Key Set access needs its real API path confirmed against a live Civil 3D drawing."
     });
+
+  private static PointGroup FindPointGroupByName(dynamic civilDoc, Transaction tr, string name)
+  {
+    var ids = ((System.Collections.IEnumerable)civilDoc.PointGroups).Cast<ObjectId>();
+    return CivilObjectLookup.FindByName<PointGroup>(ids, tr, name);
   }
 }

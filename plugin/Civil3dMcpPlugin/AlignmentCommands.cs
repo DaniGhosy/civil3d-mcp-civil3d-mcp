@@ -140,23 +140,68 @@ public static class AlignmentCommands
     });
   }
 
+  // ─────────────────────────────────────────────
+  // Alineamientos avanzados (Mes 3): superelevación y velocidades de diseño.
+  // Los nombres de las colecciones (SuperelevationCurves,
+  // SuperelevationCriticalStations, DesignSpeeds) están confirmados por
+  // documentación/código real de Autodesk, pero las propiedades internas de
+  // cada item (SuperelevationCurve/SuperelevationCriticalStation/DesignSpeed)
+  // no se pudieron verificar contra una sesión real, así que se serializan
+  // genéricamente vía reflexión (GenericObjectCommands.SerializeSimpleProperties)
+  // en vez de adivinar nombres de propiedad puntuales.
+  // ─────────────────────────────────────────────
+  public static Task<object?> ListSuperelevationCurvesAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.ReadAsync<object?>((doc, _, db, tr) =>
+    {
+      var civilDoc = CivilApplication.ActiveDocument;
+      var alignment = FindAlignmentByName(civilDoc, tr, name);
+
+      var curves = new List<object>();
+      foreach (var curve in alignment.SuperelevationCurves)
+        curves.Add(GenericObjectCommands.SerializeSimpleProperties(curve!));
+
+      return new { alignmentName = name, curves };
+    });
+  }
+
+  public static Task<object?> ListSuperelevationCriticalStationsAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.ReadAsync<object?>((doc, _, db, tr) =>
+    {
+      var civilDoc = CivilApplication.ActiveDocument;
+      var alignment = FindAlignmentByName(civilDoc, tr, name);
+
+      var stations = new List<object>();
+      foreach (var station in alignment.SuperelevationCriticalStations)
+        stations.Add(GenericObjectCommands.SerializeSimpleProperties(station!));
+
+      return new { alignmentName = name, stations };
+    });
+  }
+
+  public static Task<object?> ListDesignSpeedsAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.ReadAsync<object?>((doc, _, db, tr) =>
+    {
+      var civilDoc = CivilApplication.ActiveDocument;
+      var alignment = FindAlignmentByName(civilDoc, tr, name);
+
+      var speeds = new List<object>();
+      foreach (var speed in alignment.DesignSpeeds)
+        speeds.Add(GenericObjectCommands.SerializeSimpleProperties(speed!));
+
+      return new { alignmentName = name, speeds };
+    });
+  }
+
   // ── Helper ──
   internal static Alignment FindAlignmentByName(CivilDocument civilDoc, Transaction tr, string name)
-  {
-    foreach (ObjectId id in civilDoc.GetAlignmentIds())
-    {
-      var alignment = tr.GetObject(id, OpenMode.ForRead) as Alignment;
-
-      if (alignment != null &&
-          string.Equals(alignment.Name, name, StringComparison.OrdinalIgnoreCase))
-      {
-        return alignment;
-      }
-    }
-
-    throw new JsonRpcDispatchException(
-      "CIVIL3D.NOT_FOUND",
-      $"Alignment '{name}' not found."
-    );
-  }
+    => CivilObjectLookup.FindByName<Alignment>(civilDoc.GetAlignmentIds().Cast<ObjectId>(), tr, name);
 }

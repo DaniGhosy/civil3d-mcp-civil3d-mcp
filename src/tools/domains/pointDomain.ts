@@ -8,7 +8,11 @@ const PointActionSchema = z.enum([
   "create",
   "delete",
   "list_groups",
+  "create_group",
+  "delete_group",
   "import",
+  "export",
+  "description_keys",
 ]);
 
 const canonicalInputShape = {
@@ -127,13 +131,54 @@ export const POINT_DOMAIN_DEFINITION: DomainToolDefinition = {
           await c.sendCommand("listPointGroups", {})
         ),
     },
+    create_group: {
+      action: "create_group",
+      inputSchema: z.object({
+        action: z.literal("create_group"),
+        groupName: z.string(),
+      }),
+      capabilities: ["create"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["createPointGroup"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("createPointGroup", { name: args.groupName })
+        ),
+    },
+    delete_group: {
+      action: "delete_group",
+      inputSchema: z.object({
+        action: z.literal("delete_group"),
+        groupName: z.string(),
+      }),
+      capabilities: ["delete"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["deletePointGroup"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("deletePointGroup", { name: args.groupName })
+        ),
+    },
+    description_keys: {
+      action: "description_keys",
+      inputSchema: z.object({ action: z.literal("description_keys") }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getDescriptionKeySets"],
+      execute: async () =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getDescriptionKeySets", {})
+        ),
+    },
     import: {
       action: "import",
       inputSchema: z.object({
         action: z.literal("import"),
         filePath: z.string(),
         format: z.string().optional(),
-        groupName: z.string().optional(),
       }),
       capabilities: ["import", "create"],
       requiresActiveDrawing: true,
@@ -142,6 +187,26 @@ export const POINT_DOMAIN_DEFINITION: DomainToolDefinition = {
       execute: async (args: any) =>
         await withApplicationConnection(async (c) =>
           await c.sendCommand("importCogoPoints", {
+            filePath: args.filePath,
+            format: args.format ?? "PNEZD",
+          })
+        ),
+    },
+    export: {
+      action: "export",
+      inputSchema: z.object({
+        action: z.literal("export"),
+        filePath: z.string(),
+        format: z.string().optional(),
+        groupName: z.string().optional(),
+      }),
+      capabilities: ["export"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["exportCogoPoints"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("exportCogoPoints", {
             filePath: args.filePath,
             format: args.format ?? "PNEZD",
             groupName: args.groupName,
@@ -154,11 +219,27 @@ export const POINT_DOMAIN_DEFINITION: DomainToolDefinition = {
       toolName: "civil3d_point",
       displayName: "Civil 3D COGO Points",
       description:
-        "Manage COGO (Coordinate Geometry) points. Actions: list (optionally by group), " +
-        "get (by point number), create (single or batch), delete, list_groups, " +
-        "import (from file).",
+        "Manage COGO (Coordinate Geometry) points. Actions: list (optionally filtered by " +
+        "groupName, which only returns points actually included in that point group), " +
+        "get (by point number), create (single or batch), delete, list_groups, create_group, " +
+        "delete_group, import (plain-text PNEZD/PENZD file — does not assign points to a " +
+        "group, group membership assignment isn't confirmed against the API), export " +
+        "(plain-text PNEZD/PENZD file, optionally filtered by groupName). Note: " +
+        "description_keys is not yet implemented — it returns a 'planned' status until " +
+        "Description Key Set access is confirmed against a live Civil 3D drawing.",
       inputShape: canonicalInputShape,
-      supportedActions: ["list", "get", "create", "delete", "list_groups", "import"],
+      supportedActions: [
+        "list",
+        "get",
+        "create",
+        "delete",
+        "list_groups",
+        "create_group",
+        "delete_group",
+        "import",
+        "export",
+        "description_keys",
+      ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),
         args: rawArgs,

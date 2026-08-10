@@ -9,11 +9,23 @@ const CorridorActionSchema = z.enum([
   "get_surfaces",
   "get_feature_lines",
   "compute_volumes",
+  "list_baselines",
+  "list_baseline_regions",
+  "add_baseline_region",
+  "get_targets",
+  "create_surface_from_corridor_surface",
 ]);
 
 const canonicalInputShape = {
   action: CorridorActionSchema.describe("The corridor operation to perform."),
   name: z.string().optional().describe("Corridor name."),
+  baselineName: z.string().optional().describe("Baseline name."),
+  regionName: z.string().optional().describe("Baseline region name."),
+  assemblyName: z.string().optional().describe("Assembly name to apply to a new region (add_baseline_region)."),
+  startStation: z.number().optional().describe("Region start station (add_baseline_region)."),
+  endStation: z.number().optional().describe("Region end station (add_baseline_region)."),
+  corridorSurfaceName: z.string().optional().describe("Corridor surface name (create_surface_from_corridor_surface)."),
+  newSurfaceName: z.string().optional().describe("Name for the new independent surface (create_surface_from_corridor_surface)."),
 };
 
 export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -69,14 +81,18 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
     },
     get_feature_lines: {
       action: "get_feature_lines",
-      inputSchema: z.object({ action: z.literal("get_feature_lines"), name: z.string() }),
+      inputSchema: z.object({
+        action: z.literal("get_feature_lines"),
+        name: z.string(),
+        baselineName: z.string(),
+      }),
       capabilities: ["query"],
       requiresActiveDrawing: true,
       safeForRetry: true,
       pluginMethods: ["getCorridorFeatureLines"],
       execute: async (args: any) =>
         await withApplicationConnection(async (c) =>
-          await c.sendCommand("getCorridorFeatureLines", { name: args.name })
+          await c.sendCommand("getCorridorFeatureLines", { name: args.name, baselineName: args.baselineName })
         ),
     },
     compute_volumes: {
@@ -91,14 +107,118 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
           await c.sendCommand("computeCorridorVolumes", { name: args.name })
         ),
     },
+    list_baselines: {
+      action: "list_baselines",
+      inputSchema: z.object({ action: z.literal("list_baselines"), name: z.string() }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listBaselines"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listBaselines", { name: args.name })
+        ),
+    },
+    list_baseline_regions: {
+      action: "list_baseline_regions",
+      inputSchema: z.object({
+        action: z.literal("list_baseline_regions"),
+        name: z.string(),
+        baselineName: z.string(),
+      }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listBaselineRegions"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listBaselineRegions", { name: args.name, baselineName: args.baselineName })
+        ),
+    },
+    add_baseline_region: {
+      action: "add_baseline_region",
+      inputSchema: z.object({
+        action: z.literal("add_baseline_region"),
+        name: z.string(),
+        baselineName: z.string(),
+        regionName: z.string(),
+        assemblyName: z.string(),
+        startStation: z.number(),
+        endStation: z.number(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["addBaselineRegion"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("addBaselineRegion", {
+            name: args.name,
+            baselineName: args.baselineName,
+            regionName: args.regionName,
+            assemblyName: args.assemblyName,
+            startStation: args.startStation,
+            endStation: args.endStation,
+          })
+        ),
+    },
+    get_targets: {
+      action: "get_targets",
+      inputSchema: z.object({
+        action: z.literal("get_targets"),
+        name: z.string(),
+        baselineName: z.string(),
+        regionName: z.string(),
+      }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getCorridorTargets"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getCorridorTargets", {
+            name: args.name,
+            baselineName: args.baselineName,
+            regionName: args.regionName,
+          })
+        ),
+    },
+    create_surface_from_corridor_surface: {
+      action: "create_surface_from_corridor_surface",
+      inputSchema: z.object({
+        action: z.literal("create_surface_from_corridor_surface"),
+        name: z.string(),
+        corridorSurfaceName: z.string(),
+        newSurfaceName: z.string(),
+      }),
+      capabilities: ["create"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["createSurfaceFromCorridorSurface"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("createSurfaceFromCorridorSurface", {
+            name: args.name,
+            corridorSurfaceName: args.corridorSurfaceName,
+            newSurfaceName: args.newSurfaceName,
+          })
+        ),
+    },
   },
   exposures: [
     {
       toolName: "civil3d_corridor",
       displayName: "Civil 3D Corridor",
       description:
-        "Manage Civil 3D corridors (3D road models). Actions: list, get (by name), " +
-        "rebuild, get_surfaces, get_feature_lines, compute_volumes.",
+        "Manage Civil 3D corridors (3D road models). Actions: list, get (by name), rebuild, " +
+        "get_surfaces (corridor surfaces by name), create_surface_from_corridor_surface " +
+        "(detach an independent, dynamically-linked civil3d_surface from a corridor surface), " +
+        "get_feature_lines (by baseline, via BaselineFeatureLines), list_baselines, " +
+        "list_baseline_regions, add_baseline_region, get_targets (surface/alignment targets " +
+        "of a baseline region). Note: compute_volumes has no direct API — combine " +
+        "get_surfaces + create_surface_from_corridor_surface with civil3d_surface's " +
+        "compute_volume/get_area_elevation_table instead. There is no .NET API for creating " +
+        "intersections/roundabouts (confirmed COM/UI-only) — not covered by this tool.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -107,6 +227,11 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
         "get_surfaces",
         "get_feature_lines",
         "compute_volumes",
+        "list_baselines",
+        "list_baseline_regions",
+        "add_baseline_region",
+        "get_targets",
+        "create_surface_from_corridor_surface",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

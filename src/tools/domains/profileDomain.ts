@@ -8,6 +8,9 @@ const ProfileActionSchema = z.enum([
   "get_elevation",
   "create_from_surface",
   "create_layout",
+  "create_tangent",
+  "create_parabola",
+  "list_entities",
   "delete",
 ]);
 
@@ -17,8 +20,15 @@ const canonicalInputShape = {
   name: z.string().optional().describe("Profile name."),
   station: z.number().optional().describe("Station for elevation query."),
   surfaceName: z.string().optional().describe("Surface to sample."),
-  style: z.string().optional().describe("Profile style."),
+  style: z.string().optional().describe("Profile style name (default 'Standard')."),
+  labelSet: z.string().optional().describe("Profile label set style name (default 'Standard')."),
   layer: z.string().optional().describe("Layer name."),
+  startStation: z.number().optional().describe("Start station (create_tangent/create_parabola)."),
+  startElevation: z.number().optional().describe("Start elevation (create_tangent/create_parabola)."),
+  endStation: z.number().optional().describe("End station (create_tangent/create_parabola)."),
+  endElevation: z.number().optional().describe("End elevation (create_tangent/create_parabola)."),
+  pviStation: z.number().optional().describe("PVI station, the vertex of the curve (create_parabola)."),
+  pviElevation: z.number().optional().describe("PVI elevation, the vertex of the curve (create_parabola)."),
 };
 
 export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -85,8 +95,9 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("create_from_surface"),
         alignmentName: z.string(),
         surfaceName: z.string(),
-        name: z.string().optional(),
+        name: z.string(),
         style: z.string().optional(),
+        labelSet: z.string().optional(),
         layer: z.string().optional(),
       }),
       capabilities: ["create"],
@@ -100,6 +111,7 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
             surfaceName: args.surfaceName,
             name: args.name,
             style: args.style,
+            labelSet: args.labelSet,
             layer: args.layer,
           })
         ),
@@ -111,6 +123,7 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
         alignmentName: z.string(),
         name: z.string(),
         style: z.string().optional(),
+        labelSet: z.string().optional(),
         layer: z.string().optional(),
       }),
       capabilities: ["create"],
@@ -123,7 +136,85 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
             alignmentName: args.alignmentName,
             name: args.name,
             style: args.style,
+            labelSet: args.labelSet,
             layer: args.layer,
+          })
+        ),
+    },
+    create_tangent: {
+      action: "create_tangent",
+      inputSchema: z.object({
+        action: z.literal("create_tangent"),
+        alignmentName: z.string(),
+        name: z.string(),
+        startStation: z.number(),
+        startElevation: z.number(),
+        endStation: z.number(),
+        endElevation: z.number(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["addProfileTangent"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("addProfileTangent", {
+            alignmentName: args.alignmentName,
+            name: args.name,
+            startStation: args.startStation,
+            startElevation: args.startElevation,
+            endStation: args.endStation,
+            endElevation: args.endElevation,
+          })
+        ),
+    },
+    create_parabola: {
+      action: "create_parabola",
+      inputSchema: z.object({
+        action: z.literal("create_parabola"),
+        alignmentName: z.string(),
+        name: z.string(),
+        startStation: z.number(),
+        startElevation: z.number(),
+        pviStation: z.number(),
+        pviElevation: z.number(),
+        endStation: z.number(),
+        endElevation: z.number(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["addProfileParabola"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("addProfileParabola", {
+            alignmentName: args.alignmentName,
+            name: args.name,
+            startStation: args.startStation,
+            startElevation: args.startElevation,
+            pviStation: args.pviStation,
+            pviElevation: args.pviElevation,
+            endStation: args.endStation,
+            endElevation: args.endElevation,
+          })
+        ),
+    },
+    list_entities: {
+      action: "list_entities",
+      inputSchema: z.object({
+        action: z.literal("list_entities"),
+        alignmentName: z.string(),
+        name: z.string(),
+      }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listProfileEntities"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listProfileEntities", {
+            alignmentName: args.alignmentName,
+            name: args.name,
           })
         ),
     },
@@ -153,8 +244,13 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
       displayName: "Civil 3D Profile",
       description:
         "Manage Civil 3D profiles (vertical geometry). Actions: list (by alignment), " +
-        "get (by alignment + name), get_elevation (at station), " +
-        "create_from_surface, create_layout, delete.",
+        "get (by alignment + name), get_elevation (at station), create_from_surface, " +
+        "create_layout (empty layout profile — created without a label set for now, since " +
+        "civilDoc.Styles.ProfileLabelSetStyles does not exist under that name), " +
+        "list_entities (inspect current vertical geometry). Note: create_tangent and " +
+        "create_parabola are not yet implemented — the underlying API methods exist but take " +
+        "a different argument count than guessed, so they return a 'planned' status until the " +
+        "real overload is confirmed against a live Civil 3D drawing.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -162,6 +258,9 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "get_elevation",
         "create_from_surface",
         "create_layout",
+        "create_tangent",
+        "create_parabola",
+        "list_entities",
         "delete",
       ],
       resolveAction: (rawArgs) => ({

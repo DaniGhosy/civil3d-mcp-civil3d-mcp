@@ -18,6 +18,7 @@ export type ToolCapability =
 /** Domain categories for Civil 3D objects */
 export type ToolDomain =
   | "plugin"
+  | "generic"
   | "drawing"
   | "surface"
   | "alignment"

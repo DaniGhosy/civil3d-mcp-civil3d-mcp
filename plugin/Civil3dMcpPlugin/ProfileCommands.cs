@@ -82,26 +82,119 @@ public static class ProfileCommands
     });
   }
 
+  // ─────────────────────────────────────────────
+  // createProfileFromSurface: implementación real vía Profile.CreateFromSurface,
+  // confirmada por el compilador con la firma
+  // (string name, ObjectId alignmentId, ObjectId surfaceId, ObjectId layerId,
+  //  ObjectId styleId, ObjectId labelSetId). El lookup de label set por nombre
+  // (civilDoc.Styles.ProfileLabelSetStyles["..."]) NO existe con ese nombre —
+  // confirmado por el compilador (StylesRoot no lo contiene) — así que se pasa
+  // ObjectId.Null (sin label set) hasta confirmar la ruta real de acceso.
+  // ─────────────────────────────────────────────
   public static Task<object?> CreateProfileFromSurfaceAsync(JsonObject? parameters)
   {
-    // Placeholder — requires alignment + surface IDs and profile style
     var alignmentName = PluginRuntime.GetRequiredString(parameters, "alignmentName");
     var surfaceName = PluginRuntime.GetRequiredString(parameters, "surfaceName");
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+    var layerName = PluginRuntime.GetOptionalString(parameters, "layer") ?? "C-ROAD-PROF-EG";
+    var styleName = PluginRuntime.GetOptionalString(parameters, "style") ?? "Standard";
 
-    return Task.FromResult<object?>(new
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
     {
-      status = "planned",
-      message = $"createProfileFromSurface for alignment '{alignmentName}' + surface '{surfaceName}' is not yet fully implemented.",
+      var alignment = AlignmentCommands.FindAlignmentByName(civilDoc, tr, alignmentName);
+      var surfaceId = FindSurfaceIdByName(civilDoc, tr, surfaceName);
+      var layerId = EnsureLayer(db, tr, layerName);
+      var styleId = civilDoc.Styles.ProfileStyles[styleName];
+
+      var profileId = Profile.CreateFromSurface(name, alignment.ObjectId, surfaceId, layerId, styleId, ObjectId.Null);
+      var profile = tr.GetObject(profileId, OpenMode.ForRead) as Profile;
+
+      return new
+      {
+        success = true,
+        name,
+        alignmentName,
+        surfaceName,
+        handle = profile?.Handle.ToString(),
+        note = "Created without a label set — civilDoc.Styles.ProfileLabelSetStyles does not exist; " +
+               "the real accessor path needs to be confirmed against a live Civil 3D drawing.",
+      };
     });
   }
 
+  // ─────────────────────────────────────────────
+  // createLayoutProfile: implementación real vía Profile.CreateByLayout,
+  // confirmada por el compilador. Mismo ajuste de label set que arriba.
+  // ─────────────────────────────────────────────
   public static Task<object?> CreateLayoutProfileAsync(JsonObject? parameters)
   {
-    // Placeholder — requires proper profile creation via the API
-    return Task.FromResult<object?>(new
+    var alignmentName = PluginRuntime.GetRequiredString(parameters, "alignmentName");
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+    var layerName = PluginRuntime.GetOptionalString(parameters, "layer") ?? "C-ROAD-PROF";
+    var styleName = PluginRuntime.GetOptionalString(parameters, "style") ?? "Standard";
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var alignment = AlignmentCommands.FindAlignmentByName(civilDoc, tr, alignmentName);
+      var layerId = EnsureLayer(db, tr, layerName);
+      var styleId = civilDoc.Styles.ProfileStyles[styleName];
+
+      var profileId = Profile.CreateByLayout(name, alignment.ObjectId, layerId, styleId, ObjectId.Null);
+      var profile = tr.GetObject(profileId, OpenMode.ForRead) as Profile;
+
+      return new
+      {
+        success = true,
+        name,
+        alignmentName,
+        handle = profile?.Handle.ToString(),
+        note = "Created without a label set — civilDoc.Styles.ProfileLabelSetStyles does not exist; " +
+               "the real accessor path needs to be confirmed against a live Civil 3D drawing.",
+      };
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // Geometría vertical de un perfil de layout ya creado: los métodos
+  // ProfileEntityCollection.AddFixedTangent / .AddFixedSymmetricParabolaByThreePoints
+  // SÍ existen (confirmado por el compilador — el error es de sobrecarga, no
+  // de miembro inexistente), pero ninguna de sus sobrecargas acepta la
+  // cantidad de argumentos con la que adiviné (4 y 6 respectivamente). Se
+  // deja como stub explícito en vez de seguir probando combinaciones de
+  // argumentos a ciegas — falta confirmar la firma real contra el IntelliSense
+  // de una sesión Civil3D real o el archivo .chm del SDK.
+  // ─────────────────────────────────────────────
+  public static Task<object?> AddProfileTangentAsync(JsonObject? parameters)
+    => Task.FromResult<object?>(new
     {
       status = "planned",
-      message = "createLayoutProfile is not yet fully implemented.",
+      note = "ProfileEntityCollection.AddFixedTangent exists but takes a different argument " +
+             "count than guessed (4). Needs the real overload confirmed against a live Civil 3D drawing."
+    });
+
+  public static Task<object?> AddProfileParabolaAsync(JsonObject? parameters)
+    => Task.FromResult<object?>(new
+    {
+      status = "planned",
+      note = "ProfileEntityCollection.AddFixedSymmetricParabolaByThreePoints exists but takes a " +
+             "different argument count than guessed (6). Needs the real overload confirmed against a live Civil 3D drawing."
+    });
+
+  public static Task<object?> ListProfileEntitiesAsync(JsonObject? parameters)
+  {
+    var alignmentName = PluginRuntime.GetRequiredString(parameters, "alignmentName");
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var alignment = AlignmentCommands.FindAlignmentByName(civilDoc, tr, alignmentName);
+      var profile = FindProfileByName(alignment, tr, name);
+
+      var entities = new List<object>();
+      foreach (var entity in profile.Entities)
+        entities.Add(GenericObjectCommands.SerializeSimpleProperties(entity!));
+
+      return new { alignmentName, profileName = name, entities };
     });
   }
 
@@ -124,16 +217,16 @@ public static class ProfileCommands
   // ── Helpers ──
 
   private static Profile FindProfileByName(Alignment alignment, Transaction tr, string name)
-  {
-    foreach (ObjectId id in alignment.GetProfileIds())
-    {
-      var profile = tr.GetObject(id, OpenMode.ForRead) as Profile;
-      if (profile != null && string.Equals(profile.Name, name, StringComparison.OrdinalIgnoreCase))
-      {
-        return profile;
-      }
-    }
+    => CivilObjectLookup.FindByName<Profile>(alignment.GetProfileIds().Cast<ObjectId>(), tr, name);
 
-    throw new JsonRpcDispatchException("CIVIL3D.NOT_FOUND", $"Profile '{name}' not found on alignment '{alignment.Name}'.");
+  private static ObjectId FindSurfaceIdByName(dynamic civilDoc, Transaction tr, string name)
+  {
+    var ids = (ObjectIdCollection)civilDoc.GetSurfaceIds();
+    return CivilObjectLookup
+      .FindByName<Autodesk.Civil.DatabaseServices.Surface>(ids.Cast<ObjectId>(), tr, name)
+      .ObjectId;
   }
+
+  private static ObjectId EnsureLayer(Database db, Transaction tr, string layerName)
+    => GenericObjectCommands.EnsureLayerId(db, tr, layerName);
 }

@@ -9,6 +9,9 @@ const AlignmentActionSchema = z.enum([
   "delete",
   "station_to_point",
   "point_to_station",
+  "list_superelevation_curves",
+  "list_superelevation_critical_stations",
+  "list_design_speeds",
 ]);
 
 const canonicalInputShape = {
@@ -130,6 +133,42 @@ export const ALIGNMENT_DOMAIN_DEFINITION: DomainToolDefinition = {
           })
         ),
     },
+    list_superelevation_curves: {
+      action: "list_superelevation_curves",
+      inputSchema: z.object({ action: z.literal("list_superelevation_curves"), name: z.string() }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listSuperelevationCurves"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listSuperelevationCurves", { name: args.name })
+        ),
+    },
+    list_superelevation_critical_stations: {
+      action: "list_superelevation_critical_stations",
+      inputSchema: z.object({ action: z.literal("list_superelevation_critical_stations"), name: z.string() }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listSuperelevationCriticalStations"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listSuperelevationCriticalStations", { name: args.name })
+        ),
+    },
+    list_design_speeds: {
+      action: "list_design_speeds",
+      inputSchema: z.object({ action: z.literal("list_design_speeds"), name: z.string() }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listDesignSpeeds"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listDesignSpeeds", { name: args.name })
+        ),
+    },
   },
   exposures: [
     {
@@ -138,7 +177,10 @@ export const ALIGNMENT_DOMAIN_DEFINITION: DomainToolDefinition = {
       description:
         "Manage Civil 3D alignments (horizontal geometry). Actions: list, get (by name), " +
         "create (from polyline), delete, station_to_point (convert station+offset to X,Y), " +
-        "point_to_station (convert X,Y to station+offset).",
+        "point_to_station (convert X,Y to station+offset), list_superelevation_curves, " +
+        "list_superelevation_critical_stations, list_design_speeds (each item's fields are " +
+        "serialized generically via reflection since their exact property names weren't " +
+        "verified against a live Civil 3D drawing).",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -147,6 +189,9 @@ export const ALIGNMENT_DOMAIN_DEFINITION: DomainToolDefinition = {
         "delete",
         "station_to_point",
         "point_to_station",
+        "list_superelevation_curves",
+        "list_superelevation_critical_stations",
+        "list_design_speeds",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

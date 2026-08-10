@@ -8,6 +8,7 @@ const GeometryActionSchema = z.enum([
   "create_3d_polyline",
   "create_text",
   "create_mtext",
+  "offset_lines_to_boundary",
 ]);
 
 const canonicalInputShape = {
@@ -29,6 +30,11 @@ const canonicalInputShape = {
   insertionY: z.number().optional().describe("Insertion point Y."),
   height: z.number().optional().describe("Text height."),
   rotation: z.number().optional().describe("Rotation angle in degrees."),
+  sourceLayer: z.string().optional().describe("Layer containing the Line entities to copy (offset_lines_to_boundary)."),
+  boundaryLayer: z.string().optional().describe("Layer containing the closed boundary Polyline (offset_lines_to_boundary)."),
+  directionDegrees: z.number().optional().describe("Advance direction in degrees, 0=+X, 90=+Y (offset_lines_to_boundary)."),
+  spacing: z.number().optional().describe("Distance in meters between successive copies (offset_lines_to_boundary)."),
+  maxCopies: z.number().optional().describe("Safety limit on number of iterations (offset_lines_to_boundary)."),
 };
 
 export const GEOMETRY_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -157,6 +163,31 @@ export const GEOMETRY_DOMAIN_DEFINITION: DomainToolDefinition = {
           })
         ),
     },
+    offset_lines_to_boundary: {
+      action: "offset_lines_to_boundary",
+      inputSchema: z.object({
+        action: z.literal("offset_lines_to_boundary"),
+        sourceLayer: z.string(),
+        boundaryLayer: z.string(),
+        directionDegrees: z.number(),
+        spacing: z.number().optional(),
+        maxCopies: z.number().optional(),
+      }),
+      capabilities: ["create", "generate"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["offsetLinesToBoundary"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("offsetLinesToBoundary", {
+            sourceLayer: args.sourceLayer,
+            boundaryLayer: args.boundaryLayer,
+            directionDegrees: args.directionDegrees,
+            spacing: args.spacing,
+            maxCopies: args.maxCopies,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -165,7 +196,8 @@ export const GEOMETRY_DOMAIN_DEFINITION: DomainToolDefinition = {
       description:
         "Create basic AutoCAD geometry in Civil 3D. Actions: create_line (from start/end XYZ), " +
         "create_polyline (from 2D vertices), create_3d_polyline (from 3D vertices), " +
-        "create_text, create_mtext.",
+        "create_text, create_mtext, offset_lines_to_boundary (repeatedly copy/trim lines " +
+        "against a closed boundary polyline at regular intervals).",
       inputShape: canonicalInputShape,
       supportedActions: [
         "create_line",
@@ -173,6 +205,7 @@ export const GEOMETRY_DOMAIN_DEFINITION: DomainToolDefinition = {
         "create_3d_polyline",
         "create_text",
         "create_mtext",
+        "offset_lines_to_boundary",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),
