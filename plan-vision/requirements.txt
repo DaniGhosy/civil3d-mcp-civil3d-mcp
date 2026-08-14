@@ -1,0 +1,5 @@
+opencv-python>=4.9
+pytesseract>=0.3.10,<0.4
+pymupdf>=1.24
+pillow>=10
+numpy>=1.26

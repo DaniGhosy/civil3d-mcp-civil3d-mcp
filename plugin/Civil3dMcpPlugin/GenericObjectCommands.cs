@@ -300,7 +300,7 @@ public static class GenericObjectCommands
     return id;
   }
 
-  private static ObjectId ResolveHandle(Database db, string handleString)
+  internal static ObjectId ResolveHandle(Database db, string handleString)
   {
     try
     {

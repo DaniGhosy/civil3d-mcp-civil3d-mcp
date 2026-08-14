@@ -9,5 +9,11 @@ plugin/**/obj/
 *.user
 *.suo
 
+
 # Civil 3D References (proprietary DLLs)
 C_References/*.dll
+
+# plan-vision (Python subproject)
+plan-vision/.venv/
+plan-vision/**/__pycache__/
+plan-vision/**/*.pyc

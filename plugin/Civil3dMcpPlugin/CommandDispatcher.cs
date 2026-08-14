@@ -191,6 +191,27 @@ public static class CommandDispatcher
       "rotateEntity" => GenericObjectCommands.RotateEntityAsync(parameters),
       "getEntityBounds" => GenericObjectCommands.GetEntityBoundsAsync(parameters),
 
+      // Blocks (Módulo A — lectura de planos: inventario de bloques)
+      "listBlockDefinitions" => BlockCommands.ListBlockDefinitionsAsync(),
+      "countBlocksByName" => BlockCommands.CountBlocksByNameAsync(parameters),
+      "getBlockAttributes" => BlockCommands.GetBlockAttributesAsync(parameters),
+      "listBlocksByLayer" => BlockCommands.ListBlocksByLayerAsync(parameters),
+      "getBlockInsertionPoints" => BlockCommands.GetBlockInsertionPointsAsync(parameters),
+      "listDynamicBlockStates" => BlockCommands.ListDynamicBlockStatesAsync(parameters),
+
+      // Labels (Módulo B — lectura de planos: texto y anotaciones)
+      "extractTextEntities" => LabelCommands.ExtractTextEntitiesAsync(parameters),
+      "extractLeaderAnnotations" => LabelCommands.ExtractLeaderAnnotationsAsync(),
+      "extractDimensions" => LabelCommands.ExtractDimensionsAsync(parameters),
+
+      // Legend (Módulo C — lectura de planos: simbología y leyenda)
+      "readLegendTable" => LegendCommands.ReadLegendTableAsync(parameters),
+
+      // Shape Detection (Módulo D — lectura de planos: geometría cruda / heurística)
+      "detectParallelLinePairs" => ShapeDetectionCommands.DetectParallelLinePairsAsync(parameters),
+      "groupEntitiesByProximity" => ShapeDetectionCommands.GroupEntitiesByProximityAsync(parameters),
+      "getEntityExtendedData" => ShapeDetectionCommands.GetEntityExtendedDataAsync(parameters),
+
       // Grading
       "listGradingGroups" => GradingCommands.ListGradingGroupsAsync(),
       "getGradingGroup" => GradingCommands.GetGradingGroupAsync(parameters),

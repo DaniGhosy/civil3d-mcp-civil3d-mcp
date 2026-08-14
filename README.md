@@ -43,6 +43,12 @@ The system has two components:
 | `civil3d_assembly` | list, get, delete, list_subassemblies, get_subassembly_parameters, set_subassembly_parameter, create (planned) | Corridor assemblies |
 | `civil3d_grading` | list_feature_lines, get_feature_line, delete_feature_line, create_feature_line (planned), list_groups (planned), get_group (planned), delete_group (planned), create_group (planned) | Grading feature lines (groups pending real API access) |
 | `civil3d_geometry` | create_line, create_polyline, create_3d_polyline, create_text, create_mtext (all 5 auto-create the target layer if missing instead of throwing eKeyNotFound), offset_lines_to_boundary (returns a `warning` field when 0 lines were created, e.g. no intersections found) | Basic AutoCAD geometry |
+| `civil3d_blocks` | list_block_definitions, count_blocks_by_name (optionally scoped to a layout), get_block_attributes (per-instance tag/value pairs), list_blocks_by_layer, get_block_insertion_points, list_dynamic_block_states (only meaningful for actual dynamic blocks) | Plan-reading: exact block/symbol inventory read straight from the drawing database (bloques, atributos, layers) — no geometry interpretation |
+| `civil3d_label` | extract_text_entities (DBText/MText, optionally by layer), extract_leader_annotations (Leader/MLeader with attached text), extract_dimensions (Dimension entities, optionally by layer), match_text_to_nearby_geometry (pure post-processing — no plugin call, pairs already-extracted text with the closest already-extracted geometry within a radius) | Plan-reading: labels, leaders, and dimensions — complements civil3d_blocks with the annotations around the symbols |
+| `civil3d_legend` | read_legend_table (raw rows of a Table entity — one by handle or every table found), build_symbol_dictionary, compare_legend_vs_drawing, export_symbol_library, import_symbol_library, train_symbol_signature (upserts a geometric signature into a local JSON library), load_office_standard (reads a combined dictionary/categoryMap/signatures JSON) — all but read_legend_table are pure post-processing/local JSON, no plugin call | Plan-reading: learns a drawing's own symbol→meaning dictionary from its legend table instead of assuming a fixed office standard; also hosts the local signature-library persistence used by civil3d_shape_detection |
+| `civil3d_shape_detection` | detect_parallel_line_pairs (Line pairs at constant perpendicular distance, optionally by layer), group_entities_by_proximity (clusters loose entities within a radius via transitive adjacency), get_entity_extended_data (XDATA grouped by registered application), classify_geometry_by_signature (pure post-processing — no plugin call — scores an entity-type group against a signature catalog by Jaccard similarity) | Plan-reading: hand-drawn symbols with no block — probabilistic, not exact, leans on layer name and geometric signature |
+| `civil3d_plan_vision` | rasterize_pdf_page, extract_legend_templates (OCRs an already-cropped legend image once and auto-builds a named symbol-template library — no active drawing, no plugin call), train_symbol_template, detect_symbols_cv (multi-scale + multi-rotation template matching with non-max suppression), ocr_extract_labels, calibrate_scale_from_dimension (pure TS math, no Python) | Plan-reading: PDFs/scanned images with **no live Civil3D drawing at all** — the only tool that never talks to the plugin. Classical OpenCV computer vision (confidence-level, not exact); requires Python 3.10+ and Tesseract OCR installed separately, see `plan-vision/README.md` |
+| `civil3d_quantity` | count_by_category (groups block counts by a symbol→category mapping), generate_quantity_report (exports a BOQ table to `.xlsx`) | Plan-reading: turns block counts into budget-ready numbers. Pure post-processing — does **not** call the plugin and does not require an active drawing |
 
 ## Setup
 
@@ -85,6 +91,22 @@ dotnet build
 }
 ```
 
+### 5. (Optional) Set up `plan-vision` for scanned plans
+
+Only needed for `civil3d_plan_vision` — every other tool works without this. See
+[plan-vision/README.md](plan-vision/README.md) for full details.
+
+```bash
+cd plan-vision
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+```
+
+Also requires **Tesseract OCR** installed separately and on the PATH (not a pip package) —
+[UB-Mannheim/tesseract](https://github.com/UB-Mannheim/tesseract/wiki) on Windows. PDF rasterization
+uses PyMuPDF, which needs nothing extra beyond the `pip install` above.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -94,6 +116,8 @@ dotnet build
 | `CIVIL3D_CONNECT_TIMEOUT` | `5000` | Connection timeout (ms) |
 | `CIVIL3D_COMMAND_TIMEOUT` | `120000` | Command execution timeout (ms) |
 | `LOG_LEVEL` | `info` | Log level (debug, info, warn, error) |
+| `PLAN_VISION_PYTHON` | `python` | Path to the Python interpreter used for `civil3d_plan_vision` |
+| `PLAN_VISION_TIMEOUT` | `120000` | `civil3d_plan_vision` subprocess timeout (ms) |
 
 ## Plugin Commands
 

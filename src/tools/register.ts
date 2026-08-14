@@ -20,6 +20,12 @@ import { GRADING_DOMAIN_DEFINITION } from "./domains/gradingDomain.js";
 import { DATA_SHORTCUT_DOMAIN_DEFINITION } from "./domains/dataShortcutDomain.js";
 import { SURVEY_DOMAIN_DEFINITION } from "./domains/surveyDomain.js";
 import { IMPORT_EXPORT_DOMAIN_DEFINITION } from "./domains/importExportDomain.js";
+import { BLOCKS_DOMAIN_DEFINITION } from "./domains/blocksDomain.js";
+import { QUANTITY_DOMAIN_DEFINITION } from "./domains/quantityDomain.js";
+import { LABEL_DOMAIN_DEFINITION } from "./domains/labelDomain.js";
+import { LEGEND_DOMAIN_DEFINITION } from "./domains/legendDomain.js";
+import { SHAPE_DETECTION_DOMAIN_DEFINITION } from "./domains/shapeDetectionDomain.js";
+import { PLAN_VISION_DOMAIN_DEFINITION } from "./domains/planVisionDomain.js";
 
 /**
  * All domain definitions — order matters for tool discovery.
@@ -45,6 +51,12 @@ const DOMAIN_DEFINITIONS = [
   DATA_SHORTCUT_DOMAIN_DEFINITION,
   SURVEY_DOMAIN_DEFINITION,
   IMPORT_EXPORT_DOMAIN_DEFINITION,
+  BLOCKS_DOMAIN_DEFINITION,
+  LABEL_DOMAIN_DEFINITION,
+  LEGEND_DOMAIN_DEFINITION,
+  SHAPE_DETECTION_DOMAIN_DEFINITION,
+  PLAN_VISION_DOMAIN_DEFINITION,
+  QUANTITY_DOMAIN_DEFINITION,
   GEOMETRY_DOMAIN_DEFINITION,
 ];
 

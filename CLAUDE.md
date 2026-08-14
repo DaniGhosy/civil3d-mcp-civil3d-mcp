@@ -47,6 +47,28 @@ de depender de que exista un comando exacto ya escrito. Las primitivas genérica
   ciclo de prueba/limpieza: antes de esto no había forma de deshacer objetos de prueba sin entrar
   manualmente a Civil3D.
 
+## Módulo de lectura de planos y acciones TS-only sin plugin
+
+Desde `civil3d_blocks`/`civil3d_quantity` (catálogo de lectura de planos, Fase 1), no todos los
+dominios llaman al plugin. `civil3d_quantity` es el primer caso: sus dos acciones
+(`count_by_category`, `generate_quantity_report`) son post-proceso puro en TS sobre datos que el
+asistente ya extrajo (típicamente con `civil3d_blocks`) — no abren conexión al plugin y tienen
+`requiresActiveDrawing: false`. No es un descuido ni un dominio a medio terminar: hay pasos del
+pipeline de "leer un plano" (agrupar, sumar, exportar a Excel) que no necesitan otro round-trip a
+Civil3D. El roadmap completo del catálogo (Módulos B–G del PDF original) sigue el mismo criterio:
+lo que lee del dibujo va al plugin C#, lo que es heurística/agregación sobre datos ya leídos queda en
+TS puro.
+
+**`civil3d_plan_vision` (Módulo F) es un tercer proceso, no solo un tercer patrón.** Cuando no hay
+dibujo vivo (PDF/imagen escaneada), el servidor TS invoca un subproceso Python (`plan-vision/`, ver
+su propio `README.md`) vía `src/utils/PythonBridge.ts` — mismo principio arquitectónico que
+`ConnectionManager.ts`/plugin C# (capa fina de despacho a un proceso separado, JSON por stdin/stdout
+en vez de JSON-RPC por TCP), pero un proceso corto por llamada en vez de una conexión persistente,
+porque no hay un servidor Python de larga duración al que conectarse. Visión clásica con OpenCV
+(contornos + template matching multi-escala/rotación) y OCR con Tesseract — nivel de confianza, no
+la exactitud de los dominios que sí leen la base de datos del dibujo. Todas sus acciones tienen
+`requiresActiveDrawing: false`; es el único dominio del repo que nunca abre conexión al plugin C#.
+
 ## Patrón de dispatch
 
 - **TS**: cada dominio de Civil3D es UN tool MCP con un campo discriminador `action` (no un tool por
