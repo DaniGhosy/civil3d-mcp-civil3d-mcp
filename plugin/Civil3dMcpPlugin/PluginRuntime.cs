@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using App = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Civil3DMcpPlugin;
 
@@ -59,6 +60,20 @@ public static class PluginRuntime
       _activeOperations = 0;
       _queueDepth = 0;
     }
+  }
+
+  /// <summary>
+  /// Identifies the currently active drawing (full path, or document name if unsaved), for
+  /// tagging background jobs with the drawing they were started against. Ported for
+  /// civil3d_job — simpler than source's version, which also feeds an AsyncLocal-based
+  /// per-request "expected drawing" mismatch check that this plugin doesn't otherwise have.
+  /// </summary>
+  public static string? GetActiveDrawingIdentity()
+  {
+    var document = App.DocumentManager.MdiActiveDocument;
+    if (document == null) return null;
+    var fileName = document.Database.Filename;
+    return string.IsNullOrWhiteSpace(fileName) ? document.Name : fileName;
   }
 
   public static PluginStatus GetStatus()

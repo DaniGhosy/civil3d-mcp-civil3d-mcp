@@ -34,6 +34,17 @@ const SurfaceActionSchema = z.enum([
   "minimize_convex_triangles",
   "delete_breakline",
   "delete_operation",
+  "volume_calculate",
+  "volume_report",
+  "volume_by_region",
+  "analyze_slope",
+  "analyze_elevation",
+  "analyze_directions",
+  "watershed_add",
+  "contour_interval_set",
+  "statistics_get_detailed",
+  "sample_elevations",
+  "create_from_dem",
 ]);
 
 const canonicalInputShape = {
@@ -72,6 +83,21 @@ const canonicalInputShape = {
   tolerance: z.number().optional().describe("XY matching tolerance for delete_points (default 0.01)."),
   pasteSurfaceName: z.string().optional().describe("Name of the surface to paste into this one (paste_surface)."),
   minimumTriangleArea: z.number().optional().describe("Minimum triangle area build option (set_build_options)."),
+  method: z.string().optional().describe("Volume method label, informational only (volume_calculate)."),
+  format: z.enum(["summary", "detailed"]).optional().describe("Report format (volume_report)."),
+  boundary: z.array(Point2DSchema).min(3).optional().describe("Region boundary polygon, at least 3 points (volume_by_region)."),
+  numRanges: z.number().int().positive().optional().describe("Requested number of analysis ranges — informational only, Civil 3D's stored ranges are always returned (analyze_slope/analyze_elevation/analyze_directions)."),
+  ranges: z.array(z.any()).optional().describe("Requested custom ranges — informational only (analyze_slope/analyze_elevation)."),
+  depthThreshold: z.number().optional().describe("Minimum depth to register a watershed, default 0.1 (watershed_add)."),
+  mergeAdjacentWatersheds: z.boolean().optional().describe("Merge adjacent watersheds (watershed_add)."),
+  samplingMethod: z.enum(["grid", "points", "transect"]).optional().describe("Sampling method (sample_elevations)."),
+  gridSpacing: z.number().optional().describe("Grid spacing (sample_elevations method=grid)."),
+  elevationSamplePoints: z.array(Point2DSchema).optional().describe("Points to sample (sample_elevations method=points)."),
+  filePath: z.string().optional().describe("DEM file path — .dem/.tif/.tiff/.asc/.adf (create_from_dem)."),
+  coordinateSystem: z.string().optional().describe("Not supported — always returns a capability error (create_from_dem)."),
+  startPoint: Point2DSchema.optional().describe("Transect start point (sample_elevations method=transect)."),
+  endPoint: Point2DSchema.optional().describe("Transect end point (sample_elevations method=transect)."),
+  numSamples: z.number().int().min(2).optional().describe("Number of transect samples, default 50 (sample_elevations method=transect)."),
 };
 
 export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -566,6 +592,231 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
           await c.sendCommand("deleteSurfaceOperation", { name: args.name })
         ),
     },
+    volume_calculate: {
+      action: "volume_calculate",
+      inputSchema: z.object({
+        action: z.literal("volume_calculate"),
+        baseSurface: z.string(),
+        comparisonSurface: z.string(),
+        method: z.string().optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["calculateSurfaceVolume"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("calculateSurfaceVolume", {
+            baseSurface: args.baseSurface,
+            comparisonSurface: args.comparisonSurface,
+            method: args.method ?? "tin_volume",
+          })
+        ),
+    },
+    volume_report: {
+      action: "volume_report",
+      inputSchema: z.object({
+        action: z.literal("volume_report"),
+        baseSurface: z.string(),
+        comparisonSurface: z.string(),
+        format: z.enum(["summary", "detailed"]).optional(),
+      }),
+      capabilities: ["query", "analyze", "generate"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getSurfaceVolumeReport"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getSurfaceVolumeReport", {
+            baseSurface: args.baseSurface,
+            comparisonSurface: args.comparisonSurface,
+            format: args.format ?? "summary",
+          })
+        ),
+    },
+    volume_by_region: {
+      action: "volume_by_region",
+      inputSchema: z.object({
+        action: z.literal("volume_by_region"),
+        baseSurface: z.string(),
+        comparisonSurface: z.string(),
+        boundary: z.array(Point2DSchema).min(3),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["calculateSurfaceVolumeByRegion"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("calculateSurfaceVolumeByRegion", {
+            baseSurface: args.baseSurface,
+            comparisonSurface: args.comparisonSurface,
+            boundary: args.boundary,
+          })
+        ),
+    },
+    analyze_slope: {
+      action: "analyze_slope",
+      inputSchema: z.object({
+        action: z.literal("analyze_slope"),
+        name: z.string(),
+        numRanges: z.number().int().positive().optional(),
+        ranges: z.array(z.any()).optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["analyzeSurfaceSlope"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("analyzeSurfaceSlope", { name: args.name, numRanges: args.numRanges, ranges: args.ranges })
+        ),
+    },
+    analyze_elevation: {
+      action: "analyze_elevation",
+      inputSchema: z.object({
+        action: z.literal("analyze_elevation"),
+        name: z.string(),
+        numRanges: z.number().int().positive().optional(),
+        ranges: z.array(z.any()).optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["analyzeSurfaceElevation"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("analyzeSurfaceElevation", { name: args.name, numRanges: args.numRanges, ranges: args.ranges })
+        ),
+    },
+    analyze_directions: {
+      action: "analyze_directions",
+      inputSchema: z.object({
+        action: z.literal("analyze_directions"),
+        name: z.string(),
+        numRanges: z.number().int().positive().optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["analyzeSurfaceDirections"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("analyzeSurfaceDirections", { name: args.name, numRanges: args.numRanges })
+        ),
+    },
+    watershed_add: {
+      action: "watershed_add",
+      inputSchema: z.object({
+        action: z.literal("watershed_add"),
+        name: z.string(),
+        depthThreshold: z.number().optional(),
+        mergeAdjacentWatersheds: z.boolean().optional(),
+      }),
+      capabilities: ["edit", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["addSurfaceWatershed"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("addSurfaceWatershed", {
+            name: args.name,
+            depthThreshold: args.depthThreshold ?? 0.1,
+            mergeAdjacentWatersheds: args.mergeAdjacentWatersheds ?? false,
+          })
+        ),
+    },
+    contour_interval_set: {
+      action: "contour_interval_set",
+      inputSchema: z.object({
+        action: z.literal("contour_interval_set"),
+        name: z.string(),
+        minorInterval: z.number(),
+        majorInterval: z.number(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["setSurfaceContourInterval"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("setSurfaceContourInterval", {
+            name: args.name,
+            minorInterval: args.minorInterval,
+            majorInterval: args.majorInterval,
+          })
+        ),
+    },
+    statistics_get_detailed: {
+      action: "statistics_get_detailed",
+      inputSchema: z.object({ action: z.literal("statistics_get_detailed"), name: z.string() }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getSurfaceStatisticsDetailed"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getSurfaceStatisticsDetailed", { name: args.name })
+        ),
+    },
+    sample_elevations: {
+      action: "sample_elevations",
+      inputSchema: z.object({
+        action: z.literal("sample_elevations"),
+        name: z.string(),
+        samplingMethod: z.enum(["grid", "points", "transect"]),
+        gridSpacing: z.number().optional(),
+        boundary: z.array(Point2DSchema).optional(),
+        elevationSamplePoints: z.array(Point2DSchema).optional(),
+        startPoint: Point2DSchema.optional(),
+        endPoint: Point2DSchema.optional(),
+        numSamples: z.number().int().min(2).optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["sampleSurfaceElevations"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("sampleSurfaceElevations", {
+            name: args.name,
+            method: args.samplingMethod,
+            gridSpacing: args.gridSpacing,
+            boundary: args.boundary,
+            points: args.elevationSamplePoints,
+            startPoint: args.startPoint,
+            endPoint: args.endPoint,
+            numSamples: args.numSamples,
+          })
+        ),
+    },
+    create_from_dem: {
+      action: "create_from_dem",
+      inputSchema: z.object({
+        action: z.literal("create_from_dem"),
+        name: z.string(),
+        filePath: z.string(),
+        style: z.string().optional(),
+        layer: z.string().optional(),
+        description: z.string().optional(),
+        coordinateSystem: z.string().optional(),
+      }),
+      capabilities: ["create", "import"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["createSurfaceFromDem"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("createSurfaceFromDem", {
+            name: args.name,
+            filePath: args.filePath,
+            style: args.style,
+            layer: args.layer,
+            description: args.description,
+            coordinateSystem: args.coordinateSystem,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -596,7 +847,13 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "get_build_options to discover the real build-options property names first). " +
         "They return a 'planned' status until confirmed against a live Civil 3D drawing. There " +
         "is also no API-level toggle for automatic vs manual surface rebuild (confirmed absent " +
-        "— only Corridor exposes that).",
+        "— only Corridor exposes that). Additional real actions: volume_calculate/volume_report " +
+        "(same TinVolumeSurface calculation as compute_volume, with method/report framing), " +
+        "volume_by_region (grid-sampled cut/fill within a boundary polygon), " +
+        "analyze_slope/analyze_elevation/analyze_directions (reads Civil 3D's already-generated " +
+        "analysis ranges — throws if none exist yet), watershed_add, contour_interval_set, " +
+        "statistics_get_detailed, sample_elevations (grid/points/transect), create_from_dem " +
+        "(cannot assign a coordinate system through this API path — always errors if provided).",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -627,6 +884,17 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "minimize_convex_triangles",
         "delete_breakline",
         "delete_operation",
+        "volume_calculate",
+        "volume_report",
+        "volume_by_region",
+        "analyze_slope",
+        "analyze_elevation",
+        "analyze_directions",
+        "watershed_add",
+        "contour_interval_set",
+        "statistics_get_detailed",
+        "sample_elevations",
+        "create_from_dem",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

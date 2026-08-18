@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisor de símbolos — {{ source_drawing }}</title>
+<style>
+  :root {
+    --paper: #eef1f0;
+    --paper-raised: #ffffff;
+    --ink: #17222b;
+    --ink-soft: #46565f;
+    --muted: #7c8a90;
+    --rule: #ccd6d4;
+    --rule-soft: #dde4e2;
+    --grid-line: #dee5e3;
+    --accent: #b6511a;
+    --good: #2e7d4f;
+    --good-bg: #e2f3e9;
+    --good-line: #bfe3cf;
+    --bad: #a63a3a;
+    --bad-bg: #fbe8e8;
+    --bad-line: #f0c6c6;
+    --diagram-stroke: #17222b;
+    --input-bg: #ffffff;
+    --focus: #1f6fb2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #11171b;
+      --paper-raised: #1a2226;
+      --ink: #e9efed;
+      --ink-soft: #b7c2c0;
+      --muted: #83918f;
+      --rule: #313d3f;
+      --rule-soft: #263030;
+      --grid-line: #202a2b;
+      --accent: #e0813f;
+      --good: #63c690;
+      --good-bg: #17301f;
+      --good-line: #2b4a34;
+      --bad: #e58080;
+      --bad-bg: #331b1b;
+      --bad-line: #4d2a2a;
+      --diagram-stroke: #d9e2e0;
+      --input-bg: #10161a;
+      --focus: #5fa8e0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+                       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding: clamp(14px, 3vw, 36px);
+  }
+  .sheet { max-width: 1200px; margin: 0 auto; }
+
+  .titleblock {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 16px 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+  .titleblock h1 {
+    margin: 0 0 2px;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .titleblock .eyebrow {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .titleblock .meta {
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+  .progress {
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .progress span { color: var(--muted); font-weight: 400; font-size: 0.72rem; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card.done { opacity: 0.55; }
+
+  .diagram-wrap {
+    background: linear-gradient(var(--rule-soft) 1px, transparent 1px),
+                linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 10px 10px;
+    background-color: var(--paper-raised);
+    border-bottom: 1px solid var(--rule);
+    aspect-ratio: 5 / 3;
+  }
+  .diagram-wrap svg { width: 100%; height: 100%; display: block; }
+  .diagram-wrap line.seg { stroke: var(--diagram-stroke); stroke-width: 2.1; stroke-linecap: round; }
+  .diagram-wrap circle.shp { fill: none; stroke: var(--diagram-stroke); stroke-width: 2.1; }
+  .diagram-wrap rect.shp { fill: none; stroke: var(--diagram-stroke); stroke-width: 1.6; stroke-dasharray: 3 2; }
+  .diagram-wrap circle.ctr { fill: var(--accent); }
+
+  .body { padding: 9px 11px 11px; display: flex; flex-direction: column; gap: 6px; }
+
+  .row1 { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .gid { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: 0.72rem; font-weight: 600; }
+
+  .nearest { font-size: 0.76rem; color: var(--ink-soft); line-height: 1.4; }
+  .nearest b { color: var(--ink); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; }
+  .nearest .dist { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; color: var(--muted); }
+
+  .meta2 {
+    font-size: 0.68rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  .warn-missing {
+    font-size: 0.68rem;
+    color: var(--bad);
+    background: var(--bad-bg);
+    border: 1px solid var(--bad-line);
+    border-radius: 4px;
+    padding: 3px 6px;
+  }
+
+  .labelform { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+  .labelform .fields { display: flex; gap: 5px; }
+  .labelform input {
+    font: inherit;
+    font-size: 0.78rem;
+    background: var(--input-bg);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 5px 7px;
+    min-width: 0;
+  }
+  .labelform input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .labelform input.cat { flex: 1.3; }
+  .labelform input.sub { flex: 1; }
+  .labelform .btns { display: flex; gap: 5px; }
+  .labelform button {
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+  }
+  .labelform button:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .labelform button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .labelform button.save { flex: 1; background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .labelform button.noise { color: var(--bad); border-color: var(--bad-line); background: var(--bad-bg); }
+
+  .done-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--good);
+    background: var(--good-bg);
+    border: 1px solid var(--good-line);
+    border-radius: 4px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+
+  .card-err {
+    font-size: 0.7rem;
+    color: var(--bad);
+    min-height: 1em;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="titleblock">
+    <div>
+      <span class="eyebrow">Revisor de candidatos a símbolo</span>
+      <h1>{{ source_drawing }}</h1>
+      <div class="meta">salida: {{ output_path }}</div>
+    </div>
+    <div class="progress" id="progress">&nbsp;</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+const CANDIDATES = {{ candidates | tojson }};
+const LABELED = new Set({{ labeled_ids | tojson }});
+
+function svgFor(shapes) {
+  const xs = [], ys = [];
+  shapes.forEach(s => {
+    if (s.type === "line") { xs.push(s.x1, s.x2); ys.push(s.y1, s.y2); }
+    else if (s.type === "circle") { xs.push(s.cx - s.r, s.cx + s.r); ys.push(s.cy - s.r, s.cy + s.r); }
+    else { xs.push(s.x1, s.x2); ys.push(s.y1, s.y2); }
+  });
+  if (!xs.length) return '<svg viewBox="0 0 100 60"></svg>';
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const w = Math.max(maxX - minX, 0.04), h = Math.max(maxY - minY, 0.04);
+  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  const vbW = 100, vbH = 60, pad = 12;
+  const scale = Math.min((vbW - pad * 2) / w, (vbH - pad * 2) / h);
+  const px = x => (vbW / 2 + (x - cx) * scale).toFixed(2);
+  const py = y => (vbH / 2 - (y - cy) * scale).toFixed(2);
+
+  const parts = shapes.map(s => {
+    if (s.type === "line") {
+      return `<line class="seg" x1="${px(s.x1)}" y1="${py(s.y1)}" x2="${px(s.x2)}" y2="${py(s.y2)}"/>`;
+    }
+    if (s.type === "circle") {
+      return `<circle class="shp" cx="${px(s.cx)}" cy="${py(s.cy)}" r="${(s.r * scale).toFixed(2)}"/>`;
+    }
+    const x1 = px(s.x1), y1 = py(s.y2), x2 = px(s.x2), y2 = py(s.y1);
+    return `<rect class="shp" x="${Math.min(x1, x2)}" y="${Math.min(y1, y2)}" width="${Math.abs(x2 - x1)}" height="${Math.abs(y2 - y1)}"/>`;
+  }).join("");
+
+  const ctr = `<circle class="ctr" cx="${(vbW / 2).toFixed(2)}" cy="${(vbH / 2).toFixed(2)}" r="1.6"/>`;
+  return `<svg viewBox="0 0 ${vbW} ${vbH}" xmlns="http://www.w3.org/2000/svg">${parts}${ctr}</svg>`;
+}
+
+function updateProgress() {
+  const done = document.querySelectorAll(".card.done").length;
+  document.getElementById("progress").innerHTML =
+    `${done} / ${CANDIDATES.length} <span>etiquetados</span>`;
+}
+
+function renderCard(cand, idx) {
+  const card = document.createElement("article");
+  card.className = "card";
+  card.dataset.id = cand.id;
+
+  const f = cand.features;
+  const nearestTxt = (f.nearest_text || "(sin texto cerca)").slice(0, 50);
+  const distTxt = f.nearest_text_dist === null || f.nearest_text_dist === undefined
+    ? "" : f.nearest_text_dist.toFixed(3);
+  const missingWarn = cand.missing_bounds.length
+    ? `<div class="warn-missing">faltan bounds: ${cand.missing_bounds.join(", ")}</div>` : "";
+
+  const isDone = LABELED.has(cand.id);
+  if (isDone) card.classList.add("done");
+
+  card.innerHTML = `
+    <div class="diagram-wrap">${svgFor(cand.shapes)}</div>
+    <div class="body">
+      <div class="row1">
+        <span class="gid">c${String(idx + 1).padStart(2, "0")}</span>
+        <span class="meta2" style="justify-content:flex-end">${f.entity_count} ent. &middot; ${cand.layer || "?"}</span>
+      </div>
+      <div class="nearest">texto más cercano: <b>${nearestTxt || "—"}</b> ${distTxt ? `&middot; <span class="dist">${distTxt}</span>` : ""}</div>
+      ${missingWarn}
+      <div class="labelform-slot"></div>
+      <div class="card-err"></div>
+    </div>
+  `;
+
+  const slot = card.querySelector(".labelform-slot");
+  const errBox = card.querySelector(".card-err");
+
+  function showDone(label) {
+    card.classList.add("done");
+    const txt = label.category === "ninguno" ? "ruido / negativo" : label.category + (label.subtype ? " · " + label.subtype : "");
+    slot.innerHTML = `<div class="done-badge">guardado: ${txt}</div>`;
+    updateProgress();
+  }
+
+  async function submit(category, subtype) {
+    errBox.textContent = "";
+    try {
+      const res = await fetch("/api/label", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: cand.id, category, subtype }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errBox.textContent = data.error || "error al guardar"; return; }
+      showDone(data.label);
+    } catch (e) {
+      errBox.textContent = "no se pudo conectar con el servidor";
+    }
+  }
+
+  if (isDone) {
+    slot.innerHTML = `<div class="done-badge">ya guardado</div>`;
+  } else {
+    slot.innerHTML = `
+      <div class="labelform">
+        <div class="fields">
+          <input class="cat" type="text" placeholder="categoría" />
+          <input class="sub" type="text" placeholder="subtipo (opc.)" />
+        </div>
+        <div class="btns">
+          <button type="button" class="save">Guardar</button>
+          <button type="button" class="noise">Ruido</button>
+        </div>
+      </div>
+    `;
+    const catInput = slot.querySelector(".cat");
+    const subInput = slot.querySelector(".sub");
+    slot.querySelector(".save").addEventListener("click", () => {
+      if (!catInput.value.trim()) { errBox.textContent = "escribí una categoría, o usá \"Ruido\""; return; }
+      submit(catInput.value, subInput.value);
+    });
+    slot.querySelector(".noise").addEventListener("click", () => submit("n", null));
+    catInput.addEventListener("keydown", e => { if (e.key === "Enter") slot.querySelector(".save").click(); });
+    subInput.addEventListener("keydown", e => { if (e.key === "Enter") slot.querySelector(".save").click(); });
+  }
+
+  return card;
+}
+
+const grid = document.getElementById("grid");
+CANDIDATES.forEach((cand, idx) => grid.appendChild(renderCard(cand, idx)));
+updateProgress();
+</script>
+</body>
+</html>

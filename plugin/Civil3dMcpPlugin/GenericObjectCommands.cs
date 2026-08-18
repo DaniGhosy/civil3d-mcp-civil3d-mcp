@@ -230,6 +230,7 @@ public static class GenericObjectCommands
         return new
         {
           handle = handleString,
+          entityType = entity.GetType().Name,
           minPoint = new { x = extents.MinPoint.X, y = extents.MinPoint.Y, z = extents.MinPoint.Z },
           maxPoint = new { x = extents.MaxPoint.X, y = extents.MaxPoint.Y, z = extents.MaxPoint.Z },
         };

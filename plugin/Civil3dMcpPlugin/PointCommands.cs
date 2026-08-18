@@ -308,6 +308,132 @@ public static class PointCommands
     });
   }
 
+  public static Task<object?> UpdatePointGroupAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+    var description = PluginRuntime.GetOptionalString(parameters, "description");
+    var includeNumbers = PluginRuntime.GetOptionalString(parameters, "includeNumbers");
+    var excludeNumbers = PluginRuntime.GetOptionalString(parameters, "excludeNumbers");
+    var includeDescriptions = PluginRuntime.GetOptionalString(parameters, "includeDescriptions");
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var group = FindPointGroupByName(civilDoc, tr, name);
+      group.UpgradeOpen();
+
+      if (description != null) group.Description = description;
+
+      if (includeNumbers != null || excludeNumbers != null || includeDescriptions != null)
+      {
+        var existingQuery = group.GetQuery();
+        if (existingQuery is not null && existingQuery is not StandardPointGroupQuery)
+        {
+          throw new JsonRpcDispatchException(
+            "CIVIL3D.CONFLICT",
+            $"Point group '{name}' uses a custom query. Standard filters were not applied because doing so would discard its existing QueryString criteria.");
+        }
+
+        var query = existingQuery as StandardPointGroupQuery ?? new StandardPointGroupQuery();
+        if (includeNumbers != null) query.IncludeNumbers = includeNumbers;
+        if (excludeNumbers != null) query.ExcludeNumbers = excludeNumbers;
+        if (includeDescriptions != null) query.IncludeRawDescriptions = includeDescriptions;
+        group.SetQuery(query);
+        group.Update();
+      }
+
+      return new { success = true, name, updated = true };
+    });
+  }
+
+  public static Task<object?> TransformCogoPointsAsync(JsonObject? parameters)
+  {
+    var pointNumbersNode = parameters?["pointNumbers"] as JsonArray;
+    var groupName = PluginRuntime.GetOptionalString(parameters, "groupName");
+    var translateX = PluginRuntime.GetOptionalDouble(parameters, "translateX") ?? 0;
+    var translateY = PluginRuntime.GetOptionalDouble(parameters, "translateY") ?? 0;
+    var translateZ = PluginRuntime.GetOptionalDouble(parameters, "translateZ") ?? 0;
+    var rotateRadians = PluginRuntime.GetOptionalDouble(parameters, "rotateRadians") ?? 0;
+    var scaleFactor = PluginRuntime.GetOptionalDouble(parameters, "scaleFactor") ?? 1.0;
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      HashSet<uint>? targetNumbers = null;
+
+      if (pointNumbersNode != null && pointNumbersNode.Count > 0)
+      {
+        targetNumbers = new HashSet<uint>(pointNumbersNode.Select(n => (uint)(n?.GetValue<int>() ?? 0)).Where(n => n > 0));
+      }
+      else if (!string.IsNullOrWhiteSpace(groupName))
+      {
+        var group = FindPointGroupByName(civilDoc, tr, groupName!);
+        targetNumbers = new HashSet<uint>();
+        foreach (ObjectId id in civilDoc.CogoPoints)
+        {
+          var candidate = tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
+          if (candidate != null && group.ContainsPoint(candidate.PointNumber))
+          {
+            targetNumbers.Add(candidate.PointNumber);
+          }
+        }
+      }
+
+      var transformedCount = 0;
+      var sinRot = Math.Sin(rotateRadians);
+      var cosRot = Math.Cos(rotateRadians);
+
+      foreach (ObjectId id in civilDoc.CogoPoints)
+      {
+        var point = tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
+        if (point == null) continue;
+        if (targetNumbers != null && !targetNumbers.Contains(point.PointNumber)) continue;
+
+        var x = point.Easting;
+        var y = point.Northing;
+        var z = point.Elevation;
+
+        x *= scaleFactor;
+        y *= scaleFactor;
+
+        if (rotateRadians != 0)
+        {
+          var rx = x * cosRot - y * sinRot;
+          var ry = x * sinRot + y * cosRot;
+          x = rx;
+          y = ry;
+        }
+
+        x += translateX;
+        y += translateY;
+        z += translateZ;
+
+        point.UpgradeOpen();
+        try
+        {
+          point.Easting = x;
+          point.Northing = y;
+          point.Elevation = z;
+        }
+        catch (Exception exception)
+        {
+          throw new JsonRpcDispatchException(
+            "CIVIL3D.API_ERROR",
+            $"COGO point {point.PointNumber} could not be moved: {exception.Message}");
+        }
+        transformedCount++;
+      }
+
+      return new Dictionary<string, object?>
+      {
+        ["transformedCount"] = transformedCount,
+        ["translateX"] = translateX,
+        ["translateY"] = translateY,
+        ["translateZ"] = translateZ,
+        ["rotateRadians"] = rotateRadians,
+        ["scaleFactor"] = scaleFactor,
+      };
+    });
+  }
+
   // ─────────────────────────────────────────────
   // Description Key Sets: el PDF los menciona como parte de "Puntos COGO
   // completos", pero la ruta de acceso real del API (posiblemente vía

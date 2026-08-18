@@ -7,6 +7,9 @@ const LabelActionSchema = z.enum([
   "extract_leader_annotations",
   "extract_dimensions",
   "match_text_to_nearby_geometry",
+  "list_label_styles",
+  "list_labels",
+  "add_label",
 ]);
 
 const PointSchema = z.object({ x: z.number(), y: z.number(), z: z.number().optional() });
@@ -16,6 +19,8 @@ const PositionedItemSchema = z.object({
   label: z.string().optional().describe("Text or name to carry through into the match result."),
   position: PointSchema,
 });
+
+const LabelPointSchema = z.object({ x: z.number(), y: z.number() });
 
 const canonicalInputShape = {
   action: LabelActionSchema.describe("The text/annotation-reading operation to perform."),
@@ -32,6 +37,12 @@ const canonicalInputShape = {
     .number()
     .optional()
     .describe("Max distance (drawing units) to consider a text/geometry pair a match. Default 1.0 — match_text_to_nearby_geometry."),
+  objectType: z.string().optional().describe("Civil 3D object type owning the label, e.g. 'alignment', 'profile', 'surface', 'pipe', 'structure', 'pipe_network' (list_label_styles/list_labels/add_label)."),
+  objectName: z.string().optional().describe("Name of the object owning the label (list_labels/add_label)."),
+  labelType: z.string().optional().describe("Label kind: 'label_set', 'station', 'spot_elevation'/'spot' (surface), or plain/plan for pipe/structure (add_label)."),
+  labelStyle: z.string().optional().describe("Label (set) style name; falls back to the first available style if omitted (add_label)."),
+  station: z.number().optional().describe("Station value for 'station'-type labels (add_label)."),
+  point: LabelPointSchema.optional().describe("XY location for surface 'spot_elevation' labels (add_label)."),
 };
 
 function matchTextToNearbyGeometry(
@@ -132,6 +143,61 @@ export const LABEL_DOMAIN_DEFINITION: DomainToolDefinition = {
       execute: async (args: any) =>
         matchTextToNearbyGeometry(args.texts, args.geometry, args.radius ?? 1.0),
     },
+    list_label_styles: {
+      action: "list_label_styles",
+      inputSchema: z.object({ action: z.literal("list_label_styles"), objectType: z.string() }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listLabelStyles"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listLabelStyles", { objectType: args.objectType })
+        ),
+    },
+    list_labels: {
+      action: "list_labels",
+      inputSchema: z.object({
+        action: z.literal("list_labels"),
+        objectType: z.string(),
+        objectName: z.string(),
+      }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listLabels"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listLabels", { objectType: args.objectType, objectName: args.objectName })
+        ),
+    },
+    add_label: {
+      action: "add_label",
+      inputSchema: z.object({
+        action: z.literal("add_label"),
+        objectType: z.string(),
+        objectName: z.string(),
+        labelType: z.string(),
+        labelStyle: z.string().optional(),
+        station: z.number().optional(),
+        point: LabelPointSchema.optional(),
+      }),
+      capabilities: ["create", "edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["addLabel"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("addLabel", {
+            objectType: args.objectType,
+            objectName: args.objectName,
+            labelType: args.labelType,
+            labelStyle: args.labelStyle,
+            station: args.station,
+            point: args.point,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -147,13 +213,21 @@ export const LABEL_DOMAIN_DEFINITION: DomainToolDefinition = {
         "NOT call the plugin, no active drawing required): pairs already-extracted text items with " +
         "the closest already-extracted geometry item within a radius (e.g. matching an outlet label " +
         "to the nearest civil3d_blocks insertion point) — items with nothing in range come back in " +
-        "'unmatchedTexts' instead of being silently dropped.",
+        "'unmatchedTexts' instead of being silently dropped. Also manages Civil 3D object labels: " +
+        "list_label_styles (label/label-set styles available for an objectType), list_labels " +
+        "(labels currently attached to a named object), add_label (attach a label — supports " +
+        "alignment/profile label_set and station labels, surface spot_elevation labels, and " +
+        "basic pipe/structure labels; label object types are resolved via reflection since the " +
+        "exact managed type name shifts between Civil 3D releases).",
       inputShape: canonicalInputShape,
       supportedActions: [
         "extract_text_entities",
         "extract_leader_annotations",
         "extract_dimensions",
         "match_text_to_nearby_geometry",
+        "list_label_styles",
+        "list_labels",
+        "add_label",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

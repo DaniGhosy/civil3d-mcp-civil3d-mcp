@@ -39,7 +39,21 @@ export type ToolDomain =
   | "survey"
   | "project"
   | "assembly"
-  | "workflow";
+  | "workflow"
+  | "coordinate_system"
+  | "detention"
+  | "intersection"
+  | "sight_distance"
+  | "slope_analysis"
+  | "hydrology"
+  | "cost_estimation"
+  | "superelevation"
+  | "qc"
+  | "style"
+  | "quantity_takeoff"
+  | "standards"
+  | "job"
+  | "docs";
 
 /** Catalog entry describing a registered tool */
 export interface ToolCatalogEntry {

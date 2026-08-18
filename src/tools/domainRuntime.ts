@@ -2,6 +2,9 @@ import { z, type ZodRawShape, type ZodTypeAny } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ToolCapability, ToolCatalogEntry, ToolDomain } from "./toolMetadata.js";
 import { captureToolHandler } from "./toolHandlerRegistry.js";
+import { approvalPolicy, getActiveDrawingFingerprint } from "./approvalPolicy.js";
+import { idempotencyStore } from "./idempotencyStore.js";
+import { maybeStoreReportResource } from "./reportResourceStore.js";
 
 type JsonObject = Record<string, unknown>;
 
@@ -76,6 +79,19 @@ function buildToolErrorResult(toolName: string, actionName: string | undefined, 
 /**
  * Execute a domain tool exposure with the given raw args.
  */
+/**
+ * Approval gating, idempotent-retry support, and report-resource caching (Fase 2, ported from
+ * Civil3D-mcp-main). All three hook in here — the single choke point every domain action already
+ * passes through — rather than touching each domain file. Adapted from source in two ways:
+ *   - No progress notifications / requestId / logger wiring (source's version also threads a
+ *     request-scoped logger and MCP progress notifications through here; this repo doesn't have
+ *     that infrastructure and didn't need it added just for this).
+ *   - No "resource_link" content block for cached reports (this repo's older MCP SDK doesn't
+ *     support that content type) — instead the JSON result gets a plain `_reportResource:
+ *     {uri, name}` field merged in when a report was cached, so the pointer is still visible to
+ *     the caller; the resource itself is still fetchable via civil3d://reports/{id}
+ *     (see mcpResources.ts).
+ */
 async function executeExposure(
   definition: DomainToolDefinition,
   exposure: DomainToolExposure,
@@ -97,19 +113,57 @@ async function executeExposure(
   }
 
   const parsedArgs = actionDefinition.inputSchema.parse(resolved.args);
-  const response = await actionDefinition.execute(parsedArgs);
-  const validatedResponse = actionDefinition.responseSchema
-    ? actionDefinition.responseSchema.parse(response)
-    : response;
 
-  return {
-    content: [
+  const idempotencyKey = typeof rawArgs.idempotencyKey === "string" ? rawArgs.idempotencyKey : undefined;
+  if (idempotencyKey && !actionDefinition.safeForRetry) {
+    const error = new Error(`Action '${actionName}' does not support idempotent retries.`) as Error & { code: string };
+    error.code = "CIVIL3D.INVALID_INPUT";
+    throw error;
+  }
+
+  const executeOnce = async () => {
+    await approvalPolicy.enforce(
       {
-        type: "text" as const,
-        text: JSON.stringify(validatedResponse, null, 2),
+        toolName: exposure.toolName,
+        action: actionName,
+        capabilities: actionDefinition.capabilities,
+        safeForRetry: actionDefinition.safeForRetry,
+        requiresActiveDrawing: actionDefinition.requiresActiveDrawing,
       },
-    ],
+      rawArgs
+    );
+
+    const response = await actionDefinition.execute(parsedArgs);
+    const validatedResponse = actionDefinition.responseSchema
+      ? actionDefinition.responseSchema.parse(response)
+      : response;
+    const serializedResponse = JSON.stringify(validatedResponse, null, 2);
+    const reportResource = maybeStoreReportResource(actionName, serializedResponse);
+
+    const resultForCaller =
+      reportResource && validatedResponse && typeof validatedResponse === "object" && !Array.isArray(validatedResponse)
+        ? { ...(validatedResponse as Record<string, unknown>), _reportResource: { uri: reportResource.uri, name: reportResource.name } }
+        : validatedResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(resultForCaller, null, 2),
+        },
+      ],
+    };
   };
+
+  if (!idempotencyKey) return executeOnce();
+
+  const signature = { ...rawArgs };
+  delete signature.approvalToken;
+  delete signature.idempotencyKey;
+  const drawingScope = actionDefinition.requiresActiveDrawing
+    ? await getActiveDrawingFingerprint()
+    : "drawing-independent";
+  return idempotencyStore.execute(`${exposure.toolName}:${actionName}:${drawingScope}`, idempotencyKey, signature, executeOnce);
 }
 
 /**
@@ -132,7 +186,13 @@ export function registerDomainTools(server: McpServer, definition: DomainToolDef
       }
     };
 
-    server.tool(exposure.toolName, exposure.description, exposure.inputShape, handler);
+    const inputShapeWithApprovalFields: ZodRawShape = {
+      ...exposure.inputShape,
+      approvalToken: z.string().min(1).optional(),
+      idempotencyKey: z.string().min(1).max(128).optional(),
+    };
+
+    server.tool(exposure.toolName, exposure.description, inputShapeWithApprovalFields, handler);
     captureToolHandler(exposure.toolName, handler);
   }
 }

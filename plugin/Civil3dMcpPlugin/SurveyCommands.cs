@@ -30,21 +30,9 @@ public static class SurveyCommands
     });
   }
 
-  // "CivilDocument.GetSurveyNetworkIds()" y "GetSurveyFigureIds()" no
-  // existen con esos nombres — confirmado por el compilador. La cadena real
-  // de acceso (probablemente vía un SurveyDatabaseManager o similar) queda
-  // sin confirmar en vez de seguir adivinando.
-  public static Task<object?> ListSurveyNetworksAsync()
-    => Task.FromResult<object?>(new
-    {
-      status = "planned",
-      note = "CivilDocument.GetSurveyNetworkIds() does not exist under that name — confirmed by the compiler. Needs the real access chain confirmed against a live Civil 3D drawing."
-    });
-
-  public static Task<object?> ListSurveyFiguresAsync()
-    => Task.FromResult<object?>(new
-    {
-      status = "planned",
-      note = "CivilDocument.GetSurveyFigureIds() does not exist under that name — confirmed by the compiler. Needs the real access chain confirmed against a live Civil 3D drawing."
-    });
+  // ListSurveyNetworksAsync/ListSurveyFiguresAsync moved to CogoCommands.cs:
+  // the guessed CivilDocument.GetSurveyNetworkIds()/GetSurveyFigureIds() names
+  // never existed (confirmed by the compiler), but reflection via
+  // CivilDocument.SurveyDocument does — see CogoCommands.cs for the real
+  // implementation and CommandDispatcher.cs for the updated routing.
 }

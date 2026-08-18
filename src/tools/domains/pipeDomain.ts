@@ -16,6 +16,10 @@ const PipeActionSchema = z.enum([
   "get_rule_set",
   "get_overridden_rules",
   "check_interference",
+  "resize_pipe",
+  "hgl_calculate",
+  "hydraulic_analysis",
+  "structure_properties",
 ]);
 
 const canonicalInputShape = {
@@ -31,6 +35,16 @@ const canonicalInputShape = {
   insertionX: z.number().optional().describe("Insertion X for a new structure."),
   insertionY: z.number().optional().describe("Insertion Y for a new structure."),
   insertionZ: z.number().optional().describe("Insertion Z for a new structure (default 0)."),
+  newPartName: z.string().optional().describe("New catalog part name (resize_pipe)."),
+  newDiameter: z.number().optional().describe("New inner diameter (resize_pipe)."),
+  tailwaterElevation: z.number().optional().describe("Downstream tailwater elevation, defaults to outlet invert (hgl_calculate)."),
+  designFlow: z.number().optional().describe("Design flow in CFS, defaults to full-flow capacity (hgl_calculate/hydraulic_analysis)."),
+  manningsN: z.number().optional().describe("Manning's roughness coefficient, default 0.013 (hgl_calculate/hydraulic_analysis)."),
+  minCoverDepth: z.number().optional().describe("Minimum cover depth check (hydraulic_analysis)."),
+  minVelocity: z.number().optional().describe("Minimum velocity check, ft/s (hydraulic_analysis)."),
+  maxVelocity: z.number().optional().describe("Maximum velocity check, ft/s (hydraulic_analysis)."),
+  minSlope: z.number().optional().describe("Minimum slope check, percent (hydraulic_analysis)."),
+  structureName: z.string().optional().describe("Structure name (structure_properties)."),
 };
 
 export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -265,6 +279,100 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
           })
         ),
     },
+    resize_pipe: {
+      action: "resize_pipe",
+      inputSchema: z.object({
+        action: z.literal("resize_pipe"),
+        networkName: z.string(),
+        pipeHandle: z.string(),
+        newPartName: z.string().optional(),
+        newDiameter: z.number().optional(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["resizePipeInNetwork"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("resizePipeInNetwork", {
+            networkName: args.networkName,
+            pipeHandle: args.pipeHandle,
+            newPartName: args.newPartName,
+            newDiameter: args.newDiameter,
+          })
+        ),
+    },
+    hgl_calculate: {
+      action: "hgl_calculate",
+      inputSchema: z.object({
+        action: z.literal("hgl_calculate"),
+        networkName: z.string(),
+        tailwaterElevation: z.number().optional(),
+        designFlow: z.number().optional(),
+        manningsN: z.number().optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["calculatePipeNetworkHgl"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("calculatePipeNetworkHgl", {
+            networkName: args.networkName,
+            tailwaterElevation: args.tailwaterElevation,
+            designFlow: args.designFlow,
+            manningsN: args.manningsN ?? 0.013,
+          })
+        ),
+    },
+    hydraulic_analysis: {
+      action: "hydraulic_analysis",
+      inputSchema: z.object({
+        action: z.literal("hydraulic_analysis"),
+        networkName: z.string(),
+        designFlow: z.number().optional(),
+        manningsN: z.number().optional(),
+        minCoverDepth: z.number().optional(),
+        minVelocity: z.number().optional(),
+        maxVelocity: z.number().optional(),
+        minSlope: z.number().optional(),
+      }),
+      capabilities: ["query", "analyze"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["analyzePipeNetworkHydraulics"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("analyzePipeNetworkHydraulics", {
+            networkName: args.networkName,
+            designFlow: args.designFlow,
+            manningsN: args.manningsN ?? 0.013,
+            minCoverDepth: args.minCoverDepth ?? 2.0,
+            minVelocity: args.minVelocity ?? 2.0,
+            maxVelocity: args.maxVelocity ?? 10.0,
+            minSlope: args.minSlope ?? 0.5,
+          })
+        ),
+    },
+    structure_properties: {
+      action: "structure_properties",
+      inputSchema: z.object({
+        action: z.literal("structure_properties"),
+        networkName: z.string(),
+        structureName: z.string(),
+      }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getPipeStructureProperties"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getPipeStructureProperties", {
+            networkName: args.networkName,
+            structureName: args.structureName,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -274,15 +382,17 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "Manage gravity pipe networks. Actions: list_networks, get_network, list_pipes, " +
         "get_pipe (by handle), list_structures, get_structure (by handle), get_rule_set " +
         "(whether a pipe overrides its network rule set), get_overridden_rules (a pipe's " +
-        "overridden design rules) are real. Note: create_network, add_structure, add_pipe, " +
-        "list_parts_lists, and check_interference are not yet implemented — the compiler " +
-        "confirmed the guessed signatures/type names don't match reality (e.g. " +
-        "Network.AddStructure exists but takes part family/size ObjectIds, not strings, plus a " +
-        "rotation and a ref/bool pair). They return a 'planned' status with the real signature " +
-        "fragments discovered so far, until confirmed against a live Civil 3D drawing. For real " +
-        "pipe cover depth, combine get_pipe/get_structure (gives elevations) with " +
-        "civil3d_surface's get_elevation (gives ground elevation at that X,Y) — subtract " +
-        "instead of a dedicated command.",
+        "overridden design rules), resize_pipe, hgl_calculate (Manning's-based HGL backwater " +
+        "walk), hydraulic_analysis (capacity/velocity/slope checks per pipe), " +
+        "structure_properties (rim/sump/connected pipes by structure name) are real. Note: " +
+        "create_network, add_structure, add_pipe, list_parts_lists, and check_interference are " +
+        "not yet implemented — the compiler confirmed the guessed signatures/type names don't " +
+        "match reality (e.g. Network.AddStructure exists but takes part family/size ObjectIds, " +
+        "not strings, plus a rotation and a ref/bool pair). They return a 'planned' status with " +
+        "the real signature fragments discovered so far, until confirmed against a live Civil " +
+        "3D drawing. For real pipe cover depth, combine get_pipe/get_structure (gives " +
+        "elevations) with civil3d_surface's get_elevation (gives ground elevation at that X,Y) " +
+        "— subtract instead of a dedicated command.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list_networks",
@@ -298,6 +408,10 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "get_rule_set",
         "get_overridden_rules",
         "check_interference",
+        "resize_pipe",
+        "hgl_calculate",
+        "hydraulic_analysis",
+        "structure_properties",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

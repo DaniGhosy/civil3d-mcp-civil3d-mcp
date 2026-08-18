@@ -12,13 +12,18 @@ const ProfileActionSchema = z.enum([
   "create_parabola",
   "list_entities",
   "delete",
+  "add_pvi",
+  "delete_pvi",
+  "add_curve",
+  "set_grade",
+  "check_k_values",
 ]);
 
 const canonicalInputShape = {
   action: ProfileActionSchema.describe("The profile operation to perform."),
   alignmentName: z.string().optional().describe("Parent alignment name."),
   name: z.string().optional().describe("Profile name."),
-  station: z.number().optional().describe("Station for elevation query."),
+  station: z.number().optional().describe("Station for elevation query / PVI station (add_pvi/delete_pvi)."),
   surfaceName: z.string().optional().describe("Surface to sample."),
   style: z.string().optional().describe("Profile style name (default 'Standard')."),
   labelSet: z.string().optional().describe("Profile label set style name (default 'Standard')."),
@@ -27,8 +32,14 @@ const canonicalInputShape = {
   startElevation: z.number().optional().describe("Start elevation (create_tangent/create_parabola)."),
   endStation: z.number().optional().describe("End station (create_tangent/create_parabola)."),
   endElevation: z.number().optional().describe("End elevation (create_tangent/create_parabola)."),
-  pviStation: z.number().optional().describe("PVI station, the vertex of the curve (create_parabola)."),
+  pviStation: z.number().optional().describe("PVI station, the vertex of the curve (create_parabola/add_curve)."),
   pviElevation: z.number().optional().describe("PVI elevation, the vertex of the curve (create_parabola)."),
+  elevation: z.number().optional().describe("PVI elevation (add_pvi)."),
+  length: z.number().positive().optional().describe("Vertical curve length (add_curve)."),
+  curveType: z.enum(["symmetric_parabola", "asymmetric_parabola"]).optional().describe("Curve type (add_curve) — only symmetric_parabola is implemented."),
+  entityIndex: z.number().int().min(0).optional().describe("Zero-based tangent entity index (set_grade)."),
+  grade: z.number().optional().describe("Grade as a decimal fraction, e.g. 0.02 = 2% (set_grade)."),
+  designSpeed: z.number().positive().optional().describe("Design speed for AASHTO K-value check (check_k_values)."),
 };
 
 export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -237,6 +248,119 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
           })
         ),
     },
+    add_pvi: {
+      action: "add_pvi",
+      inputSchema: z.object({
+        action: z.literal("add_pvi"),
+        alignmentName: z.string(),
+        name: z.string(),
+        station: z.number(),
+        elevation: z.number(),
+      }),
+      capabilities: ["create", "edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["profileAddPvi"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("profileAddPvi", {
+            alignmentName: args.alignmentName,
+            profileName: args.name,
+            station: args.station,
+            elevation: args.elevation,
+          })
+        ),
+    },
+    delete_pvi: {
+      action: "delete_pvi",
+      inputSchema: z.object({
+        action: z.literal("delete_pvi"),
+        alignmentName: z.string(),
+        name: z.string(),
+        station: z.number(),
+      }),
+      capabilities: ["delete", "edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["profileDeletePvi"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("profileDeletePvi", {
+            alignmentName: args.alignmentName,
+            profileName: args.name,
+            station: args.station,
+          })
+        ),
+    },
+    add_curve: {
+      action: "add_curve",
+      inputSchema: z.object({
+        action: z.literal("add_curve"),
+        alignmentName: z.string(),
+        name: z.string(),
+        pviStation: z.number(),
+        length: z.number().positive(),
+        curveType: z.enum(["symmetric_parabola", "asymmetric_parabola"]).optional(),
+      }),
+      capabilities: ["create", "edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["profileAddCurve"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("profileAddCurve", {
+            alignmentName: args.alignmentName,
+            profileName: args.name,
+            pviStation: args.pviStation,
+            length: args.length,
+            curveType: args.curveType ?? "symmetric_parabola",
+          })
+        ),
+    },
+    set_grade: {
+      action: "set_grade",
+      inputSchema: z.object({
+        action: z.literal("set_grade"),
+        alignmentName: z.string(),
+        name: z.string(),
+        entityIndex: z.number().int().min(0),
+        grade: z.number(),
+      }),
+      capabilities: ["edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["profileSetGrade"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("profileSetGrade", {
+            alignmentName: args.alignmentName,
+            profileName: args.name,
+            entityIndex: args.entityIndex,
+            grade: args.grade,
+          })
+        ),
+    },
+    check_k_values: {
+      action: "check_k_values",
+      inputSchema: z.object({
+        action: z.literal("check_k_values"),
+        alignmentName: z.string(),
+        name: z.string(),
+        designSpeed: z.number().positive(),
+      }),
+      capabilities: ["analyze", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["profileCheckKValues"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("profileCheckKValues", {
+            alignmentName: args.alignmentName,
+            profileName: args.name,
+            designSpeed: args.designSpeed,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -250,7 +374,10 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "list_entities (inspect current vertical geometry). Note: create_tangent and " +
         "create_parabola are not yet implemented — the underlying API methods exist but take " +
         "a different argument count than guessed, so they return a 'planned' status until the " +
-        "real overload is confirmed against a live Civil 3D drawing.",
+        "real overload is confirmed against a live Civil 3D drawing. PVI-based editing is " +
+        "available instead: add_pvi, delete_pvi, add_curve (symmetric_parabola only), " +
+        "check_k_values (AASHTO). set_grade always returns a capability error — " +
+        "ProfileTangent.Grade is read-only in the managed API; edit the adjoining PVIs instead.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -262,6 +389,11 @@ export const PROFILE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "create_parabola",
         "list_entities",
         "delete",
+        "add_pvi",
+        "delete_pvi",
+        "add_curve",
+        "set_grade",
+        "check_k_values",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

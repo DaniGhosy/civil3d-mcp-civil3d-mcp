@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
+using Autodesk.Civil.DatabaseServices.Styles;
 
 namespace Civil3DMcpPlugin;
 
@@ -255,6 +256,69 @@ public static class PipeNetworkCommands
       status = "planned",
       note = "No confirmed API member found for triggering interference checks. Needs confirmation against a live Civil 3D drawing."
     });
+
+  // resizePipeInNetwork (portado de Civil3D-mcp-main, adaptado a la convención
+  // de este repo de ubicar el pipe por handle en vez de por nombre).
+  public static Task<object?> ResizePipeInNetworkAsync(JsonObject? p)
+  {
+    var networkName = PluginRuntime.GetRequiredString(p, "networkName");
+    var pipeHandle = PluginRuntime.GetRequiredString(p, "pipeHandle");
+    var newPartName = PluginRuntime.GetOptionalString(p, "newPartName");
+    var newDiameter = PluginRuntime.GetOptionalDouble(p, "newDiameter");
+
+    if (string.IsNullOrWhiteSpace(newPartName) && !newDiameter.HasValue)
+    {
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Either 'newPartName' or 'newDiameter' is required.");
+    }
+
+    return CivilExecution.WriteAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var network = FindNetworkByName(civilDoc, tr, networkName);
+      var pipe = FindPipeByHandle(tr, network, pipeHandle);
+      var writablePipe = tr.GetObject(pipe.ObjectId, OpenMode.ForWrite) as Pipe
+        ?? throw new JsonRpcDispatchException("CIVIL3D.TRANSACTION_FAILED", "Could not open pipe for write.");
+
+      if (!string.IsNullOrWhiteSpace(newPartName))
+      {
+        var part = FindPartForNetwork(network, tr, newPartName!, DomainType.Pipe);
+        writablePipe.SwapPartFamilyAndSize(part.FamilyId, part.SizeId);
+      }
+
+      if (newDiameter.HasValue)
+      {
+        writablePipe.ResizeByInnerDiameterOrWidth(newDiameter.Value, useClosestSize: false);
+      }
+
+      return new { networkName, pipeHandle, newPartName, newDiameter, resized = true };
+    });
+  }
+
+  private readonly record struct NetworkPartIds(ObjectId FamilyId, ObjectId SizeId);
+
+  private static NetworkPartIds FindPartForNetwork(Network network, Transaction transaction, string partName, DomainType domain)
+  {
+    if (network.PartsListId.IsNull)
+    {
+      throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Pipe network '{network.Name}' does not have a parts list assigned.");
+    }
+
+    var partsList = CivilObjectUtils.GetRequiredObject<PartsList>(transaction, network.PartsListId, OpenMode.ForRead);
+    foreach (ObjectId familyId in partsList.GetPartFamilyIdsByDomain(domain))
+    {
+      var family = CivilObjectUtils.GetRequiredObject<PartFamily>(transaction, familyId, OpenMode.ForRead);
+      for (var index = 0; index < family.PartSizeCount; index++)
+      {
+        var sizeId = family[index];
+        var size = transaction.GetObject(sizeId, OpenMode.ForRead);
+        var sizeName = CivilObjectUtils.GetName(size) ?? CivilObjectUtils.GetStringProperty(size, "Description");
+        if (string.Equals(sizeName, partName, StringComparison.OrdinalIgnoreCase)
+          || (family.PartSizeCount == 1 && string.Equals(family.Name, partName, StringComparison.OrdinalIgnoreCase)))
+          return new NetworkPartIds(familyId, sizeId);
+      }
+    }
+
+    throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Exact {domain} size '{partName}' was not found in the parts list for network '{network.Name}'.");
+  }
 
   // ── Helpers ──
 

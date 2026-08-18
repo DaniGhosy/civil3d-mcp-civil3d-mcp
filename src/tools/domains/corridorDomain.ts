@@ -14,7 +14,15 @@ const CorridorActionSchema = z.enum([
   "add_baseline_region",
   "get_targets",
   "create_surface_from_corridor_surface",
+  "set_target_mappings",
+  "delete_region",
 ]);
+
+const TargetMappingSchema = z.object({
+  parameterName: z.string(),
+  targetType: z.enum(["surface", "alignment", "profile"]),
+  targetName: z.string(),
+});
 
 const canonicalInputShape = {
   action: CorridorActionSchema.describe("The corridor operation to perform."),
@@ -26,6 +34,9 @@ const canonicalInputShape = {
   endStation: z.number().optional().describe("Region end station (add_baseline_region)."),
   corridorSurfaceName: z.string().optional().describe("Corridor surface name (create_surface_from_corridor_surface)."),
   newSurfaceName: z.string().optional().describe("Name for the new independent surface (create_surface_from_corridor_surface)."),
+  baselineIndex: z.number().int().min(0).optional().describe("Zero-based baseline index (set_target_mappings/delete_region)."),
+  regionIndex: z.number().int().min(0).optional().describe("Zero-based region index within the baseline (set_target_mappings/delete_region)."),
+  targets: z.array(TargetMappingSchema).optional().describe("Target mappings to apply to the region (set_target_mappings)."),
 };
 
 export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -204,6 +215,50 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
           })
         ),
     },
+    set_target_mappings: {
+      action: "set_target_mappings",
+      inputSchema: z.object({
+        action: z.literal("set_target_mappings"),
+        name: z.string(),
+        baselineIndex: z.number().int().min(0).optional(),
+        regionIndex: z.number().int().min(0).optional(),
+        targets: z.array(TargetMappingSchema),
+      }),
+      capabilities: ["edit", "manage"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["setCorridorTargetMappings"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("setCorridorTargetMappings", {
+            corridorName: args.name,
+            baselineIndex: args.baselineIndex ?? 0,
+            regionIndex: args.regionIndex ?? 0,
+            targets: args.targets,
+          })
+        ),
+    },
+    delete_region: {
+      action: "delete_region",
+      inputSchema: z.object({
+        action: z.literal("delete_region"),
+        name: z.string(),
+        baselineIndex: z.number().int().min(0).optional(),
+        regionIndex: z.number().int().min(0),
+      }),
+      capabilities: ["edit", "delete"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["deleteCorridorRegion"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("deleteCorridorRegion", {
+            corridorName: args.name,
+            baselineIndex: args.baselineIndex ?? 0,
+            regionIndex: args.regionIndex,
+          })
+        ),
+    },
   },
   exposures: [
     {
@@ -215,8 +270,10 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
         "(detach an independent, dynamically-linked civil3d_surface from a corridor surface), " +
         "get_feature_lines (by baseline, via BaselineFeatureLines), list_baselines, " +
         "list_baseline_regions, add_baseline_region, get_targets (surface/alignment targets " +
-        "of a baseline region). Note: compute_volumes has no direct API — combine " +
-        "get_surfaces + create_surface_from_corridor_surface with civil3d_surface's " +
+        "of a baseline region, by name), set_target_mappings (write target mappings, by " +
+        "baseline/region index), delete_region (by baseline/region index). Note: " +
+        "compute_volumes has no direct API — combine get_surfaces + " +
+        "create_surface_from_corridor_surface with civil3d_surface's " +
         "compute_volume/get_area_elevation_table instead. There is no .NET API for creating " +
         "intersections/roundabouts (confirmed COM/UI-only) — not covered by this tool.",
       inputShape: canonicalInputShape,
@@ -232,6 +289,8 @@ export const CORRIDOR_DOMAIN_DEFINITION: DomainToolDefinition = {
         "add_baseline_region",
         "get_targets",
         "create_surface_from_corridor_surface",
+        "set_target_mappings",
+        "delete_region",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

@@ -4,14 +4,8 @@ using Autodesk.AutoCAD.DatabaseServices;
 namespace Civil3DMcpPlugin;
 
 /// <summary>
-/// Módulo B del catálogo de lectura de planos ("texto y anotaciones"): complementa a
-/// BlockCommands.cs leyendo etiquetas, leaders y cotas del plano. Mismo idiom de escaneo de
-/// ModelSpace que BlockCommands.ListBlocksByLayerAsync (no hay un GetXxxIds() equivalente para
-/// texto/leaders/cotas sueltos, a diferencia de los bloques).
-///
-/// MLeader.MText (contenido de texto de un multileader) es API incierta — no confirmada contra
-/// una sesión de Civil3D en vivo. Sigue el protocolo de CLAUDE.md: mejor intento, una sola pasada
-/// de dotnet build, stub documentado si el compilador la rechaza.
+/// Labels (Módulo B — lectura de planos: texto y anotaciones): extracts DBText/MText,
+/// Leader/MLeader, and Dimension entities straight from the drawing.
 /// </summary>
 public static class LabelCommands
 {
@@ -21,29 +15,31 @@ public static class LabelCommands
 
     return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
     {
-      var ms = ModelSpace(tr, db);
+      var modelSpace = ModelSpace(tr, db);
       var entities = new List<object>();
 
-      foreach (ObjectId id in ms)
+      foreach (ObjectId id in modelSpace)
       {
         var obj = tr.GetObject(id, OpenMode.ForRead);
 
-        if (obj is DBText dbText)
+        if (obj is DBText text)
         {
-          if (layer != null && !string.Equals(dbText.Layer, layer, StringComparison.OrdinalIgnoreCase)) continue;
+          if (layer != null && !string.Equals(text.Layer, layer, StringComparison.OrdinalIgnoreCase)) continue;
+
           entities.Add(new
           {
-            handle = dbText.Handle.ToString(),
+            handle = text.Handle.ToString(),
             entityType = "DBText",
-            text = dbText.TextString,
-            position = new { x = dbText.Position.X, y = dbText.Position.Y, z = dbText.Position.Z },
-            height = dbText.Height,
-            layer = dbText.Layer,
+            text = text.TextString,
+            position = new { x = text.Position.X, y = text.Position.Y, z = text.Position.Z },
+            height = text.Height,
+            layer = text.Layer,
           });
         }
         else if (obj is MText mtext)
         {
           if (layer != null && !string.Equals(mtext.Layer, layer, StringComparison.OrdinalIgnoreCase)) continue;
+
           entities.Add(new
           {
             handle = mtext.Handle.ToString(),
@@ -64,19 +60,22 @@ public static class LabelCommands
   {
     return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
     {
-      var ms = ModelSpace(tr, db);
+      var modelSpace = ModelSpace(tr, db);
       var leaders = new List<object>();
 
-      foreach (ObjectId id in ms)
+      foreach (ObjectId id in modelSpace)
       {
         var obj = tr.GetObject(id, OpenMode.ForRead);
 
         if (obj is Leader leader)
         {
           string? text = null;
-          if (!leader.Annotation.IsNull && tr.GetObject(leader.Annotation, OpenMode.ForRead) is MText annotationText)
+          if (!leader.Annotation.IsNull)
           {
-            text = annotationText.Contents;
+            if (tr.GetObject(leader.Annotation, OpenMode.ForRead) is MText annotationText)
+            {
+              text = annotationText.Contents;
+            }
           }
 
           leaders.Add(new
@@ -109,34 +108,36 @@ public static class LabelCommands
 
     return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
     {
-      var ms = ModelSpace(tr, db);
+      var modelSpace = ModelSpace(tr, db);
       var dimensions = new List<object>();
 
-      foreach (ObjectId id in ms)
+      foreach (ObjectId id in modelSpace)
       {
-        if (tr.GetObject(id, OpenMode.ForRead) is not Dimension dim) continue;
-        if (layer != null && !string.Equals(dim.Layer, layer, StringComparison.OrdinalIgnoreCase)) continue;
+        var obj = tr.GetObject(id, OpenMode.ForRead);
 
-        dimensions.Add(new
+        if (obj is Dimension dimension)
         {
-          handle = dim.Handle.ToString(),
-          dimensionType = dim.GetType().Name,
-          measurement = dim.Measurement,
-          dimensionText = dim.DimensionText,
-          textPosition = new { x = dim.TextPosition.X, y = dim.TextPosition.Y, z = dim.TextPosition.Z },
-          layer = dim.Layer,
-        });
+          if (layer != null && !string.Equals(dimension.Layer, layer, StringComparison.OrdinalIgnoreCase)) continue;
+
+          dimensions.Add(new
+          {
+            handle = dimension.Handle.ToString(),
+            dimensionType = dimension.GetType().Name,
+            measurement = dimension.Measurement,
+            dimensionText = dimension.DimensionText,
+            textPosition = new { x = dimension.TextPosition.X, y = dimension.TextPosition.Y, z = dimension.TextPosition.Z },
+            layer = dimension.Layer,
+          });
+        }
       }
 
       return new { layer, dimensions };
     });
   }
 
-  // ── Helpers ──
-
   private static BlockTableRecord ModelSpace(Transaction tr, Database db)
   {
-    var bt = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
-    return (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForRead);
+    var blockTable = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+    return (BlockTableRecord)tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForRead);
   }
 }

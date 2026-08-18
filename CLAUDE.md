@@ -69,6 +69,17 @@ porque no hay un servidor Python de larga duración al que conectarse. Visión c
 la exactitud de los dominios que sí leen la base de datos del dibujo. Todas sus acciones tienen
 `requiresActiveDrawing: false`; es el único dominio del repo que nunca abre conexión al plugin C#.
 
+**`ml/` (Módulo G, sistema de reconocimiento de símbolos entrenado) es standalone de verdad — ni
+siquiera un subproceso.** A diferencia de `plan-vision/`, el servidor TS no lo invoca nunca:
+`ml/dataset_builder.py` se corre a mano en terminal, tomando como input JSON crudo que el asistente
+ya extrajo en una sesión MCP en vivo (`civil3d_shape_detection.group_entities_by_proximity`,
+`civil3d_object.get_entity_bounds` uno por handle, `civil3d_label.extract_text_entities`, guardados
+como archivos) y arma filas etiquetadas en `ml/dataset.jsonl` para entrenar un clasificador tabular
+(scikit-learn, sin GPU — ver `planteamiento_ml_simbolos_civil3d.pdf` para el planteamiento completo).
+`get_entity_bounds` expone `entityType` (`GenericObjectCommands.cs`) específicamente para que el
+builder pueda contar tipos de entidad reales por símbolo, ya que `group_entities_by_proximity`
+deduplica `entityTypes` con `.Distinct()` y no sirve para eso.
+
 ## Patrón de dispatch
 
 - **TS**: cada dominio de Civil3D es UN tool MCP con un campo discriminador `action` (no un tool por

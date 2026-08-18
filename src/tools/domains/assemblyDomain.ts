@@ -10,6 +10,8 @@ const AssemblyActionSchema = z.enum([
   "set_subassembly_parameter",
   "delete",
   "create",
+  "create_subassembly",
+  "edit",
 ]);
 
 const canonicalInputShape = {
@@ -19,6 +21,14 @@ const canonicalInputShape = {
   subassemblyName: z.string().optional().describe("Subassembly name."),
   displayName: z.string().optional().describe("Parameter display name (set_subassembly_parameter)."),
   value: z.number().optional().describe("New parameter value (set_subassembly_parameter)."),
+  insertX: z.number().optional().describe("Insertion X for a new empty assembly (create)."),
+  insertY: z.number().optional().describe("Insertion Y for a new empty assembly (create)."),
+  description: z.string().optional().describe("Assembly description (create)."),
+  assemblyType: z.string().optional().describe("Assembly type, e.g. 'Undivided' (create)."),
+  subassemblyType: z.string().optional().describe("Stock subassembly catalog name (create_subassembly)."),
+  side: z.enum(["Left", "Right", "Both"]).optional().describe("Side to attach the subassembly (create_subassembly)."),
+  parameters: z.record(z.union([z.number(), z.string(), z.boolean()])).optional().describe("Subassembly parameters by display name (create_subassembly/edit)."),
+  delete: z.boolean().optional().describe("Delete the named subassembly instead of editing it (edit)."),
 };
 
 export const ASSEMBLY_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -116,14 +126,73 @@ export const ASSEMBLY_DOMAIN_DEFINITION: DomainToolDefinition = {
     },
     create: {
       action: "create",
-      inputSchema: z.object({ action: z.literal("create"), name: z.string().optional() }),
+      inputSchema: z.object({
+        action: z.literal("create"),
+        name: z.string(),
+        insertX: z.number(),
+        insertY: z.number(),
+        description: z.string().optional(),
+        assemblyType: z.string().optional(),
+      }),
       capabilities: ["create"],
       requiresActiveDrawing: true,
       safeForRetry: false,
       pluginMethods: ["createAssembly"],
       execute: async (args: any) =>
         await withApplicationConnection(async (c) =>
-          await c.sendCommand("createAssembly", { name: args.name })
+          await c.sendCommand("createAssembly", {
+            name: args.name,
+            insertX: args.insertX,
+            insertY: args.insertY,
+            description: args.description,
+            assemblyType: args.assemblyType ?? "Undivided",
+          })
+        ),
+    },
+    create_subassembly: {
+      action: "create_subassembly",
+      inputSchema: z.object({
+        action: z.literal("create_subassembly"),
+        assemblyName: z.string(),
+        subassemblyType: z.string(),
+        side: z.enum(["Left", "Right", "Both"]),
+        parameters: z.record(z.union([z.number(), z.string(), z.boolean()])).optional(),
+      }),
+      capabilities: ["create", "edit"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["createSubassembly"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("createSubassembly", {
+            assemblyName: args.assemblyName,
+            subassemblyType: args.subassemblyType,
+            side: args.side,
+            parameters: args.parameters ?? {},
+          })
+        ),
+    },
+    edit: {
+      action: "edit",
+      inputSchema: z.object({
+        action: z.literal("edit"),
+        assemblyName: z.string(),
+        subassemblyName: z.string().optional(),
+        delete: z.boolean().optional(),
+        parameters: z.record(z.union([z.number(), z.string(), z.boolean()])).optional(),
+      }),
+      capabilities: ["edit", "delete"],
+      requiresActiveDrawing: true,
+      safeForRetry: false,
+      pluginMethods: ["editAssembly"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("editAssembly", {
+            assemblyName: args.assemblyName,
+            subassemblyName: args.subassemblyName,
+            delete: args.delete ?? false,
+            parameters: args.parameters ?? {},
+          })
         ),
     },
   },
@@ -135,8 +204,9 @@ export const ASSEMBLY_DOMAIN_DEFINITION: DomainToolDefinition = {
         "Manage Civil 3D corridor assemblies. Actions: list, get (by name), " +
         "list_subassemblies (by assembly name), get_subassembly_parameters (double/bool/string " +
         "parameters of a subassembly), set_subassembly_parameter (writes a double parameter by " +
-        "displayName), delete (by name). Note: create is not yet implemented — it returns a " +
-        "'planned' status until the Assembly factory API is verified against a live Civil 3D drawing.",
+        "displayName), delete (by name), create (empty assembly baseline), create_subassembly " +
+        "(imports a stock catalog subassembly onto an existing assembly), edit (lists " +
+        "subassemblies when subassemblyName is omitted, else deletes or edits parameters on one).",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list",
@@ -146,6 +216,8 @@ export const ASSEMBLY_DOMAIN_DEFINITION: DomainToolDefinition = {
         "set_subassembly_parameter",
         "delete",
         "create",
+        "create_subassembly",
+        "edit",
       ],
       resolveAction: (rawArgs) => ({
         action: String(rawArgs.action),

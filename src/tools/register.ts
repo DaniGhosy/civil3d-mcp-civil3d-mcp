@@ -19,6 +19,12 @@ import { GENERIC_DOMAIN_DEFINITION } from "./domains/genericDomain.js";
 import { GRADING_DOMAIN_DEFINITION } from "./domains/gradingDomain.js";
 import { DATA_SHORTCUT_DOMAIN_DEFINITION } from "./domains/dataShortcutDomain.js";
 import { SURVEY_DOMAIN_DEFINITION } from "./domains/surveyDomain.js";
+import { STYLE_DOMAIN_DEFINITION } from "./domains/styleDomain.js";
+import { QUANTITY_TAKEOFF_DOMAIN_DEFINITION } from "./domains/quantityTakeoffDomain.js";
+import { WORKFLOW_DOMAIN_DEFINITION } from "./domains/workflowDomain.js";
+import { STANDARDS_LOOKUP_DOMAIN_DEFINITION } from "./domains/standardsLookupDomain.js";
+import { JOB_DOMAIN_DEFINITION } from "./domains/jobDomain.js";
+import { ORCHESTRATE_DOMAIN_DEFINITION } from "./domains/orchestrateDomain.js";
 import { IMPORT_EXPORT_DOMAIN_DEFINITION } from "./domains/importExportDomain.js";
 import { BLOCKS_DOMAIN_DEFINITION } from "./domains/blocksDomain.js";
 import { QUANTITY_DOMAIN_DEFINITION } from "./domains/quantityDomain.js";
@@ -26,12 +32,21 @@ import { LABEL_DOMAIN_DEFINITION } from "./domains/labelDomain.js";
 import { LEGEND_DOMAIN_DEFINITION } from "./domains/legendDomain.js";
 import { SHAPE_DETECTION_DOMAIN_DEFINITION } from "./domains/shapeDetectionDomain.js";
 import { PLAN_VISION_DOMAIN_DEFINITION } from "./domains/planVisionDomain.js";
+import { COORDINATE_SYSTEM_DOMAIN_DEFINITION } from "./domains/coordinateSystemDomain.js";
+import { DETENTION_DOMAIN_DEFINITION } from "./domains/detentionDomain.js";
+import { INTERSECTION_DOMAIN_DEFINITION } from "./domains/intersectionDomain.js";
+import { SIGHT_DISTANCE_DOMAIN_DEFINITION } from "./domains/sightDistanceDomain.js";
+import { SLOPE_ANALYSIS_DOMAIN_DEFINITION } from "./domains/slopeAnalysisDomain.js";
+import { HYDROLOGY_DOMAIN_DEFINITION } from "./domains/hydrologyDomain.js";
+import { COST_ESTIMATION_DOMAIN_DEFINITION } from "./domains/costEstimationDomain.js";
+import { SUPERELEVATION_DOMAIN_DEFINITION } from "./domains/superelevationDomain.js";
+import { QC_DOMAIN_DEFINITION } from "./domains/qcDomain.js";
 
 /**
  * All domain definitions — order matters for tool discovery.
  * Plugin/health first, then read-heavy domains, then write-heavy.
  */
-const DOMAIN_DEFINITIONS = [
+export const DOMAIN_DEFINITIONS = [
   PLUGIN_DOMAIN_DEFINITION,
   GENERIC_DOMAIN_DEFINITION,
   DRAWING_DOMAIN_DEFINITION,
@@ -50,6 +65,12 @@ const DOMAIN_DEFINITIONS = [
   GRADING_DOMAIN_DEFINITION,
   DATA_SHORTCUT_DOMAIN_DEFINITION,
   SURVEY_DOMAIN_DEFINITION,
+  STYLE_DOMAIN_DEFINITION,
+  QUANTITY_TAKEOFF_DOMAIN_DEFINITION,
+  WORKFLOW_DOMAIN_DEFINITION,
+  STANDARDS_LOOKUP_DOMAIN_DEFINITION,
+  JOB_DOMAIN_DEFINITION,
+  ORCHESTRATE_DOMAIN_DEFINITION,
   IMPORT_EXPORT_DOMAIN_DEFINITION,
   BLOCKS_DOMAIN_DEFINITION,
   LABEL_DOMAIN_DEFINITION,
@@ -58,6 +79,15 @@ const DOMAIN_DEFINITIONS = [
   PLAN_VISION_DOMAIN_DEFINITION,
   QUANTITY_DOMAIN_DEFINITION,
   GEOMETRY_DOMAIN_DEFINITION,
+  COORDINATE_SYSTEM_DOMAIN_DEFINITION,
+  DETENTION_DOMAIN_DEFINITION,
+  INTERSECTION_DOMAIN_DEFINITION,
+  SIGHT_DISTANCE_DOMAIN_DEFINITION,
+  SLOPE_ANALYSIS_DOMAIN_DEFINITION,
+  HYDROLOGY_DOMAIN_DEFINITION,
+  COST_ESTIMATION_DOMAIN_DEFINITION,
+  SUPERELEVATION_DOMAIN_DEFINITION,
+  QC_DOMAIN_DEFINITION,
 ];
 
 export async function registerTools(server: McpServer) {

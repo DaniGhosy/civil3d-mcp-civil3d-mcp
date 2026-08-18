@@ -164,6 +164,10 @@ public static class DrawingCommands
           handle = obj.Handle.ToString(),
           objectType = obj.GetType().Name,
           layer = (obj as Autodesk.AutoCAD.DatabaseServices.Entity)?.Layer ?? "Unknown",
+          // Best-effort name via reflection (civil3d_orchestrate's selection-based param
+          // inference needs this to match a selected object back to e.g. alignmentName) — not
+          // every entity type has a "Name" property, so this is null rather than required.
+          name = CivilObjectUtils.GetName(obj),
         });
 
         count++;

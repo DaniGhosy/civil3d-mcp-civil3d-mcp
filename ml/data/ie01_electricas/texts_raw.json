@@ -1,0 +1,7457 @@
+{
+  "layer": null,
+  "entities": [
+    {
+      "handle": "1B188",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": 169.95610318887861,
+        "y": -40.6539189174548,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "FORMATO"
+    },
+    {
+      "handle": "1B189",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": 193.9863074403745,
+        "y": -22.25737572947105,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "03"
+    },
+    {
+      "handle": "1B18A",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": 194.09650653940275,
+        "y": -22.509870982963662,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "03"
+    },
+    {
+      "handle": "1B18B",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": -139.28660983062787,
+        "y": 9.10274951618294,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXT-CH"
+    },
+    {
+      "handle": "1B18C",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": -77.70021470159031,
+        "y": -42.64551717666751,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "TEXT-M"
+    },
+    {
+      "handle": "1D78F",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": 122.04984080936902,
+        "y": -10.43926309338947,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1DFAE",
+      "entityType": "DBText",
+      "text": "PARAPETO, H:1.00",
+      "position": {
+        "x": 200.27657208494162,
+        "y": -16.74418748396014,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1DFF2",
+      "entityType": "DBText",
+      "text": "ESC: 1/50",
+      "position": {
+        "x": 185.26797261023052,
+        "y": -18.602255657367632,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1DFF3",
+      "entityType": "DBText",
+      "text": "PLANTA: SEGUNDO PISO",
+      "position": {
+        "x": 185.24120359772726,
+        "y": -18.14517410311873,
+        "z": 0
+      },
+      "height": 0.25,
+      "layer": "TEXTOS06"
+    },
+    {
+      "handle": "1DFF5",
+      "entityType": "DBText",
+      "text": "PLANTA: PRIMER PISO",
+      "position": {
+        "x": 178.66473828500193,
+        "y": -20.702369349327466,
+        "z": 0
+      },
+      "height": 0.25,
+      "layer": "TEXTOS06"
+    },
+    {
+      "handle": "1E006",
+      "entityType": "DBText",
+      "text": "ESC: 1/50",
+      "position": {
+        "x": 178.69150729750518,
+        "y": -21.159450903576367,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E053",
+      "entityType": "DBText",
+      "text": "2",
+      "position": {
+        "x": 181.64418290956746,
+        "y": -16.739320675168937,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E058",
+      "entityType": "DBText",
+      "text": "1",
+      "position": {
+        "x": 181.6441829095675,
+        "y": -17.039320675168934,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E07C",
+      "entityType": "DBText",
+      "text": "PLANTA: TECHOS",
+      "position": {
+        "x": 198.29811453317245,
+        "y": -18.975847075044502,
+        "z": 0
+      },
+      "height": 0.25,
+      "layer": "TEXTOS06"
+    },
+    {
+      "handle": "1E07E",
+      "entityType": "DBText",
+      "text": "PLANTA: TERCER PISO",
+      "position": {
+        "x": 192.35987077724053,
+        "y": -18.945968567768187,
+        "z": 0
+      },
+      "height": 0.25,
+      "layer": "TEXTOS06"
+    },
+    {
+      "handle": "1E08F",
+      "entityType": "DBText",
+      "text": "ESC: 1/50",
+      "position": {
+        "x": 192.38663978974378,
+        "y": -19.40305012201709,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E094",
+      "entityType": "DBText",
+      "text": "ESC: 1/50",
+      "position": {
+        "x": 198.3248835456757,
+        "y": -19.432928629293404,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E096",
+      "entityType": "DBText",
+      "text": "Mirella Aranda Castillo",
+      "position": {
+        "x": 211.44358827718372,
+        "y": -25.408058364006312,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E097",
+      "entityType": "DBText",
+      "text": "OLINDA RAQUEL-A02.DWG",
+      "position": {
+        "x": 211.4447902657296,
+        "y": -25.167989749038863,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E098",
+      "entityType": "DBText",
+      "text": "URB. SAGITARIO Mz A17 lt. 19 Distrito SANTIAGO DE SURCO",
+      "position": {
+        "x": 207.21671266564306,
+        "y": -24.86283842574127,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E099",
+      "entityType": "DBText",
+      "text": "SRA. OLINDA RAQUEL SANTOS LUCICH SR. OSCAR MARIO ACOSTA MORENO",
+      "position": {
+        "x": 207.21671266564306,
+        "y": -24.527999249388667,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0A2",
+      "entityType": "DBText",
+      "text": "INSTALACIONES ELECTRICAS",
+      "position": {
+        "x": 207.30379926640563,
+        "y": -25.13083524117567,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0A6",
+      "entityType": "DBText",
+      "text": "UBICACION",
+      "position": {
+        "x": 206.34252251841258,
+        "y": -24.78313157643097,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0A7",
+      "entityType": "DBText",
+      "text": "ESPECIALIDAD",
+      "position": {
+        "x": 206.34252251841258,
+        "y": -25.086829445091066,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0A8",
+      "entityType": "DBText",
+      "text": "PROPIETARIO",
+      "position": {
+        "x": 206.34252251841258,
+        "y": -24.436354486628797,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0A9",
+      "entityType": "DBText",
+      "text": "PROFESIONAL",
+      "position": {
+        "x": 206.34554713609032,
+        "y": -25.391668251341127,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0AA",
+      "entityType": "DBText",
+      "text": "PROYECTO",
+      "position": {
+        "x": 206.34252251841258,
+        "y": -23.851438009173773,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0AC",
+      "entityType": "DBText",
+      "text": "VIVIENDA UNIFAMILIAR",
+      "position": {
+        "x": 208.7115236737517,
+        "y": -24.11236373411708,
+        "z": 0
+      },
+      "height": 0.15000000000000002,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0B4",
+      "entityType": "DBText",
+      "text": "",
+      "position": {
+        "x": 213.2516653020678,
+        "y": -25.28368287342384,
+        "z": 0
+      },
+      "height": 0.48,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0B9",
+      "entityType": "DBText",
+      "text": "FECHA",
+      "position": {
+        "x": 213.14771199328607,
+        "y": -24.13851300414498,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0BD",
+      "entityType": "DBText",
+      "text": "PLANO:6/8",
+      "position": {
+        "x": 213.3280794824771,
+        "y": -24.49279009151851,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0BE",
+      "entityType": "DBText",
+      "text": "MAY 2000",
+      "position": {
+        "x": 213.5711099450103,
+        "y": -24.212045462621372,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0BF",
+      "entityType": "DBText",
+      "text": "ESCALA",
+      "position": {
+        "x": 213.14771199328607,
+        "y": -23.8351159702904,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "TEXTOS03"
+    },
+    {
+      "handle": "1E0C0",
+      "entityType": "DBText",
+      "text": "1:50",
+      "position": {
+        "x": 213.93935293705795,
+        "y": -23.91183561272626,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS04"
+    },
+    {
+      "handle": "1E0E8",
+      "entityType": "DBText",
+      "text": "SH.",
+      "position": {
+        "x": 186.25316066236294,
+        "y": -11.684615634227857,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E130",
+      "entityType": "DBText",
+      "text": "2",
+      "position": {
+        "x": 182.72278927198644,
+        "y": -15.723880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E187",
+      "entityType": "DBText",
+      "text": "COMEDOR",
+      "position": {
+        "x": 179.6145658152512,
+        "y": -12.84397031283229,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E1BE",
+      "entityType": "DBText",
+      "text": "1",
+      "position": {
+        "x": 182.47278927198647,
+        "y": -15.723880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E1D0",
+      "entityType": "DBText",
+      "text": "HALL",
+      "position": {
+        "x": 181.75316444641305,
+        "y": -14.695981502089985,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E205",
+      "entityType": "DBText",
+      "text": "9",
+      "position": {
+        "x": 183.5583863096849,
+        "y": -13.973880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E208",
+      "entityType": "DBText",
+      "text": "8",
+      "position": {
+        "x": 183.5583863096849,
+        "y": -14.223880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E20B",
+      "entityType": "DBText",
+      "text": "7",
+      "position": {
+        "x": 183.55838630968486,
+        "y": -14.473880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E228",
+      "entityType": "DBText",
+      "text": "5",
+      "position": {
+        "x": 183.5583863096849,
+        "y": -14.973880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E22B",
+      "entityType": "DBText",
+      "text": "4",
+      "position": {
+        "x": 183.55838630968492,
+        "y": -15.223880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E22E",
+      "entityType": "DBText",
+      "text": "3",
+      "position": {
+        "x": 182.97278927198647,
+        "y": -15.723880449883115,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E238",
+      "entityType": "DBText",
+      "text": "6",
+      "position": {
+        "x": 183.5583863096849,
+        "y": -14.723880449883122,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E23D",
+      "entityType": "DBText",
+      "text": "SALA",
+      "position": {
+        "x": 182.06734273285835,
+        "y": -8.20683100700159,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E246",
+      "entityType": "DBText",
+      "text": "DE DIARIO",
+      "position": {
+        "x": 180.05276212853775,
+        "y": -5.670555218369153,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E247",
+      "entityType": "DBText",
+      "text": "COMEDOR",
+      "position": {
+        "x": 180.0201049277264,
+        "y": -5.410422957640557,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E276",
+      "entityType": "DBText",
+      "text": "COCINA",
+      "position": {
+        "x": 179.87992372750142,
+        "y": -8.860762423185442,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E2E0",
+      "entityType": "DBText",
+      "text": "JARDIN",
+      "position": {
+        "x": 183.58467231411277,
+        "y": -5.149112451275435,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E316",
+      "entityType": "DBText",
+      "text": "PRINCIPAL",
+      "position": {
+        "x": 178.58105711179277,
+        "y": -1.0921186778774448,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E317",
+      "entityType": "DBText",
+      "text": "DORMITORIO",
+      "position": {
+        "x": 178.43653378522077,
+        "y": -0.7965807194916941,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E350",
+      "entityType": "DBText",
+      "text": "PATIO",
+      "position": {
+        "x": 179.06008865003216,
+        "y": -3.701628096367366,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E37B",
+      "entityType": "DBText",
+      "text": "SH",
+      "position": {
+        "x": 183.42676924943598,
+        "y": 0.17062903829934511,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E395",
+      "entityType": "DBText",
+      "text": "SH",
+      "position": {
+        "x": 182.85329163739763,
+        "y": -3.1850853206295904,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3A2",
+      "entityType": "DBText",
+      "text": "AZOTEA",
+      "position": {
+        "x": 201.25909591857916,
+        "y": -11.466083866782423,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3B8",
+      "entityType": "DBText",
+      "text": "DORMITORIO",
+      "position": {
+        "x": 192.45986255655964,
+        "y": -8.923274097879549,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3B9",
+      "entityType": "DBText",
+      "text": "AREA TENDAL",
+      "position": {
+        "x": 192.4946622155488,
+        "y": -5.72743151167272,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3CF",
+      "entityType": "DBText",
+      "text": "SH.",
+      "position": {
+        "x": 193.74122372479405,
+        "y": -10.43405231704038,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3F5",
+      "entityType": "DBText",
+      "text": "10",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -13.22728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3F6",
+      "entityType": "DBText",
+      "text": "11",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -12.97728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3F7",
+      "entityType": "DBText",
+      "text": "12",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -12.72728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3F8",
+      "entityType": "DBText",
+      "text": "13",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -12.47728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3F9",
+      "entityType": "DBText",
+      "text": "14",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -12.22728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3FA",
+      "entityType": "DBText",
+      "text": "15",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -11.97728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3FB",
+      "entityType": "DBText",
+      "text": "16",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -11.72728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E3FC",
+      "entityType": "DBText",
+      "text": "17",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -11.47728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E402",
+      "entityType": "DBText",
+      "text": "6",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -14.72728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E405",
+      "entityType": "DBText",
+      "text": "4",
+      "position": {
+        "x": 190.31594324908383,
+        "y": -15.22728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E408",
+      "entityType": "DBText",
+      "text": "5",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -14.97728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E40D",
+      "entityType": "DBText",
+      "text": "3",
+      "position": {
+        "x": 189.75534621138536,
+        "y": -15.545216632264019,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E40E",
+      "entityType": "DBText",
+      "text": "2",
+      "position": {
+        "x": 189.50534621138533,
+        "y": -15.545216632264026,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E415",
+      "entityType": "DBText",
+      "text": "1",
+      "position": {
+        "x": 189.25534621138536,
+        "y": -15.545216632264026,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E446",
+      "entityType": "DBText",
+      "text": "8",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -14.22728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E447",
+      "entityType": "DBText",
+      "text": "7",
+      "position": {
+        "x": 190.31594324908377,
+        "y": -14.47728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E44E",
+      "entityType": "DBText",
+      "text": "9",
+      "position": {
+        "x": 190.3159432490838,
+        "y": -13.97728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E461",
+      "entityType": "DBText",
+      "text": "18",
+      "position": {
+        "x": 189.41594324908374,
+        "y": -11.47728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E464",
+      "entityType": "DBText",
+      "text": "19",
+      "position": {
+        "x": 189.41594324908377,
+        "y": -11.72728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E467",
+      "entityType": "DBText",
+      "text": "21",
+      "position": {
+        "x": 189.4159432490838,
+        "y": -12.22728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E46A",
+      "entityType": "DBText",
+      "text": "20",
+      "position": {
+        "x": 189.4093251805363,
+        "y": -11.97728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E46D",
+      "entityType": "DBText",
+      "text": "22",
+      "position": {
+        "x": 189.40932518053634,
+        "y": -12.47728112975,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E480",
+      "entityType": "DBText",
+      "text": "DORM 02",
+      "position": {
+        "x": 185.6230513759739,
+        "y": -15.75896669162482,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4AB",
+      "entityType": "DBText",
+      "text": "CUARTO DE",
+      "position": {
+        "x": 192.11543026248458,
+        "y": -15.567947854994515,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4AC",
+      "entityType": "DBText",
+      "text": "COSTURA",
+      "position": {
+        "x": 192.23099821380305,
+        "y": -15.841726719641912,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4C6",
+      "entityType": "DBText",
+      "text": "SALA DE TV",
+      "position": {
+        "x": 188.1161281919182,
+        "y": -10.748167932155095,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4E2",
+      "entityType": "DBText",
+      "text": "DORM 02",
+      "position": {
+        "x": 186.4817122369185,
+        "y": -7.147610404955203,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4E3",
+      "entityType": "DBText",
+      "text": "SALA DE ESTAR ",
+      "position": {
+        "x": 187.88875016976073,
+        "y": -10.442386186566718,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E4F5",
+      "entityType": "DBText",
+      "text": "EMPLEADA",
+      "position": {
+        "x": 192.57030880402414,
+        "y": -9.125905948910592,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E58F",
+      "entityType": "DBText",
+      "text": "27",
+      "position": {
+        "x": 197.19171511258858,
+        "y": -12.98576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E592",
+      "entityType": "DBText",
+      "text": "28",
+      "position": {
+        "x": 197.1917151125886,
+        "y": -12.73576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E595",
+      "entityType": "DBText",
+      "text": "29",
+      "position": {
+        "x": 197.1917151125886,
+        "y": -12.48576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E598",
+      "entityType": "DBText",
+      "text": "30",
+      "position": {
+        "x": 197.19171511258855,
+        "y": -12.23576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E59B",
+      "entityType": "DBText",
+      "text": "31",
+      "position": {
+        "x": 197.19171511258855,
+        "y": -11.98576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E59E",
+      "entityType": "DBText",
+      "text": "32",
+      "position": {
+        "x": 197.1917151125886,
+        "y": -11.73576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5A1",
+      "entityType": "DBText",
+      "text": "33",
+      "position": {
+        "x": 197.19171511258858,
+        "y": -11.48576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5A4",
+      "entityType": "DBText",
+      "text": "26",
+      "position": {
+        "x": 197.19171511258855,
+        "y": -13.23576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5BA",
+      "entityType": "DBText",
+      "text": "21",
+      "position": {
+        "x": 196.29171511258858,
+        "y": -12.23576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5BB",
+      "entityType": "DBText",
+      "text": "20",
+      "position": {
+        "x": 196.2850970440411,
+        "y": -11.98576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5BC",
+      "entityType": "DBText",
+      "text": "19",
+      "position": {
+        "x": 196.29171511258855,
+        "y": -11.73576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5C5",
+      "entityType": "DBText",
+      "text": "22",
+      "position": {
+        "x": 196.28509704404112,
+        "y": -12.48576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5C6",
+      "entityType": "DBText",
+      "text": "23",
+      "position": {
+        "x": 196.28509704404112,
+        "y": -12.735764210450274,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5C9",
+      "entityType": "DBText",
+      "text": "24",
+      "position": {
+        "x": 196.2850970440412,
+        "y": -12.985764210450274,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5CC",
+      "entityType": "DBText",
+      "text": "25",
+      "position": {
+        "x": 196.28509704404112,
+        "y": -13.23576421045027,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E5F4",
+      "entityType": "DBText",
+      "text": "PARAPETO, H:1.00",
+      "position": {
+        "x": 198.87097957249105,
+        "y": -16.21881207124387,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E63D",
+      "entityType": "DBText",
+      "text": "ESCALERA",
+      "position": {
+        "x": 196.15834075564874,
+        "y": -6.379323862822755,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E640",
+      "entityType": "DBText",
+      "text": "DE GATO",
+      "position": {
+        "x": 196.15834075564874,
+        "y": -6.535603279908894,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E644",
+      "entityType": "DBText",
+      "text": "LAVANDERIA",
+      "position": {
+        "x": 194.9680350837417,
+        "y": -7.977248227547705,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E66C",
+      "entityType": "DBText",
+      "text": "ESTAR",
+      "position": {
+        "x": 195.79454734658233,
+        "y": -11.120208451965542,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E66F",
+      "entityType": "DBText",
+      "text": "PARAPETO, H:1.00",
+      "position": {
+        "x": 198.870979572491,
+        "y": -9.646350376793858,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E682",
+      "entityType": "DBText",
+      "text": "ESTUDIO",
+      "position": {
+        "x": 189.6876660841605,
+        "y": -2.9192927004554905,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E69C",
+      "entityType": "DBText",
+      "text": "SH.",
+      "position": {
+        "x": 189.7132051351875,
+        "y": -0.7480901048628013,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E6DC",
+      "entityType": "DBText",
+      "text": "DORM 01",
+      "position": {
+        "x": 186.68243226182625,
+        "y": -1.5448896740227418,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E70B",
+      "entityType": "DBText",
+      "text": "AZOTEA",
+      "position": {
+        "x": 195.73731667805606,
+        "y": -1.8276367727421785,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "MUEBLES"
+    },
+    {
+      "handle": "1E7F0",
+      "entityType": "DBText",
+      "text": "DE LA RED DE EDELNOR",
+      "position": {
+        "x": 178.7016850387274,
+        "y": -20.075500883333795,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1E80D",
+      "entityType": "DBText",
+      "text": "T.G.",
+      "position": {
+        "x": 177.72923286062868,
+        "y": -9.560854909352843,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E80E",
+      "entityType": "DBText",
+      "text": "SUBE MONTANTE ELECTRICO C6,C7,C8",
+      "position": {
+        "x": 177.83008736073126,
+        "y": -8.341009033028026,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1E810",
+      "entityType": "DBText",
+      "text": "C9,C10,C11,C12 TUB.35mm PP",
+      "position": {
+        "x": 177.96712054374322,
+        "y": -8.352687957515379,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1E813",
+      "entityType": "DBText",
+      "text": "K",
+      "position": {
+        "x": 178.5376389155399,
+        "y": -3.6347407033404435,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E815",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 178.30217889626942,
+        "y": -5.030452576951994,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E817",
+      "entityType": "DBText",
+      "text": "G'",
+      "position": {
+        "x": 183.53491879264547,
+        "y": -5.383246699474998,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E819",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 183.8243615222968,
+        "y": -7.193927878829273,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E853",
+      "entityType": "DBText",
+      "text": "S(K)",
+      "position": {
+        "x": 178.30608183041215,
+        "y": -4.624040613421253,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E856",
+      "entityType": "DBText",
+      "text": "S(J)",
+      "position": {
+        "x": 181.04394510204975,
+        "y": -7.519053174995157,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E85B",
+      "entityType": "DBText",
+      "text": "2S(A,Z)S3(Q)",
+      "position": {
+        "x": 181.91259829296112,
+        "y": -16.018454843612197,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E85E",
+      "entityType": "DBText",
+      "text": "3S(D,E,F)",
+      "position": {
+        "x": 180.35170436035622,
+        "y": -13.653003730454675,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E861",
+      "entityType": "DBText",
+      "text": "2S(H,I)",
+      "position": {
+        "x": 179.47305164206605,
+        "y": -9.542928811186961,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E867",
+      "entityType": "DBText",
+      "text": "S3(L)",
+      "position": {
+        "x": 181.31135176265457,
+        "y": -7.935535816399233,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E86A",
+      "entityType": "DBText",
+      "text": "2S3(L,M)",
+      "position": {
+        "x": 181.31283788168815,
+        "y": -4.989199322205674,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E86B",
+      "entityType": "DBText",
+      "text": "S(P)",
+      "position": {
+        "x": 182.56670687485325,
+        "y": -3.546470973681628,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E86E",
+      "entityType": "DBText",
+      "text": "S(N)",
+      "position": {
+        "x": 181.2157696951622,
+        "y": -2.481699876959225,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E871",
+      "entityType": "DBText",
+      "text": "S(O)",
+      "position": {
+        "x": 182.56670687485322,
+        "y": -1.0213739465462153,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E874",
+      "entityType": "DBText",
+      "text": "S(N')",
+      "position": {
+        "x": 178.97431531480328,
+        "y": 0.4730947145911548,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E877",
+      "entityType": "DBText",
+      "text": "S(N'')",
+      "position": {
+        "x": 180.40335038339998,
+        "y": 0.4892594417040437,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E87A",
+      "entityType": "DBText",
+      "text": "2S(O',S)",
+      "position": {
+        "x": 182.84939001256268,
+        "y": -1.8974010321813024,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E87D",
+      "entityType": "DBText",
+      "text": "S(P')",
+      "position": {
+        "x": 182.73936106812036,
+        "y": -4.796899287451274,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E880",
+      "entityType": "DBText",
+      "text": "S3(M)",
+      "position": {
+        "x": 180.95304340437,
+        "y": -2.939033878401765,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E883",
+      "entityType": "DBText",
+      "text": "2S(B,C)",
+      "position": {
+        "x": 180.41149449034535,
+        "y": -16.10600883917315,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E886",
+      "entityType": "DBText",
+      "text": "S(I')",
+      "position": {
+        "x": 187.4450737399747,
+        "y": -13.38987222922239,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E889",
+      "entityType": "DBText",
+      "text": "S(C')",
+      "position": {
+        "x": 185.74926381425206,
+        "y": -16.04559264522241,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E88C",
+      "entityType": "DBText",
+      "text": "2S(E'D')",
+      "position": {
+        "x": 187.22594605727454,
+        "y": -11.256877968902415,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E88F",
+      "entityType": "DBText",
+      "text": "V",
+      "position": {
+        "x": 185.76986378425147,
+        "y": -12.04559264522241,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E892",
+      "entityType": "DBText",
+      "text": "S(A')",
+      "position": {
+        "x": 187.57063264127282,
+        "y": -5.960922500265169,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E895",
+      "entityType": "DBText",
+      "text": "S(U)",
+      "position": {
+        "x": 185.08319058828795,
+        "y": -8.814339792814454,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E898",
+      "entityType": "DBText",
+      "text": "S(B')",
+      "position": {
+        "x": 185.1188717449539,
+        "y": -6.13486351094513,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E89B",
+      "entityType": "DBText",
+      "text": "S(F')",
+      "position": {
+        "x": 189.07121961090326,
+        "y": -3.535470051519833,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E89E",
+      "entityType": "DBText",
+      "text": "S(T)",
+      "position": {
+        "x": 189.04926381425258,
+        "y": -1.0132104121550425,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8A1",
+      "entityType": "DBText",
+      "text": "S(X)",
+      "position": {
+        "x": 187.88994142966533,
+        "y": -2.1955926482132844,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8A4",
+      "entityType": "DBText",
+      "text": "S(X')",
+      "position": {
+        "x": 185.0492638142521,
+        "y": -0.19559264522243058,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8A7",
+      "entityType": "DBText",
+      "text": "S(N')",
+      "position": {
+        "x": 185.0492638143226,
+        "y": -14.008501091375859,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8AA",
+      "entityType": "DBText",
+      "text": "S(W,D'')",
+      "position": {
+        "x": 190.72750662549325,
+        "y": -10.676219924569834,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8AD",
+      "entityType": "DBText",
+      "text": "S3(L')",
+      "position": {
+        "x": 187.96084223708885,
+        "y": -6.967865361148308,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8B0",
+      "entityType": "DBText",
+      "text": "S3(M')",
+      "position": {
+        "x": 187.8992638142524,
+        "y": -3.520592645222311,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8B3",
+      "entityType": "DBText",
+      "text": "S(r)S3(c)",
+      "position": {
+        "x": 195.2794368781062,
+        "y": -7.252873551767244,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8B6",
+      "entityType": "DBText",
+      "text": "S(b)",
+      "position": {
+        "x": 194.20135674258555,
+        "y": -8.421570591170717,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8B9",
+      "entityType": "DBText",
+      "text": "S(e)",
+      "position": {
+        "x": 194.27525001572008,
+        "y": -9.725198000490476,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8BC",
+      "entityType": "DBText",
+      "text": "S(f)",
+      "position": {
+        "x": 194.32030136718188,
+        "y": -11.375914668097558,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8BF",
+      "entityType": "DBText",
+      "text": "S(g)",
+      "position": {
+        "x": 194.3016945990354,
+        "y": -13.231825598233605,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8C2",
+      "entityType": "DBText",
+      "text": "S(h)",
+      "position": {
+        "x": 192.63165374630424,
+        "y": -16.05407572592272,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8C5",
+      "entityType": "DBText",
+      "text": "S(d)",
+      "position": {
+        "x": 197.26876178108304,
+        "y": -11.035253386423943,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8C8",
+      "entityType": "DBText",
+      "text": "S(j)",
+      "position": {
+        "x": 194.83748322753596,
+        "y": -11.118652986117706,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8CB",
+      "entityType": "DBText",
+      "text": "S(a)",
+      "position": {
+        "x": 191.93165374630416,
+        "y": -7.888002085443779,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E8E3",
+      "entityType": "DBText",
+      "text": "S(R)",
+      "position": {
+        "x": 183.25331635193294,
+        "y": -2.8890049912623494,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E904",
+      "entityType": "DBText",
+      "text": "2S(G,G')",
+      "position": {
+        "x": 181.0693663235039,
+        "y": -9.896409063856922,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1E906",
+      "entityType": "DBText",
+      "text": "100 x 100 X 37.5 h=.30 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -7.918377442207088,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E90D",
+      "entityType": "DBText",
+      "text": "SALIDA DE CALENTADOR CAJA FºGº 100 x 37.5 h=.30 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -8.238377442207138,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E90E",
+      "entityType": "DBText",
+      "text": "SALIDA PARA ANTENA TV y/ó CABLE CAJA FºGº 100 x 55 x 28 h=.30 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -8.558377442207131,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E917",
+      "entityType": "DBText",
+      "text": "TV",
+      "position": {
+        "x": 208.5215186947109,
+        "y": -8.490440407929668,
+        "z": 0
+      },
+      "height": 0.07776,
+      "layer": "04"
+    },
+    {
+      "handle": "1E919",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE BIPOLAR DOBLE CON HORQUILLAS TIPO UNIVERSAL ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -2.0231661397876906,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E922",
+      "entityType": "DBText",
+      "text": "CAJA FºGº 100 x .55 x 28 h= .30  / 1.10SNPT RESPECTIVAMENTE.",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -2.1583774422070974,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E923",
+      "entityType": "DBText",
+      "text": "TABLERO DE DISTRIBUCION ELECTRICA h=1.80 SNPT BORDE SUPERIOR",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -2.4783774422070906,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E924",
+      "entityType": "DBText",
+      "text": "INTERRUPTOR DE CONMUTACION EN CAJA DE 100 x 43 x 28 h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -3.75837744220712,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E925",
+      "entityType": "DBText",
+      "text": "INTERRUPTOR DE CUCHILLA DE 2x20A CON FUSIBLE DE ALAMBRE ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -2.9728456553250453,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E926",
+      "entityType": "DBText",
+      "text": "INTERRUPTOR UNIPOLAR SIMPLE, DOBLE, TRIPLE EN CAJA FºGº",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -3.296350622668058,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E927",
+      "entityType": "DBText",
+      "text": "SALIDA PARA TELEFONO EXTERNO EN PARED CAJA 100 x 53 x 28 ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -3.9420901068378953,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E928",
+      "entityType": "DBText",
+      "text": "SALIDA PARA TELEFONO INTERNO EN PARED CAJA 100 x 53 x 28",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -4.255747557920699,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E936",
+      "entityType": "DBText",
+      "text": "L    E    Y    E    N     D    A",
+      "position": {
+        "x": 209.34387422852268,
+        "y": 0.5413249804695397,
+        "z": 0
+      },
+      "height": 0.22400000000000003,
+      "layer": "04"
+    },
+    {
+      "handle": "1E937",
+      "entityType": "DBText",
+      "text": "FºGº 100 x 55 x 28 h= .30  / 1.10SNPT RESPECTIVAMENTE.",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -1.8383774422071042,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E938",
+      "entityType": "DBText",
+      "text": "CAJA DE PASE CUADRADA DE 100 x 30 DE FºGº h= .40 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -0.8783774422071247,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E939",
+      "entityType": "DBText",
+      "text": "SALIDA PARA SPOT LIGTH EN CAJA OCTOGONAL DE 100 x 30",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -1.518377442207111,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E93A",
+      "entityType": "DBText",
+      "text": "SALIDA PARA ALUMBRADO EN TECHO EN CAJA OCTOGONAL DE 100 x 30",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -1.1983774422071178,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E93B",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE BIPOLAR DOBLE CON HORQUILLAS REDONDAS/T CAJA ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -1.6962675798366718,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E93C",
+      "entityType": "DBText",
+      "text": "SALIDA  PARA  CAJA  DE  PASE  EN  PARED  EN  CAJA  OCTOGONAL  DE",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -0.41660432174376183,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E947",
+      "entityType": "DBText",
+      "text": "TUB. EMPOTRADA EN PISO %%c 15mm TELEFONO EXTERNO",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -6.638377442207116,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E948",
+      "entityType": "DBText",
+      "text": "TUB. EMPOTRADA  EN PISO %%c 15 mm TELEFONO INTERNO",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -7.278377442207102,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E949",
+      "entityType": "DBText",
+      "text": "TUB. EMPOTRADA EN PISO %%c 15mm PARA INTERCOMUNICADOR",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -7.598377442207095,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94A",
+      "entityType": "DBText",
+      "text": "TUB. EMPOTRADA EN TECHO Y/O PARED %%c INDICADO EN ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.854034963012509,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94B",
+      "entityType": "DBText",
+      "text": "TUBERIA EMPOTRADA EN PISO %%c INDICADO EN DIAGRAMA UNIFILAR",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -6.318377442207122,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94C",
+      "entityType": "DBText",
+      "text": "CAJA DE PASE CUADRADA PARA TELEFONO DE 100 x 100 DE FºGº ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -6.808520769333427,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94D",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE  TRIFASICO  CON  P/T  3x30A  220v  CAJA  FºGº ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -7.778630167221536,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94E",
+      "entityType": "DBText",
+      "text": "SALIDA PARA MANDO ELÉCTRICO EN PUERTA h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.038377442207093,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E94F",
+      "entityType": "DBText",
+      "text": "TRANSFORMADOR  220v  60 Hz  %%c 20mm  PVC-SEL",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.358377442207086,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E950",
+      "entityType": "DBText",
+      "text": "TIMBRE  EN  CAJA  OCTOGONAL  FºGº  100  x  55  x  28  h=2.20  SNPT  CON",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.2135657847001085,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E951",
+      "entityType": "DBText",
+      "text": "SALIDA PARA TELEFONO PORTERO CAJA DE MADERA 200 x 120 x 120 (mm) ",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -4.898359849004123,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E95D",
+      "entityType": "DBText",
+      "text": "S",
+      "position": {
+        "x": 208.16745959987855,
+        "y": -3.41505055512323,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E973",
+      "entityType": "DBText",
+      "text": "3",
+      "position": {
+        "x": 208.54895735102144,
+        "y": -3.7740757262041598,
+        "z": 0
+      },
+      "height": 0.08000000000000002,
+      "layer": "04"
+    },
+    {
+      "handle": "1E974",
+      "entityType": "DBText",
+      "text": "S",
+      "position": {
+        "x": 208.465587323649,
+        "y": -3.735050555123223,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E975",
+      "entityType": "DBText",
+      "text": "2S",
+      "position": {
+        "x": 208.42619430184385,
+        "y": -3.41505055512323,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E976",
+      "entityType": "DBText",
+      "text": "3S",
+      "position": {
+        "x": 208.7338010153191,
+        "y": -3.41505055512323,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E97F",
+      "entityType": "DBText",
+      "text": "Wh",
+      "position": {
+        "x": 208.49316993497013,
+        "y": -2.728594394676577,
+        "z": 0
+      },
+      "height": 0.08000000000000002,
+      "layer": "04"
+    },
+    {
+      "handle": "1E984",
+      "entityType": "DBText",
+      "text": "DE 15A h= 1.40SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -3.118377442207077,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E985",
+      "entityType": "DBText",
+      "text": "100 x 53 x 28 h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -3.438377442207127,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E986",
+      "entityType": "DBText",
+      "text": "h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -4.078377442207113,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E987",
+      "entityType": "DBText",
+      "text": "MEDIDOR DE KHW PARA SU INSTALACION",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -2.7983774422070837,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E988",
+      "entityType": "DBText",
+      "text": "h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -4.3983774422071065,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E996",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 209.00534054101553,
+        "y": -1.8467723952356891,
+        "z": 0
+      },
+      "height": 0.08000000000000002,
+      "layer": "04"
+    },
+    {
+      "handle": "1E99B",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 208.43612440946998,
+        "y": -1.8467723952356891,
+        "z": 0
+      },
+      "height": 0.08000000000000002,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D1",
+      "entityType": "DBText",
+      "text": "POZO DE TIERRA (ver detalle)",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.678377442207136,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D2",
+      "entityType": "DBText",
+      "text": "h= .40 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -6.958377442207109,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D3",
+      "entityType": "DBText",
+      "text": "DIAGRAMA UNIFILAR",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -5.998377442207129,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D6",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 208.48283068737618,
+        "y": -4.685933035991866,
+        "z": 0
+      },
+      "height": 0.128,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D7",
+      "entityType": "DBText",
+      "text": "h=1.20 SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -4.7183774422071,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9D8",
+      "entityType": "DBText",
+      "text": "SIMBOLOGIA",
+      "position": {
+        "x": 207.9816612073202,
+        "y": 0.14620954804871644,
+        "z": 0
+      },
+      "height": 0.144,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9EA",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 208.5754385233169,
+        "y": -0.4750594561406274,
+        "z": 0
+      },
+      "height": 0.048,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9EB",
+      "entityType": "DBText",
+      "text": "DESCRIPCION",
+      "position": {
+        "x": 210.81955823940478,
+        "y": 0.14620954804871644,
+        "z": 0
+      },
+      "height": 0.144,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9ED",
+      "entityType": "DBText",
+      "text": "SALIDA PARA ALUMBRADO EN LA PARED",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -0.23837744220708146,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1E9EE",
+      "entityType": "DBText",
+      "text": "FºGº  100  x  30  h=2.20  SNPT",
+      "position": {
+        "x": 209.37841065524225,
+        "y": -0.5583774422070746,
+        "z": 0
+      },
+      "height": 0.096,
+      "layer": "04"
+    },
+    {
+      "handle": "1EA3C",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -9.785557475887913,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA3D",
+      "entityType": "DBText",
+      "text": "CONDUCTORES",
+      "position": {
+        "x": 206.16946807224537,
+        "y": -9.785557475887913,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA3F",
+      "entityType": "DBText",
+      "text": ",padran ser fabricadas en obra, cuidando que su seccion recta no",
+      "position": {
+        "x": 208.62956609166082,
+        "y": -18.68909534304811,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA40",
+      "entityType": "DBText",
+      "text": " disminuya de area, y sin utilizar dispositivos de llama directa.Las de mayor diametro seran hechas en",
+      "position": {
+        "x": 205.94825874562463,
+        "y": -19.190211901244822,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA41",
+      "entityType": "DBText",
+      "text": "-No se aceptaran mas de cuatro curvas de 90` por cada tramo de tuberia.",
+      "position": {
+        "x": 205.92493396120932,
+        "y": -19.542851317049667,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA42",
+      "entityType": "DBText",
+      "text": "-La longitud maxima de un tramo de tuberia sera de 15 m.",
+      "position": {
+        "x": 205.932203753941,
+        "y": -19.734738402437188,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA43",
+      "entityType": "DBText",
+      "text": "-Para empalme para tuberias y/o accesorios, se debera utilizar el pegamento que recomiende el fra-",
+      "position": {
+        "x": 205.92856885757152,
+        "y": -19.926140187583655,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA44",
+      "entityType": "DBText",
+      "text": "-Todos los empalmes de las tuberias con las cajas, se realizaran utilizando los \"conectores tubo-caja\" apropiados",
+      "position": {
+        "x": 205.932203753941,
+        "y": -20.266800141843532,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA45",
+      "entityType": "DBText",
+      "text": "-Todas las tuberias que deben quedar enterradas (p. ej.: en jardines)deberan ser protegidas con una",
+      "position": {
+        "x": 205.932203753941,
+        "y": -20.476723557126604,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA46",
+      "entityType": "DBText",
+      "text": " envoltura (dado)de concreto pobre, 5cm de espesor minimo.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -20.640665612903547,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA47",
+      "entityType": "DBText",
+      "text": "-Todos los conductores seran decobre electronico, con conductibilidad de100",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -10.035557475887913,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA48",
+      "entityType": "DBText",
+      "text": "-Los conductores de hasta 6mm2 de seccion, seran de tipo \"solido\", los de secciones mayores seran",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -10.379018016556074,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA49",
+      "entityType": "DBText",
+      "text": "-Los conductores de los circuitos deribados y la linea de tierra de proteccion, llevaran aislamiento TW;",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -10.76174473351199,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA4A",
+      "entityType": "DBText",
+      "text": "-Todos los cunductores seran continuos de caja a caja. No se permitiran empalmes  que queden",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -11.155165790924855,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA4C",
+      "entityType": "DBText",
+      "text": "DIMENSIONAMIENTO DE CIRCUITOS DERIVADOS (DE 220 V)",
+      "position": {
+        "x": 206.15841351894284,
+        "y": -11.611317164896775,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA4D",
+      "entityType": "DBText",
+      "text": "-Donde no se indique otra cosa, se entiende que se trata de: 2-1x2.5mm2-15mm",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -11.900080632716993,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA4E",
+      "entityType": "DBText",
+      "text": "-El numero de rayas trazadas sobre la linea representativas de tramos de circuitos indican el numero",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -12.116424045937777,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA4F",
+      "entityType": "DBText",
+      "text": " de conductores de 2.5mm2 que este lleva. La raya de diferente inclinacion indica la linea de tierra de",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -12.356040427237872,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA50",
+      "entityType": "DBText",
+      "text": "-Todos los circuitos deribados para tomacorrientes, deberan llebar una linea de tierra de proteccion,",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -12.835010779100003,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA51",
+      "entityType": "DBText",
+      "text": " aunque el dispositivo tomacorriente no tenga \"salida\" con este fin.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -13.082037396082114,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA53",
+      "entityType": "DBText",
+      "text": "TABLERO DE DISTRIBUCION ELECTRICA EN 220V.",
+      "position": {
+        "x": 206.20001614849986,
+        "y": -13.406405995254886,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA54",
+      "entityType": "DBText",
+      "text": "-Seran de tipo de \"frente muerto\", para empotrar. Estaran compuesto de: un gabinete de plancha de",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -13.672562737416001,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA55",
+      "entityType": "DBText",
+      "text": " fierro galvanizado, de 1.59mm de espesor minimo; y mandil, marco y puerta de plancha de fierro",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -13.846975684050904,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA56",
+      "entityType": "DBText",
+      "text": " negro, de 1.27mm de espesor minimo, protegidos con pintura anticorrosiva y acabados con pintura",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -14.027202935865887,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA57",
+      "entityType": "DBText",
+      "text": "-La puerta debera llevar chapa con llave amaestrada. En el lado interior de la puerta debera ir una cartulina ",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -14.44928106497133,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA58",
+      "entityType": "DBText",
+      "text": "-Los interruptores seran automatico, termomagneticos, y aprobados por \"U.L.\".",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -14.89102143542749,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA59",
+      "entityType": "DBText",
+      "text": "-Los interruptores generales deberan tener, minimo, una capacidad de interrupcion de la corriente de",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -15.265127813587412,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5A",
+      "entityType": "DBText",
+      "text": " cortocircuito (en 220V) de 10 kA; los de los circuitos deribados podran ser para 5 kA minimo.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -15.455184421287584,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5B",
+      "entityType": "DBText",
+      "text": "-Todos los equipos de alumbrado fluorescentes a utilizarse, seran de \"alto factor de potencia\".",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -15.982923683369279,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5C",
+      "entityType": "DBText",
+      "text": "-Las caracteristicas de las \"salidas electricas\" de los equipos especiales (p. ej.: las bombas de agua),",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -16.186133272965037,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5D",
+      "entityType": "DBText",
+      "text": " deberan ser consultadas con el \"equipador-proveedor\" carrespondiente.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -16.370502233125364,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5E",
+      "entityType": "DBText",
+      "text": "-El alambrado, coneptores, accesorios y equipos necesarios para el correcto funcionamiento del",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -16.56401265405674,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA5F",
+      "entityType": "DBText",
+      "text": " sistema de Telefonos Externos, seran suministrtrados e instalados por el \"equipador-proveedor\"",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -16.75491378177844,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA60",
+      "entityType": "DBText",
+      "text": "-En la ejecucion de obras de este proyecto, deberan aplicarce, en lo que corresponda, lo que ordene el Codigo ",
+      "position": {
+        "x": 205.93220375394827,
+        "y": -17.46838452369599,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA61",
+      "entityType": "DBText",
+      "text": "Nacional de Electricidad, el Reglamento Nacional de construcciones, y la ley de Concesiones Electricas y su ",
+      "position": {
+        "x": 206.04918913910893,
+        "y": -17.643332066030155,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA62",
+      "entityType": "DBText",
+      "text": "  -Circuitos de 220V, sera de 15mm",
+      "position": {
+        "x": 205.75543155594875,
+        "y": -18.679881416153307,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA63",
+      "entityType": "DBText",
+      "text": "-Las curvas de hasta  20mm ",
+      "position": {
+        "x": 205.92439017435623,
+        "y": -19.03889938050196,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA64",
+      "entityType": "DBText",
+      "text": "-Todas las tuberias seran de PVC-SAP",
+      "position": {
+        "x": 205.932203753941,
+        "y": -18.29736662686679,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA65",
+      "entityType": "DBText",
+      "text": "-El diametro minimo para las tuberias de:",
+      "position": {
+        "x": 205.932203753941,
+        "y": -18.490973704003864,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA66",
+      "entityType": "DBText",
+      "text": "  -Sistema de telafonos Externos, sera de 20mm",
+      "position": {
+        "x": 205.75543155594875,
+        "y": -18.854691033340032,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA67",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -18.061464857582564,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA68",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -17.196467050298395,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA69",
+      "entityType": "DBText",
+      "text": "∅",
+      "position": {
+        "x": 208.49385180594487,
+        "y": -18.68909534304811,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA6B",
+      "entityType": "DBText",
+      "text": "TUBERIAS",
+      "position": {
+        "x": 206.1393007775792,
+        "y": -18.061464857582564,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA6C",
+      "entityType": "DBText",
+      "text": " la fabrica.",
+      "position": {
+        "x": 205.95260133538483,
+        "y": -19.35562265270346,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA6D",
+      "entityType": "DBText",
+      "text": " bricante de la tuberia.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -20.10705448582678,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA6F",
+      "entityType": "DBText",
+      "text": "CODIGOS Y REGLAMENTOS",
+      "position": {
+        "x": 206.19058566569817,
+        "y": -17.196467050298395,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA70",
+      "entityType": "DBText",
+      "text": "Reglamento.",
+      "position": {
+        "x": 206.05630950136634,
+        "y": -17.810814002502298,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA71",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -11.616424181690832,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA72",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -13.416156667398809,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA73",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.9393466110874,
+        "y": -15.699301425040119,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA75",
+      "entityType": "DBText",
+      "text": " El calibre minimo sera de 2.5mm2.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -10.190197305058518,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA76",
+      "entityType": "DBText",
+      "text": " de tipo \"cableado\".",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -10.562229410051259,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA77",
+      "entityType": "DBText",
+      "text": " dentro de las tuberias.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -11.343462071121735,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA78",
+      "entityType": "DBText",
+      "text": " proteccion.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -12.585010643346948,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA79",
+      "entityType": "DBText",
+      "text": " al duco.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -14.242316697526462,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA7B",
+      "entityType": "DBText",
+      "text": "EQUIPOS",
+      "position": {
+        "x": 206.18471979742986,
+        "y": -15.705184285534472,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA7C",
+      "entityType": "DBText",
+      "text": " correspondiente.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -16.96107869923003,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA7D",
+      "entityType": "DBText",
+      "text": " los de los alimentadores llevaran aislamiento THW.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -10.950041013708756,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA7E",
+      "entityType": "DBText",
+      "text": "que indique el \"directorio de circuitos\" que corresponda.",
+      "position": {
+        "x": 206.0495898798859,
+        "y": -14.675396817776004,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA7F",
+      "entityType": "DBText",
+      "text": " Tendran la capacidad nominal indicada en los planos.",
+      "position": {
+        "x": 205.96077518251928,
+        "y": -15.093811395114074,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA80",
+      "entityType": "DBText",
+      "text": "∅",
+      "position": {
+        "x": 212.08555781749834,
+        "y": -11.898692150032446,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA81",
+      "entityType": "DBText",
+      "text": ".",
+      "position": {
+        "x": 212.2212721032143,
+        "y": -11.898692150032446,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA82",
+      "entityType": "DBText",
+      "text": "% I.A.C.S, unipolares.",
+      "position": {
+        "x": 211.55480229063193,
+        "y": -10.035557475887913,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA85",
+      "entityType": "DBText",
+      "text": "ESPECIFICACIONES    TECNICAS",
+      "position": {
+        "x": 206.964972032542,
+        "y": -9.255587504114942,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8A",
+      "entityType": "DBText",
+      "text": "-Todas las cajas de paso de fabricacion a la medida, deberan de ser hechas en plancha de fierro",
+      "position": {
+        "x": 205.9540626628554,
+        "y": -22.039665348981146,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8B",
+      "entityType": "DBText",
+      "text": " galvanizado de, minimo, 1.59mm de espesor (16 MSG) y deberan llevar tapa ciega del mismo",
+      "position": {
+        "x": 205.98263409143368,
+        "y": -22.192684710506683,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8C",
+      "entityType": "DBText",
+      "text": " material.",
+      "position": {
+        "x": 205.98263409143368,
+        "y": -22.38718015591587,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8D",
+      "entityType": "DBText",
+      "text": "-Todas las cajas de fabricacion estandar (estampadas), seran de plancha de fierro galvanizado del tipo \"pesado\".",
+      "position": {
+        "x": 205.9540626628554,
+        "y": -21.08531224941595,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8E",
+      "entityType": "DBText",
+      "text": "-Todas las cajas para tomacorrientes o interruptores empotrados, que reciban mas de dos tubos, o",
+      "position": {
+        "x": 205.9540626628554,
+        "y": -21.28895483724665,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA8F",
+      "entityType": "DBText",
+      "text": " para dos interruptores de conmutacion,o para tres interruptores simples (tres golpes), deberan ser",
+      "position": {
+        "x": 205.98263409143368,
+        "y": -21.449254230149563,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA90",
+      "entityType": "DBText",
+      "text": " cuadradas de 100x100x40mm y llevaran \"tapa de un gang\".",
+      "position": {
+        "x": 205.98263409143368,
+        "y": -21.636433550941206,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA91",
+      "entityType": "DBText",
+      "text": "-Todas las cajas de paso deberan llevar tapa ciega de plancha de fierro galvanizado de tipo pesado.",
+      "position": {
+        "x": 205.9540626628554,
+        "y": -21.83804938208459,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA92",
+      "entityType": "DBText",
+      "text": "*",
+      "position": {
+        "x": 205.96120552000178,
+        "y": -20.862014459415946,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA94",
+      "entityType": "DBText",
+      "text": "CAJAS",
+      "position": {
+        "x": 206.13308201361036,
+        "y": -20.862014459415946,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EA99",
+      "entityType": "DBText",
+      "text": "POZO DE TIERRA",
+      "position": {
+        "x": 198.94317624136525,
+        "y": -4.2925200277164315,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "ALUM"
+    },
+    {
+      "handle": "1EA9A",
+      "entityType": "DBText",
+      "text": "ESC. 1/25",
+      "position": {
+        "x": 198.95440397573762,
+        "y": -4.49536188672182,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EA9C",
+      "entityType": "DBText",
+      "text": "TUBO DE PVC-P",
+      "position": {
+        "x": 204.73538360755475,
+        "y": -0.6350459617405733,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD2",
+      "entityType": "DBText",
+      "text": "CONDUCTOR DE",
+      "position": {
+        "x": 204.66018191404015,
+        "y": -2.188909693096562,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD3",
+      "entityType": "DBText",
+      "text": "PUESTA A TIERRA",
+      "position": {
+        "x": 204.65956151513063,
+        "y": -2.343195405094562,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD4",
+      "entityType": "DBText",
+      "text": "DE COBRE O BRONCE",
+      "position": {
+        "x": 204.63156026540645,
+        "y": -2.74524091261436,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD5",
+      "entityType": "DBText",
+      "text": "CONECTOR DE PRESION",
+      "position": {
+        "x": 204.64931624571676,
+        "y": -2.5909552006163636,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD7",
+      "entityType": "DBText",
+      "text": "A",
+      "position": {
+        "x": 204.38023968774738,
+        "y": -5.299955122669939,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAD8",
+      "entityType": "DBText",
+      "text": "CONDUCTOR DESNUDO",
+      "position": {
+        "x": 204.63609608126367,
+        "y": -5.31471550169341,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EADB",
+      "entityType": "DBText",
+      "text": "Y COMPACTADA",
+      "position": {
+        "x": 204.71682398880708,
+        "y": -7.017620935973536,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EADC",
+      "entityType": "DBText",
+      "text": "TIERRA CERNIDA",
+      "position": {
+        "x": 204.71685163538692,
+        "y": -6.857078902246382,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EADE",
+      "entityType": "DBText",
+      "text": "C",
+      "position": {
+        "x": 204.38010957670136,
+        "y": -5.883611376052169,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EADF",
+      "entityType": "DBText",
+      "text": "ELECTRODO DE COBRE",
+      "position": {
+        "x": 204.635968351755,
+        "y": -5.884542264659796,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAE1",
+      "entityType": "DBText",
+      "text": "B",
+      "position": {
+        "x": 204.38017316480196,
+        "y": -5.598208322636889,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EAE2",
+      "entityType": "DBText",
+      "text": "CONECTOR DE BRONCE",
+      "position": {
+        "x": 204.63603221650934,
+        "y": -5.597532719592731,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EC9E",
+      "entityType": "DBText",
+      "text": "C",
+      "position": {
+        "x": 200.914840006162,
+        "y": -1.2446069721892883,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1ECCC",
+      "entityType": "DBText",
+      "text": "DE 0.40x0.40",
+      "position": {
+        "x": 204.92815562306913,
+        "y": -0.29964259181890895,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1ECCD",
+      "entityType": "DBText",
+      "text": "TAPA DE CONCRETO ARMADO",
+      "position": {
+        "x": 204.03343493232256,
+        "y": -0.14535687982079537,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1ECFA",
+      "entityType": "DBText",
+      "text": "B",
+      "position": {
+        "x": 200.9118025554142,
+        "y": -0.3060876727600004,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1EDE3",
+      "entityType": "DBText",
+      "text": "DETALLE DE ACOMETIDA",
+      "position": {
+        "x": 195.06529239260112,
+        "y": -25.000220877670852,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTO06"
+    },
+    {
+      "handle": "1EDE4",
+      "entityType": "DBText",
+      "text": "AEREA DE TELEFONO",
+      "position": {
+        "x": 195.34909971298316,
+        "y": -25.320002383377965,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTO06"
+    },
+    {
+      "handle": "1EDFC",
+      "entityType": "DBText",
+      "text": "20 mm ø P",
+      "position": {
+        "x": 196.9327674037106,
+        "y": -23.653599697094915,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "04"
+    },
+    {
+      "handle": "1EE12",
+      "entityType": "DBText",
+      "text": "CONDUCTOR TW)",
+      "position": {
+        "x": 201.4397990162636,
+        "y": -24.136483007275366,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE13",
+      "entityType": "DBText",
+      "text": "(",
+      "position": {
+        "x": 201.31979348443772,
+        "y": -24.148600328787587,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE1C",
+      "entityType": "DBText",
+      "text": "SECCION DE VEREDA",
+      "position": {
+        "x": 200.7296163139711,
+        "y": -23.902580735728613,
+        "z": 0
+      },
+      "height": 0.2,
+      "layer": "TEXTO06"
+    },
+    {
+      "handle": "1EE1D",
+      "entityType": "DBText",
+      "text": "TUBERIA PVC-P",
+      "position": {
+        "x": 202.74275564530606,
+        "y": -22.093741804452158,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE1E",
+      "entityType": "DBText",
+      "text": "UBICACION DE",
+      "position": {
+        "x": 202.85859243362418,
+        "y": -21.93542841676149,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE25",
+      "entityType": "DBText",
+      "text": "VEREDA",
+      "position": {
+        "x": 200.7573944493072,
+        "y": -22.091441796232097,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE26",
+      "entityType": "DBText",
+      "text": "NIVEL DE",
+      "position": {
+        "x": 200.67418362152446,
+        "y": -21.933094131003294,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE31",
+      "entityType": "DBText",
+      "text": "COMPACTADO",
+      "position": {
+        "x": 204.42055636970534,
+        "y": -23.263039890254767,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE32",
+      "entityType": "DBText",
+      "text": "MATERIAL",
+      "position": {
+        "x": 204.64496458498095,
+        "y": -23.10474519940309,
+        "z": 0
+      },
+      "height": 0.095,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1EE3A",
+      "entityType": "DBText",
+      "text": "ESC. 1/10",
+      "position": {
+        "x": 204.01340374689136,
+        "y": -23.57313105999631,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F180",
+      "entityType": "DBText",
+      "text": "A",
+      "position": {
+        "x": 201.00483432994392,
+        "y": 0.6556558289668581,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F2CB",
+      "entityType": "DBText",
+      "text": "SANIK GEL, SULFATO DE ",
+      "position": {
+        "x": 204.30655140725835,
+        "y": -3.2573917368533323,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F2CC",
+      "entityType": "DBText",
+      "text": "MAGNESIO O SUSTANCIA SIMILAR",
+      "position": {
+        "x": 204.29881606058237,
+        "y": -3.4116774488512185,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F2CD",
+      "entityType": "DBText",
+      "text": "VARILLA DE COBRE DE 16mm.%%C x",
+      "position": {
+        "x": 204.27773372709672,
+        "y": -4.173652901168406,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F2CE",
+      "entityType": "DBText",
+      "text": "2.50m. DE LONGITUD",
+      "position": {
+        "x": 204.2777071579043,
+        "y": -4.327938613166349,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXT"
+    },
+    {
+      "handle": "1F2D1",
+      "entityType": "DBText",
+      "text": "C2",
+      "position": {
+        "x": 178.2739919308224,
+        "y": -8.743311064452651,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1F2E5",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.50579575843412,
+        "y": -6.243305668232683,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2EE",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.506835145042,
+        "y": -5.577619028593155,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2F0",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.4944890430391,
+        "y": -6.858170223010095,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2F6",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.4944890430391,
+        "y": -7.6647415390878555,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2F7",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.4944890430391,
+        "y": -7.951452622789489,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2FA",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 180.62132146526855,
+        "y": -8.465028478041773,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F2FB",
+      "entityType": "DBText",
+      "text": "C1",
+      "position": {
+        "x": 178.69551890852637,
+        "y": -9.366402289267828,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1F301",
+      "entityType": "DBText",
+      "text": "C4",
+      "position": {
+        "x": 178.85535915925573,
+        "y": -8.602577956834143,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "1F31A",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 181.1481838947434,
+        "y": -13.957127536255246,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "1F32B",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.49140885098282,
+        "y": -2.9989991525613675,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F33C",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 183.1119213768003,
+        "y": -4.7987364489811455,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "1F359",
+      "entityType": "DBText",
+      "text": "C5",
+      "position": {
+        "x": 178.9692422352108,
+        "y": -8.943864392644315,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "215EB",
+      "entityType": "DBText",
+      "text": "CAPAC. 90Lts.",
+      "position": {
+        "x": 178.05190349072748,
+        "y": -3.998035521357391,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "215EC",
+      "entityType": "DBText",
+      "text": "CALENTADOR ",
+      "position": {
+        "x": 177.92121962642554,
+        "y": -3.998035521357391,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "215FF",
+      "entityType": "DBText",
+      "text": "MONTANTE INTERCOMUNICADOR",
+      "position": {
+        "x": 184.2949164376403,
+        "y": -10.037180334623526,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21600",
+      "entityType": "DBText",
+      "text": "SUBE TUB.20mm PP",
+      "position": {
+        "x": 184.4439808576566,
+        "y": -9.374830714808168,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21613",
+      "entityType": "DBText",
+      "text": "MONTANTE TELEFONICO",
+      "position": {
+        "x": 184.30384024920903,
+        "y": -11.934856308912554,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21614",
+      "entityType": "DBText",
+      "text": "SUBE TUB.20mm PP",
+      "position": {
+        "x": 184.45194858468346,
+        "y": -11.92417470085375,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21637",
+      "entityType": "DBText",
+      "text": "ELECTROBOMBA",
+      "position": {
+        "x": 178.9987689613547,
+        "y": -14.759876045739038,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21659",
+      "entityType": "DBText",
+      "text": "MONTANTE DE TELEVISON",
+      "position": {
+        "x": 184.29758485512804,
+        "y": -7.269238702225588,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2165A",
+      "entityType": "DBText",
+      "text": "SUBE TUB.20mm PP",
+      "position": {
+        "x": 184.44569319060247,
+        "y": -7.258557094166785,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2168E",
+      "entityType": "DBText",
+      "text": "T.B.",
+      "position": {
+        "x": 178.3784259204549,
+        "y": -14.877931509044124,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21699",
+      "entityType": "DBText",
+      "text": "2",
+      "position": {
+        "x": 178.3470685133913,
+        "y": -14.478863154987565,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "216A1",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.49994854204562,
+        "y": -14.339153832860134,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "216C4",
+      "entityType": "DBText",
+      "text": "C3",
+      "position": {
+        "x": 178.3715707759043,
+        "y": -9.890237199148263,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "216DE",
+      "entityType": "DBText",
+      "text": "SUBE C8,C9,C10,C11,C12 TUB.35mm PP",
+      "position": {
+        "x": 184.80738245766585,
+        "y": -8.006188940404709,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "216E0",
+      "entityType": "DBText",
+      "text": "LLEGA MONTANTE ELECTRICO C6,C7",
+      "position": {
+        "x": 184.6703492746539,
+        "y": -7.994510015917355,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "216F3",
+      "entityType": "DBText",
+      "text": "S(T')",
+      "position": {
+        "x": 190.37698172320543,
+        "y": -0.05328903480406222,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21702",
+      "entityType": "DBText",
+      "text": "2S3(L',M')",
+      "position": {
+        "x": 187.9711039784883,
+        "y": -4.901685564208605,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2173B",
+      "entityType": "DBText",
+      "text": "S(H')",
+      "position": {
+        "x": 187.91098060116565,
+        "y": -11.324915759531287,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2176D",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 183.84804949102067,
+        "y": -16.075406310454227,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21776",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 185.27704598243795,
+        "y": -11.279555024684058,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21780",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 185.27704598243795,
+        "y": -16.420947166349023,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "217B5",
+      "entityType": "DBText",
+      "text": "SUBE TUB.20mm PP",
+      "position": {
+        "x": 191.22825013000136,
+        "y": -7.276561877594129,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217B6",
+      "entityType": "DBText",
+      "text": "MONTANTE DE TELEVISON",
+      "position": {
+        "x": 191.08014179452692,
+        "y": -7.287243485652932,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217B8",
+      "entityType": "DBText",
+      "text": "LLEGA Y SUBE TUB.20mm PP",
+      "position": {
+        "x": 191.2265377970555,
+        "y": -10.040218957856666,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217B9",
+      "entityType": "DBText",
+      "text": "MONTANTE INTERCOMUNICADOR",
+      "position": {
+        "x": 191.07747337703918,
+        "y": -10.05518511805087,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217BF",
+      "entityType": "DBText",
+      "text": "TUB.20mm PP",
+      "position": {
+        "x": 191.24303496491368,
+        "y": -11.906260145887003,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217C0",
+      "entityType": "DBText",
+      "text": "MONTANTE TELEFONICO",
+      "position": {
+        "x": 191.09492662943924,
+        "y": -11.916941753945807,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "217F5",
+      "entityType": "DBText",
+      "text": "VT",
+      "position": {
+        "x": 185.44121089553462,
+        "y": -1.6893079279130623,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "03"
+    },
+    {
+      "handle": "21811",
+      "entityType": "DBText",
+      "text": "LLEGA MONTANTE ELECTRICO C8,C9",
+      "position": {
+        "x": 191.53500957312525,
+        "y": -7.99451001592229,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21813",
+      "entityType": "DBText",
+      "text": "C10,C11,C12 TUB.35mm PP",
+      "position": {
+        "x": 191.67204275613722,
+        "y": -8.006188940409643,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2181B",
+      "entityType": "DBText",
+      "text": "SUBE S(Q)",
+      "position": {
+        "x": 184.22799177098452,
+        "y": -13.959590797108927,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21828",
+      "entityType": "DBText",
+      "text": "D",
+      "position": {
+        "x": 181.4155908203095,
+        "y": -14.934862391093986,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21829",
+      "entityType": "DBText",
+      "text": "A",
+      "position": {
+        "x": 182.0790862342248,
+        "y": -16.631128679665295,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2182A",
+      "entityType": "DBText",
+      "text": "B",
+      "position": {
+        "x": 179.6620672745641,
+        "y": -15.305674002023181,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2182B",
+      "entityType": "DBText",
+      "text": "C",
+      "position": {
+        "x": 178.85805495498587,
+        "y": -17.10637732739459,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2182C",
+      "entityType": "DBText",
+      "text": "C",
+      "position": {
+        "x": 179.94057650348262,
+        "y": -16.986755411594956,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2182D",
+      "entityType": "DBText",
+      "text": "C",
+      "position": {
+        "x": 180.79158947007426,
+        "y": -16.71002484250471,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2182E",
+      "entityType": "DBText",
+      "text": "E",
+      "position": {
+        "x": 182.18930224941693,
+        "y": -12.013242652493616,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21830",
+      "entityType": "DBText",
+      "text": "F",
+      "position": {
+        "x": 179.65578460323758,
+        "y": -12.011494837155709,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21831",
+      "entityType": "DBText",
+      "text": "Q",
+      "position": {
+        "x": 183.6024197301465,
+        "y": -15.449460741804387,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21832",
+      "entityType": "DBText",
+      "text": "Q",
+      "position": {
+        "x": 183.57548595087945,
+        "y": -14.631146010886056,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21833",
+      "entityType": "DBText",
+      "text": "Q",
+      "position": {
+        "x": 183.7681219406805,
+        "y": -13.506424323051618,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21834",
+      "entityType": "DBText",
+      "text": "G",
+      "position": {
+        "x": 182.64351871498633,
+        "y": -9.218777688866282,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21835",
+      "entityType": "DBText",
+      "text": "H",
+      "position": {
+        "x": 179.5750351967008,
+        "y": -8.976809521815767,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21836",
+      "entityType": "DBText",
+      "text": "I",
+      "position": {
+        "x": 179.6255036179383,
+        "y": -6.294994349051506,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21837",
+      "entityType": "DBText",
+      "text": "J",
+      "position": {
+        "x": 181.08908951990537,
+        "y": -6.597454791033072,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21850",
+      "entityType": "DBText",
+      "text": "L",
+      "position": {
+        "x": 182.3104265278301,
+        "y": -6.688192923627525,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21851",
+      "entityType": "DBText",
+      "text": "L",
+      "position": {
+        "x": 182.21958323471625,
+        "y": -6.002616108337405,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21852",
+      "entityType": "DBText",
+      "text": "L",
+      "position": {
+        "x": 182.24422786984192,
+        "y": -5.160641428706071,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21853",
+      "entityType": "DBText",
+      "text": "L",
+      "position": {
+        "x": 181.8763974981989,
+        "y": -4.812938742946044,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21854",
+      "entityType": "DBText",
+      "text": "M",
+      "position": {
+        "x": 181.85621073669273,
+        "y": -4.161719570010177,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21855",
+      "entityType": "DBText",
+      "text": "M",
+      "position": {
+        "x": 181.84611685011566,
+        "y": -3.486224769452746,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21856",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 183.35007762395912,
+        "y": -3.9903253195539596,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21857",
+      "entityType": "DBText",
+      "text": "R",
+      "position": {
+        "x": 183.71345079641458,
+        "y": -2.5788436300427966,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21858",
+      "entityType": "DBText",
+      "text": "S",
+      "position": {
+        "x": 182.9366258819305,
+        "y": -2.4780165571528245,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21859",
+      "entityType": "DBText",
+      "text": "N",
+      "position": {
+        "x": 180.1399482102646,
+        "y": -1.1796178308160838,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2185A",
+      "entityType": "DBText",
+      "text": "N'",
+      "position": {
+        "x": 178.56127858012178,
+        "y": 0.4589182023277658,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2185B",
+      "entityType": "DBText",
+      "text": "N''",
+      "position": {
+        "x": 180.82732213036257,
+        "y": 0.4549410957054416,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2185C",
+      "entityType": "DBText",
+      "text": "O",
+      "position": {
+        "x": 183.0549886685397,
+        "y": -0.8751459850182925,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2185D",
+      "entityType": "DBText",
+      "text": "O'",
+      "position": {
+        "x": 183.58011403079894,
+        "y": -1.6437168280045418,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2185F",
+      "entityType": "DBText",
+      "text": "P'",
+      "position": {
+        "x": 183.60575176145875,
+        "y": -4.346510183989465,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21863",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 190.4993530723744,
+        "y": -11.299740441801163,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21872",
+      "entityType": "DBText",
+      "text": "LLEGA S(Q)",
+      "position": {
+        "x": 191.0105487103834,
+        "y": -14.162050673935575,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21874",
+      "entityType": "DBText",
+      "text": "Q",
+      "position": {
+        "x": 190.57973275218103,
+        "y": -12.339434801800053,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2187E",
+      "entityType": "DBText",
+      "text": "S3(c)",
+      "position": {
+        "x": 195.66348105970775,
+        "y": -9.453541875333734,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218A5",
+      "entityType": "DBText",
+      "text": "A'",
+      "position": {
+        "x": 186.44295737109928,
+        "y": -7.456794661106811,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218A6",
+      "entityType": "DBText",
+      "text": "B'",
+      "position": {
+        "x": 185.345067385407,
+        "y": -5.54695302730397,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218A7",
+      "entityType": "DBText",
+      "text": "L'",
+      "position": {
+        "x": 188.9964763099839,
+        "y": -6.323211082100953,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218A8",
+      "entityType": "DBText",
+      "text": "L' ",
+      "position": {
+        "x": 188.9224611069999,
+        "y": -5.670168532340084,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218A9",
+      "entityType": "DBText",
+      "text": "L'",
+      "position": {
+        "x": 188.6880801367078,
+        "y": -5.029447533082844,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218AA",
+      "entityType": "DBText",
+      "text": "M'",
+      "position": {
+        "x": 188.2563259662237,
+        "y": -4.234787455724642,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218AB",
+      "entityType": "DBText",
+      "text": "M'",
+      "position": {
+        "x": 188.5153786708438,
+        "y": -3.5940662699327097,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218AC",
+      "entityType": "DBText",
+      "text": "M'",
+      "position": {
+        "x": 188.2439902676677,
+        "y": -2.8794157811190635,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218AD",
+      "entityType": "DBText",
+      "text": "F'",
+      "position": {
+        "x": 189.83531359105615,
+        "y": -3.7049604109999157,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218AF",
+      "entityType": "DBText",
+      "text": "X",
+      "position": {
+        "x": 187.20588294639424,
+        "y": -0.9099511241503819,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B0",
+      "entityType": "DBText",
+      "text": "X'",
+      "position": {
+        "x": 185.30616378694944,
+        "y": -0.7568721202961912,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B2",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 189.66071528518285,
+        "y": -1.057809730193724,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B3",
+      "entityType": "DBText",
+      "text": "W",
+      "position": {
+        "x": 189.08093104594673,
+        "y": -8.944502269032853,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B4",
+      "entityType": "DBText",
+      "text": "U",
+      "position": {
+        "x": 185.33504452559035,
+        "y": -9.12850742982003,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B5",
+      "entityType": "DBText",
+      "text": "E'",
+      "position": {
+        "x": 186.50274037273408,
+        "y": -11.42113597214069,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B6",
+      "entityType": "DBText",
+      "text": "D'",
+      "position": {
+        "x": 187.34641517500975,
+        "y": -10.305775404102036,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B7",
+      "entityType": "DBText",
+      "text": "H'",
+      "position": {
+        "x": 188.5134821680506,
+        "y": -12.500408103949042,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B8",
+      "entityType": "DBText",
+      "text": "I'",
+      "position": {
+        "x": 186.42872516975,
+        "y": -14.336320434730197,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218B9",
+      "entityType": "DBText",
+      "text": "C'",
+      "position": {
+        "x": 185.58497332707262,
+        "y": -16.851638460908784,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218BA",
+      "entityType": "DBText",
+      "text": "C'",
+      "position": {
+        "x": 186.72478530725414,
+        "y": -16.735215609430895,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218BB",
+      "entityType": "DBText",
+      "text": "C'",
+      "position": {
+        "x": 187.96342430000485,
+        "y": -16.465968162916177,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218BC",
+      "entityType": "DBText",
+      "text": "T'",
+      "position": {
+        "x": 190.40297491503333,
+        "y": -0.4021493522628816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218BD",
+      "entityType": "DBText",
+      "text": "V",
+      "position": {
+        "x": 185.28687761820456,
+        "y": -11.548237584336874,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218BF",
+      "entityType": "DBText",
+      "text": "N'",
+      "position": {
+        "x": 185.1472389436127,
+        "y": -13.480588332551235,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C0",
+      "entityType": "DBText",
+      "text": "S3(Q)",
+      "position": {
+        "x": 190.84101616977918,
+        "y": -10.680526451979743,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C1",
+      "entityType": "DBText",
+      "text": "a",
+      "position": {
+        "x": 192.2076557301423,
+        "y": -8.198579830676216,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C2",
+      "entityType": "DBText",
+      "text": "b",
+      "position": {
+        "x": 193.3158627676139,
+        "y": -8.45604906482652,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C3",
+      "entityType": "DBText",
+      "text": "c",
+      "position": {
+        "x": 196.2820642887939,
+        "y": -8.213364977545385,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C4",
+      "entityType": "DBText",
+      "text": "d",
+      "position": {
+        "x": 196.25782317929998,
+        "y": -10.349417071936816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C5",
+      "entityType": "DBText",
+      "text": "e",
+      "position": {
+        "x": 193.87042493600734,
+        "y": -10.617253499993158,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C6",
+      "entityType": "DBText",
+      "text": "f",
+      "position": {
+        "x": 193.462878827849,
+        "y": -11.871808384896415,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C7",
+      "entityType": "DBText",
+      "text": "j",
+      "position": {
+        "x": 195.37768132183487,
+        "y": -12.472327609223843,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C8",
+      "entityType": "DBText",
+      "text": "g",
+      "position": {
+        "x": 193.05285822867063,
+        "y": -14.186617254887896,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218C9",
+      "entityType": "DBText",
+      "text": "h",
+      "position": {
+        "x": 192.5050346476379,
+        "y": -16.75040538567342,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218CA",
+      "entityType": "DBText",
+      "text": "h",
+      "position": {
+        "x": 193.5613941222162,
+        "y": -16.731498452667825,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218CB",
+      "entityType": "DBText",
+      "text": "h",
+      "position": {
+        "x": 194.50677186202142,
+        "y": -16.77261485800329,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "218DD",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 197.387384604455,
+        "y": -9.025166222486334,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "218DF",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 197.42488404200628,
+        "y": -8.240973931847325,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "218FB",
+      "entityType": "DBText",
+      "text": "SUBE S(Z)",
+      "position": {
+        "x": 184.0841147881892,
+        "y": -16.23467405336247,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21909",
+      "entityType": "DBText",
+      "text": "Z",
+      "position": {
+        "x": 202.93633302377293,
+        "y": -16.081980887180265,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "2190B",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 194.4101069324146,
+        "y": -7.200556723991273,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21911",
+      "entityType": "DBText",
+      "text": "r",
+      "position": {
+        "x": 193.3420883932775,
+        "y": -6.1377630012397075,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21912",
+      "entityType": "DBText",
+      "text": "SUBE TUB.15mm PL ",
+      "position": {
+        "x": 191.4219859905179,
+        "y": -0.9276150819839408,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21913",
+      "entityType": "DBText",
+      "text": "A TANQUE ELEV.",
+      "position": {
+        "x": 191.65352577037052,
+        "y": -0.9265014731163674,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21914",
+      "entityType": "DBText",
+      "text": "CONTROL DE NIVELES",
+      "position": {
+        "x": 191.5585818169651,
+        "y": -0.9421675273954673,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2191A",
+      "entityType": "DBText",
+      "text": "PROY.DE TANQUE",
+      "position": {
+        "x": 192.81580810689232,
+        "y": -1.9569829545729966,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "01"
+    },
+    {
+      "handle": "2191B",
+      "entityType": "DBText",
+      "text": "ELEVADO",
+      "position": {
+        "x": 192.81580810689232,
+        "y": -2.077172644037919,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "01"
+    },
+    {
+      "handle": "2191E",
+      "entityType": "DBText",
+      "text": "A TANQUE ELEV.",
+      "position": {
+        "x": 184.77113583831837,
+        "y": -0.9265014731163674,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2191F",
+      "entityType": "DBText",
+      "text": "CONTROL DE NIVELES",
+      "position": {
+        "x": 184.67619188491295,
+        "y": -0.9421675273954673,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21920",
+      "entityType": "DBText",
+      "text": "SUBE TUB.15mm PL ",
+      "position": {
+        "x": 184.53959605846575,
+        "y": -0.9276150819839408,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21923",
+      "entityType": "DBText",
+      "text": "SUBE TUB.15mm PL ",
+      "position": {
+        "x": 177.75703911906686,
+        "y": -0.9242144021170553,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21924",
+      "entityType": "DBText",
+      "text": "CONTROL DE NIVELES",
+      "position": {
+        "x": 177.89363494551407,
+        "y": -0.9387668475285817,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21925",
+      "entityType": "DBText",
+      "text": "A TANQUE ELEV.",
+      "position": {
+        "x": 177.98857889891949,
+        "y": -0.9231007932494819,
+        "z": 0
+      },
+      "height": 0.07,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21933",
+      "entityType": "DBText",
+      "text": "MONTANTE DE TELEVISON",
+      "position": {
+        "x": 197.96253172657902,
+        "y": -7.287243485652932,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21935",
+      "entityType": "DBText",
+      "text": "SUBE TUB.20mm PP",
+      "position": {
+        "x": 198.11064006205345,
+        "y": -7.276561877594129,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21945",
+      "entityType": "DBText",
+      "text": "LLEGA TUB.20mm PP",
+      "position": {
+        "x": 198.21019504326424,
+        "y": -10.087049207049166,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21947",
+      "entityType": "DBText",
+      "text": "MONTANTE INTERCOMUNICADOR",
+      "position": {
+        "x": 198.06113062324792,
+        "y": -10.10201536724337,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "2195A",
+      "entityType": "DBText",
+      "text": "16049.35",
+      "position": {
+        "x": 190.25499841617233,
+        "y": -23.676764263846795,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "04"
+    },
+    {
+      "handle": "2195B",
+      "entityType": "DBText",
+      "text": "W",
+      "position": {
+        "x": 189.24048257419847,
+        "y": -23.681733163185758,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "04"
+    },
+    {
+      "handle": "2195C",
+      "entityType": "DBText",
+      "text": "TOTAL",
+      "position": {
+        "x": 187.49032771856713,
+        "y": -23.676764263846795,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "04"
+    },
+    {
+      "handle": "2195D",
+      "entityType": "DBText",
+      "text": "11317.09",
+      "position": {
+        "x": 192.3509543353722,
+        "y": -23.676764263846795,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "04"
+    },
+    {
+      "handle": "2195E",
+      "entityType": "DBText",
+      "text": "W",
+      "position": {
+        "x": 191.4919873918671,
+        "y": -23.681733163185758,
+        "z": 0
+      },
+      "height": 0.11,
+      "layer": "04"
+    },
+    {
+      "handle": "21960",
+      "entityType": "DBText",
+      "text": "ELECTROBOMBA",
+      "position": {
+        "x": 184.8913756146452,
+        "y": -22.18800748372766,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21962",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE",
+      "position": {
+        "x": 184.88405665615545,
+        "y": -23.304646339370617,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21963",
+      "entityType": "DBText",
+      "text": "ALUMBRADO",
+      "position": {
+        "x": 184.88405665615545,
+        "y": -23.038108232109888,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21966",
+      "entityType": "DBText",
+      "text": "DIAGRAMA UNIFILAR T-G.",
+      "position": {
+        "x": 181.79447435403947,
+        "y": -25.633268016464232,
+        "z": 0
+      },
+      "height": 0.28,
+      "layer": "05"
+    },
+    {
+      "handle": "21975",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE",
+      "position": {
+        "x": 184.87572606458946,
+        "y": -21.874856539133972,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21976",
+      "entityType": "DBText",
+      "text": "ALUMBRADO",
+      "position": {
+        "x": 184.87572606458946,
+        "y": -21.608318431873357,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "2197A",
+      "entityType": "DBText",
+      "text": "F.D. (%)",
+      "position": {
+        "x": 191.3223200413617,
+        "y": -20.755740839739932,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "04"
+    },
+    {
+      "handle": "2197E",
+      "entityType": "DBText",
+      "text": "CUADRO DE CARGAS TABLERO GENERAL",
+      "position": {
+        "x": 188.13802577075376,
+        "y": -20.323946855956738,
+        "z": 0
+      },
+      "height": 0.15,
+      "layer": "05"
+    },
+    {
+      "handle": "21985",
+      "entityType": "DBText",
+      "text": "C-5",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -22.748695657804745,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21994",
+      "entityType": "DBText",
+      "text": "VER DETALLE",
+      "position": {
+        "x": 178.81112274326506,
+        "y": -23.67946355336582,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21996",
+      "entityType": "DBText",
+      "text": "AL POZO DE TIERRA",
+      "position": {
+        "x": 178.81112274326506,
+        "y": -23.55256905615883,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21998",
+      "entityType": "DBText",
+      "text": "DE LA RED PUBLICA",
+      "position": {
+        "x": 178.81112274326506,
+        "y": -23.004300116421945,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21999",
+      "entityType": "DBText",
+      "text": "=  11317.09 =",
+      "position": {
+        "x": 191.05428976774854,
+        "y": -24.703111927138984,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "2199A",
+      "entityType": "DBText",
+      "text": "220x.9x1.73",
+      "position": {
+        "x": 191.22116688095915,
+        "y": -24.884828357260567,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "2199B",
+      "entityType": "DBText",
+      "text": "IN",
+      "position": {
+        "x": 190.86074299950812,
+        "y": -24.70311179147472,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "2199E",
+      "entityType": "DBText",
+      "text": "CALCULO DE ALIMENTADOR:",
+      "position": {
+        "x": 190.79860620295327,
+        "y": -24.409239540582597,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "2199F",
+      "entityType": "DBText",
+      "text": "DE TABLA: 46A -----10mm2",
+      "position": {
+        "x": 190.8607632418871,
+        "y": -25.50132556454471,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "219A0",
+      "entityType": "DBText",
+      "text": "ID= 33.04A x 1.25 = 41.30 A",
+      "position": {
+        "x": 190.8439130660809,
+        "y": -25.109543271817127,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "219A1",
+      "entityType": "DBText",
+      "text": "33.04A",
+      "position": {
+        "x": 191.84367496451046,
+        "y": -24.703111927138984,
+        "z": 0
+      },
+      "height": 0.08800000000000001,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "219A2",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.313449652483,
+        "y": -24.101309109889968,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "219AB",
+      "entityType": "DBText",
+      "text": "C-10",
+      "position": {
+        "x": 182.00131580159305,
+        "y": -24.18869565780463,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219AD",
+      "entityType": "DBText",
+      "text": "1000.00",
+      "position": {
+        "x": 190.2757559532871,
+        "y": -22.65541866584181,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219AE",
+      "entityType": "DBText",
+      "text": "CALENTADOR",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -22.65541866584181,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219AF",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.72424733593328,
+        "y": -23.47175758001168,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219B0",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.72424733593328,
+        "y": -23.327390427179704,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219B1",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.72424733593328,
+        "y": -23.183757580011555,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219B2",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW ",
+      "position": {
+        "x": 182.72424733593328,
+        "y": -23.068433636287462,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219CE",
+      "entityType": "DBText",
+      "text": "C-7",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -23.324695657804654,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219D4",
+      "entityType": "DBText",
+      "text": "C-6",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -23.036695657804756,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219D7",
+      "entityType": "DBText",
+      "text": "C-8",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -23.612695657804665,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219DC",
+      "entityType": "DBText",
+      "text": "C-9",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -23.900695657804647,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219E1",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -22.66130910988997,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "219E3",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -22.94930910988998,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "219E5",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -23.525309109890003,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "219E8",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -23.813309109889985,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "219E9",
+      "entityType": "DBText",
+      "text": "DESCRIPCION",
+      "position": {
+        "x": 188.71937901228756,
+        "y": -20.755740839739932,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "04"
+    },
+    {
+      "handle": "219EA",
+      "entityType": "DBText",
+      "text": "P.I. (w)",
+      "position": {
+        "x": 190.34156160421713,
+        "y": -20.755740839739932,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "04"
+    },
+    {
+      "handle": "219EC",
+      "entityType": "DBText",
+      "text": "CIRCUITOS",
+      "position": {
+        "x": 187.52343293039638,
+        "y": -20.755740839739932,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "04"
+    },
+    {
+      "handle": "219ED",
+      "entityType": "DBText",
+      "text": "1000.00",
+      "position": {
+        "x": 190.2757559532871,
+        "y": -22.285418665841807,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219EF",
+      "entityType": "DBText",
+      "text": "300.00",
+      "position": {
+        "x": 190.35013439279777,
+        "y": -21.915418665841802,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F0",
+      "entityType": "DBText",
+      "text": "23.02m2 x 5 w/m2",
+      "position": {
+        "x": 188.72081622605236,
+        "y": -21.545418665841797,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F1",
+      "entityType": "DBText",
+      "text": "6434.25w",
+      "position": {
+        "x": 188.72081622605236,
+        "y": -21.268163457431005,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F3",
+      "entityType": "DBText",
+      "text": "4434.25",
+      "position": {
+        "x": 190.35587881106431,
+        "y": -21.268163457431005,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F4",
+      "entityType": "DBText",
+      "text": "115.10",
+      "position": {
+        "x": 190.35013439279774,
+        "y": -21.545418665841797,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F5",
+      "entityType": "DBText",
+      "text": "ELECTROBOMBA",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -22.285418665841807,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F6",
+      "entityType": "DBText",
+      "text": "TELEF. PORT.",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -21.915418665841802,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F7",
+      "entityType": "DBText",
+      "text": "C-6 C-7",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -21.209435514717374,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F8",
+      "entityType": "DBText",
+      "text": "tomacorriente",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -21.545418665841797,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219F9",
+      "entityType": "DBText",
+      "text": "alumbrado y",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -21.368839912307298,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219FA",
+      "entityType": "DBText",
+      "text": "257.37m2 x 25 w/m2",
+      "position": {
+        "x": 188.72081622605236,
+        "y": -21.045151687076785,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219FB",
+      "entityType": "DBText",
+      "text": "2000.00",
+      "position": {
+        "x": 190.2929047126451,
+        "y": -21.045151687076785,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219FC",
+      "entityType": "DBText",
+      "text": "C-1 C-2  C-4 C-5",
+      "position": {
+        "x": 187.49032771856702,
+        "y": -21.045151687076785,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "219FD",
+      "entityType": "DBText",
+      "text": "3 - 1 x 10mm2 THW  + 1 x 6 mm2 THW/T",
+      "position": {
+        "x": 179.59084635187025,
+        "y": -22.463906341313702,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "219FF",
+      "entityType": "DBText",
+      "text": "%%c 25mm PVC-SAP",
+      "position": {
+        "x": 179.59423519674436,
+        "y": -22.63340604162744,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A0E",
+      "entityType": "DBText",
+      "text": "Wh",
+      "position": {
+        "x": 178.8019778724049,
+        "y": -22.269646853467037,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "02"
+    },
+    {
+      "handle": "21A13",
+      "entityType": "DBText",
+      "text": "25A",
+      "position": {
+        "x": 179.22400038556157,
+        "y": -22.368431484750403,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A15",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.7159167443673,
+        "y": -22.332093932510787,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A16",
+      "entityType": "DBText",
+      "text": "2-1 x 4mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.7159167443673,
+        "y": -22.212979261250524,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A1C",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.7159167443673,
+        "y": -21.89760062694306,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A20",
+      "entityType": "DBText",
+      "text": "%%c 15mm PVC-L",
+      "position": {
+        "x": 182.70146090999083,
+        "y": -22.04196777977492,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A26",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW ",
+      "position": {
+        "x": 182.7159167443673,
+        "y": -21.63864383605093,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A27",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.7159167443673,
+        "y": -21.753967779775024,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A35",
+      "entityType": "DBText",
+      "text": "C-4",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -22.460695657804735,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A36",
+      "entityType": "DBText",
+      "text": "C-3",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -22.172695657804724,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A3F",
+      "entityType": "DBText",
+      "text": "C-2",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -21.884695657804713,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A40",
+      "entityType": "DBText",
+      "text": "C-1",
+      "position": {
+        "x": 182.00131580159302,
+        "y": -21.596695657804702,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A46",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -21.797309109889937,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A48",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -21.50930910989004,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A4A",
+      "entityType": "DBText",
+      "text": "30A",
+      "position": {
+        "x": 182.33080732650478,
+        "y": -22.082231035364202,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A4C",
+      "entityType": "DBText",
+      "text": "1000.00",
+      "position": {
+        "x": 192.37668243381376,
+        "y": -22.65541866584181,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A4D",
+      "entityType": "DBText",
+      "text": "1.00",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -22.65541866584181,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A4E",
+      "entityType": "DBText",
+      "text": "Max. D (w)",
+      "position": {
+        "x": 192.18307020169715,
+        "y": -20.755740839739932,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "04"
+    },
+    {
+      "handle": "21A50",
+      "entityType": "DBText",
+      "text": "500.00",
+      "position": {
+        "x": 192.37668243381376,
+        "y": -22.285418665841807,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A51",
+      "entityType": "DBText",
+      "text": "150.00",
+      "position": {
+        "x": 192.40754003014683,
+        "y": -21.915418665841802,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A52",
+      "entityType": "DBText",
+      "text": "1551.99",
+      "position": {
+        "x": 192.36842116729605,
+        "y": -21.27072652997629,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A53",
+      "entityType": "DBText",
+      "text": "115.10",
+      "position": {
+        "x": 192.42357847035052,
+        "y": -21.545418665841797,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A54",
+      "entityType": "DBText",
+      "text": "2000.00",
+      "position": {
+        "x": 192.37433555060136,
+        "y": -21.049087232050173,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A55",
+      "entityType": "DBText",
+      "text": "0.50",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -22.285418665841807,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A56",
+      "entityType": "DBText",
+      "text": "0.50",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -21.915418665841802,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A57",
+      "entityType": "DBText",
+      "text": "1.00",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -21.049087232050173,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A58",
+      "entityType": "DBText",
+      "text": "0.35",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -21.27072652997629,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A59",
+      "entityType": "DBText",
+      "text": "1.00",
+      "position": {
+        "x": 191.49198739186699,
+        "y": -21.545418665841797,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21A5A",
+      "entityType": "DBText",
+      "text": "CC = 16049.35x 0.3 = 4814.81w",
+      "position": {
+        "x": 187.7785344828745,
+        "y": -24.78688675697969,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A5B",
+      "entityType": "DBText",
+      "text": "CC = P.I. x 0.3",
+      "position": {
+        "x": 187.7785344828745,
+        "y": -24.606561584553297,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A5C",
+      "entityType": "DBText",
+      "text": "CARGA A CONTRATAR",
+      "position": {
+        "x": 187.75427953579546,
+        "y": -24.371794709025913,
+        "z": 0
+      },
+      "height": 0.12,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A5E",
+      "entityType": "DBText",
+      "text": "CC = 4.5Kw",
+      "position": {
+        "x": 187.7785344828745,
+        "y": -24.95546092366316,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A60",
+      "entityType": "DBText",
+      "text": "C-12",
+      "position": {
+        "x": 182.00131580159308,
+        "y": -24.764695657804594,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A61",
+      "entityType": "DBText",
+      "text": "C-11",
+      "position": {
+        "x": 182.00131580159305,
+        "y": -24.476695657804612,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A64",
+      "entityType": "DBText",
+      "text": "TELEFONO PORTERO",
+      "position": {
+        "x": 184.87572606458954,
+        "y": -22.761518629456745,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A65",
+      "entityType": "DBText",
+      "text": "RESERVA",
+      "position": {
+        "x": 184.8842461976499,
+        "y": -24.776318431873165,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A68",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.313449652483,
+        "y": -24.38930910988995,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A70",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW ",
+      "position": {
+        "x": 182.71591674436738,
+        "y": -22.788619851108948,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A71",
+      "entityType": "DBText",
+      "text": "%%c 15mm PVC-L",
+      "position": {
+        "x": 182.72443687742762,
+        "y": -24.921967779774945,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A72",
+      "entityType": "DBText",
+      "text": "%%c 15mm PVC-L",
+      "position": {
+        "x": 182.7014609099909,
+        "y": -22.913699119307466,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A7A",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248303,
+        "y": -24.677309109889933,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A83",
+      "entityType": "DBText",
+      "text": "2-1 x 4mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.7169914049956,
+        "y": -22.490080800240516,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A84",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.721238303595,
+        "y": -22.62643519626189,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A85",
+      "entityType": "DBText",
+      "text": "COCINA ELECTRICA",
+      "position": {
+        "x": 184.8768007252221,
+        "y": -22.469232027263697,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A86",
+      "entityType": "DBText",
+      "text": "30A",
+      "position": {
+        "x": 182.31948362565174,
+        "y": -22.349070771052222,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21A87",
+      "entityType": "DBText",
+      "text": "CALENTADOR ELECTRICO",
+      "position": {
+        "x": 184.89351969508826,
+        "y": -24.195915858556894,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A88",
+      "entityType": "DBText",
+      "text": "2-1 x 4mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.7180608248058,
+        "y": -24.22088763607976,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A89",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.71052404716912,
+        "y": -24.358577054957145,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "UNIFILAR"
+    },
+    {
+      "handle": "21A8B",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW ",
+      "position": {
+        "x": 182.72424733593328,
+        "y": -23.644433636287456,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A8C",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.72424733593326,
+        "y": -23.759757580011605,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A8D",
+      "entityType": "DBText",
+      "text": "2-1 x 2.5mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.72424733593326,
+        "y": -23.903390427179755,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A8E",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.72424733593326,
+        "y": -24.04775758001173,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A8F",
+      "entityType": "DBText",
+      "text": "TOMACORRIENTE",
+      "position": {
+        "x": 184.88405665615542,
+        "y": -23.880646339370667,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21A90",
+      "entityType": "DBText",
+      "text": "ALUMBRADO",
+      "position": {
+        "x": 184.88405665615545,
+        "y": -23.61410823210988,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21AA4",
+      "entityType": "DBText",
+      "text": "LLEGA ",
+      "position": {
+        "x": 191.03413177316696,
+        "y": -16.238074733229354,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AA8",
+      "entityType": "DBText",
+      "text": "SUBE S(Z)",
+      "position": {
+        "x": 197.74906165964026,
+        "y": -16.246557813929655,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AB2",
+      "entityType": "DBText",
+      "text": "SUBE S(Z)",
+      "position": {
+        "x": 204.40663102820452,
+        "y": -17.316685793032907,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AC2",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 187.9347082018879,
+        "y": -13.87167139817728,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AC5",
+      "entityType": "DBText",
+      "text": "D'",
+      "position": {
+        "x": 188.19814775970855,
+        "y": -14.934862391093922,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AC9",
+      "entityType": "DBText",
+      "text": "D",
+      "position": {
+        "x": 195.08053769176084,
+        "y": -14.943345471794196,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21ACB",
+      "entityType": "DBText",
+      "text": "P",
+      "position": {
+        "x": 194.8170981339402,
+        "y": -13.880154478877554,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AE4",
+      "entityType": "DBText",
+      "text": "S(A'')",
+      "position": {
+        "x": 182.73211840029293,
+        "y": -18.925452375176366,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AEA",
+      "entityType": "DBText",
+      "text": "A''",
+      "position": {
+        "x": 183.56663165667376,
+        "y": -17.198659177403954,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AEC",
+      "entityType": "DBText",
+      "text": "A''",
+      "position": {
+        "x": 183.55987007888737,
+        "y": -18.46884640564234,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21AF4",
+      "entityType": "DBText",
+      "text": "S(D')",
+      "position": {
+        "x": 187.93460888716788,
+        "y": -13.596447342696127,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21B22",
+      "entityType": "DBText",
+      "text": "(ver detalle)",
+      "position": {
+        "x": 183.0755629207438,
+        "y": -5.8810847155811805,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21B23",
+      "entityType": "DBText",
+      "text": "POZO DE TIERRA",
+      "position": {
+        "x": 183.0462010803739,
+        "y": -5.7699779404759814,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21B34",
+      "entityType": "DBText",
+      "text": "N.T.+.50",
+      "position": {
+        "x": 183.49785932928273,
+        "y": -16.82452327816368,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21B38",
+      "entityType": "DBText",
+      "text": "N.T.+.50",
+      "position": {
+        "x": 183.49785932928273,
+        "y": -18.076733244935184,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21B49",
+      "entityType": "DBText",
+      "text": "Y SUBE S(Z)",
+      "position": {
+        "x": 191.04867538875564,
+        "y": -16.38339845342685,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21C2A",
+      "entityType": "DBText",
+      "text": "D''",
+      "position": {
+        "x": 190.3742553929621,
+        "y": -14.934862391093922,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21C45",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 178.5073165576245,
+        "y": -15.241109544733238,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21C46",
+      "entityType": "DBText",
+      "text": "SUBE C10",
+      "position": {
+        "x": 190.65305710225127,
+        "y": -9.340244191465825,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C4C",
+      "entityType": "DBText",
+      "text": "SUBE C10",
+      "position": {
+        "x": 183.87050016285244,
+        "y": -9.336843511598978,
+        "z": 0
+      },
+      "height": 0.075,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C50",
+      "entityType": "DBText",
+      "text": "C6",
+      "position": {
+        "x": 185.37192064003287,
+        "y": -8.389729077547614,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C57",
+      "entityType": "DBText",
+      "text": "C7",
+      "position": {
+        "x": 184.82789890903783,
+        "y": -8.66152853389606,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C58",
+      "entityType": "DBText",
+      "text": "C8",
+      "position": {
+        "x": 192.13897433868394,
+        "y": -8.487743162917127,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C59",
+      "entityType": "DBText",
+      "text": "C9",
+      "position": {
+        "x": 191.71872908238205,
+        "y": -8.761853725340472,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C5B",
+      "entityType": "DBText",
+      "text": "TH",
+      "position": {
+        "x": 192.8313771521149,
+        "y": -11.664704646198071,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C61",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 192.84887126348042,
+        "y": -11.783544420526834,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21C63",
+      "entityType": "DBText",
+      "text": "2",
+      "position": {
+        "x": 192.68862091072663,
+        "y": -11.80826284111198,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "ELECTRICAS"
+    },
+    {
+      "handle": "21C77",
+      "entityType": "DBText",
+      "text": "C11",
+      "position": {
+        "x": 192.48760534244997,
+        "y": -8.596825576856034,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C78",
+      "entityType": "DBText",
+      "text": "C12",
+      "position": {
+        "x": 192.31152907685438,
+        "y": -9.036674106906261,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS02"
+    },
+    {
+      "handle": "21C86",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 183.43139144005048,
+        "y": -4.637834619170924,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21C87",
+      "entityType": "DBText",
+      "text": "T",
+      "position": {
+        "x": 183.60710148961627,
+        "y": -1.7993970779334134,
+        "z": 0
+      },
+      "height": 0.08,
+      "layer": "03"
+    },
+    {
+      "handle": "21C89",
+      "entityType": "DBText",
+      "text": "20A",
+      "position": {
+        "x": 182.31344965248297,
+        "y": -23.237309109889992,
+        "z": 0
+      },
+      "height": 0.07200000000000001,
+      "layer": "03"
+    },
+    {
+      "handle": "21C8A",
+      "entityType": "DBText",
+      "text": "2-1 x 4mm2 TW + 1 x 2.5mm2/T",
+      "position": {
+        "x": 182.71699140499564,
+        "y": -24.506080800240508,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21C8B",
+      "entityType": "DBText",
+      "text": "%%c 20mm PVC-L",
+      "position": {
+        "x": 182.72123830359502,
+        "y": -24.642435196261882,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21C8C",
+      "entityType": "DBText",
+      "text": "LAVADORA-SECADODRA",
+      "position": {
+        "x": 184.87680072522213,
+        "y": -24.485232027263688,
+        "z": 0
+      },
+      "height": 0.0864,
+      "layer": "03"
+    },
+    {
+      "handle": "21C95",
+      "entityType": "DBText",
+      "text": "COCINA ELEC.",
+      "position": {
+        "x": 187.49032771856696,
+        "y": -23.025418665841816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C97",
+      "entityType": "DBText",
+      "text": "6000.00",
+      "position": {
+        "x": 190.27575595328705,
+        "y": -23.025418665841816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C98",
+      "entityType": "DBText",
+      "text": "0.80",
+      "position": {
+        "x": 191.49198739186693,
+        "y": -23.025418665841816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C99",
+      "entityType": "DBText",
+      "text": "4800.00",
+      "position": {
+        "x": 192.3766824338137,
+        "y": -23.025418665841816,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C9B",
+      "entityType": "DBText",
+      "text": "LAVADORA-SECAD.",
+      "position": {
+        "x": 187.49032771856696,
+        "y": -23.39541866584182,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C9D",
+      "entityType": "DBText",
+      "text": "1200.00",
+      "position": {
+        "x": 190.27575595328705,
+        "y": -23.39541866584182,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C9E",
+      "entityType": "DBText",
+      "text": "0.80",
+      "position": {
+        "x": 191.49198739186693,
+        "y": -23.39541866584182,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21C9F",
+      "entityType": "DBText",
+      "text": "1200.00",
+      "position": {
+        "x": 192.3766824338137,
+        "y": -23.39541866584182,
+        "z": 0
+      },
+      "height": 0.09,
+      "layer": "02"
+    },
+    {
+      "handle": "21FF9",
+      "entityType": "DBText",
+      "text": "ING. VICTOR MANUEL GABINO ELERA  C.I.P. 33363",
+      "position": {
+        "x": 207.302340469189,
+        "y": -25.387246407209535,
+        "z": 0
+      },
+      "height": 0.1,
+      "layer": "TEXTOS04"
+    }
+  ]
+}

@@ -10,7 +10,8 @@
   "scripts": {
     "clean": "rimraf build",
     "prebuild": "npm run clean",
-    "build": "tsc"
+    "build": "tsc",
+    "postbuild": "node scripts/copy-static-assets.mjs"
   },
   "files": [
     "build"
@@ -28,7 +29,9 @@
   "homepage": "https://github.com/civil3d-mcp/civil3d-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
+    "cheerio": "^1.2.0",
     "exceljs": "^4.4.0",
+    "minisearch": "^7.2.0",
     "ws": "^8.18.1",
     "zod": "^3.24.2"
   },
