@@ -103,10 +103,54 @@ Mes 9 S1 busca cerrar — repórtalo con el mensaje de error completo.
 
 ## civil3d_sheet_production
 - [ ] `list_view_frames`, `list_match_lines` (solo lectura, sin riesgo).
+- [ ] **`list_view_frame_groups`** — API investigada pero no verificada en vivo todavía
+      (`CivilDocument.GetViewFrameGroupIds()`). Esperado: un ítem por grupo con `name`/`handle`/
+      `viewFrameCount`. Si tu dibujo no tiene grupos de view frames creados, debe devolver
+      `viewFrameGroups: []`, no fallar.
+- [ ] **`get_view_frame_group`** con el `name` de un grupo real (del listado anterior) — confirma
+      que `viewFrames` trae los mismos view frames que ves agrupados en Prospector > Sheets > View
+      Frame Groups.
 
 ## civil3d_pipe
 - [ ] `list_networks`, `get_network`, `list_pipes`, `get_pipe`, `list_structures`, `get_structure`.
 - [ ] `get_rule_set`, `get_overridden_rules`.
+- [ ] `resize_pipe`, `hgl_calculate`, `hydraulic_analysis`, `structure_properties`.
+- [ ] **`list_parts_lists`** — sin parámetros. Esperado: los nombres de catálogo (parts lists) de
+      gravedad disponibles en el dibujo, sin necesitar ninguna red creada.
+- [ ] **`list_parts`** con `partsListName` de un catálogo real del listado anterior — prueba con y
+      sin `domain: "pipe"`/`"structure"`. Confirma que los `partName` devueltos son los mismos que
+      ves en Toolspace > Settings > catálogo de partes.
+- [ ] **`get_part`** con un `partName` exacto del listado anterior — confirma que trae el detalle
+      completo de esa parte.
+
+## civil3d_pressure_pipe
+- [ ] `list_networks`, `get_network` sobre una red a presión real.
+- [ ] **`list_parts_lists`** — sin parámetros. Esperado: catálogos de presión disponibles.
+- [ ] **`list_parts`** con `partsListName` directo (sin red creada) — esto es lo que hoy bloqueaba
+      antes de poder llamar `create_network`/`add_pipe`. Prueba también pasando `networkName` de
+      una red ya creada en vez de `partsListName`, para confirmar que ambos caminos resuelven al
+      mismo catálogo. Prueba el filtro opcional `partType` (ej. `"Valve"`).
+- [ ] **`get_part`** con un `partName` exacto — confirma `isValid`/detalle.
+- [ ] `create_network`, `assign_parts_list`, `add_pipe`, `get_pipe_properties`, `add_fitting`,
+      `get_fitting_properties`, `add_appurtenance`, `export`, `delete_network` — sobre una red de
+      prueba, en ese orden, terminando con `delete_network` como limpieza.
+
+## civil3d_settings
+- [ ] **`list_settings_tree` con `objectType: "pipe_network"`** — el caso más relevante hoy (parts
+      lists/settings de redes). Revisa el campo `settingsType` de la respuesta: si viene un nombre
+      de clase real (no un error "could not resolve"), reporta cuál fue — confirma qué namespace
+      candidato acertó. Revisa también que el árbol tenga sentido (grupos anidados con hojas
+      `{value: ...}`).
+- [ ] Repetir con `objectType: "alignment"` y `objectType: "surface"` — son los casos con más
+      evidencia de documentación oficial citada.
+- [ ] Probar un `objectType` que probablemente no resuelva bien (ej. `"pressure_network"` o
+      `"survey"`) — debe devolver un error claro "could not resolve a loaded settings type",
+      nunca un árbol vacío silencioso ni un crash.
+- [ ] **`set_feature_setting`** — usa un `settingPath` visto en la salida de `list_settings_tree`
+      de arriba (ej. `"Angle.Precision"` si `objectType: "alignment"` lo mostró) y un `value` de
+      prueba. Confirma en Toolspace > Settings que el valor realmente cambió. Prueba también un
+      `settingPath` que apunte a un grupo (no a una hoja) — debe fallar con un error claro en vez
+      de escribir algo incorrecto.
 
 ## civil3d_point
 - [ ] `list`, `get`, `list_groups`.

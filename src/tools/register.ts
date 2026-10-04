@@ -20,6 +20,7 @@ import { GRADING_DOMAIN_DEFINITION } from "./domains/gradingDomain.js";
 import { DATA_SHORTCUT_DOMAIN_DEFINITION } from "./domains/dataShortcutDomain.js";
 import { SURVEY_DOMAIN_DEFINITION } from "./domains/surveyDomain.js";
 import { STYLE_DOMAIN_DEFINITION } from "./domains/styleDomain.js";
+import { SETTINGS_DOMAIN_DEFINITION } from "./domains/settingsDomain.js";
 import { QUANTITY_TAKEOFF_DOMAIN_DEFINITION } from "./domains/quantityTakeoffDomain.js";
 import { WORKFLOW_DOMAIN_DEFINITION } from "./domains/workflowDomain.js";
 import { STANDARDS_LOOKUP_DOMAIN_DEFINITION } from "./domains/standardsLookupDomain.js";
@@ -66,6 +67,7 @@ export const DOMAIN_DEFINITIONS = [
   DATA_SHORTCUT_DOMAIN_DEFINITION,
   SURVEY_DOMAIN_DEFINITION,
   STYLE_DOMAIN_DEFINITION,
+  SETTINGS_DOMAIN_DEFINITION,
   QUANTITY_TAKEOFF_DOMAIN_DEFINITION,
   WORKFLOW_DOMAIN_DEFINITION,
   STANDARDS_LOOKUP_DOMAIN_DEFINITION,

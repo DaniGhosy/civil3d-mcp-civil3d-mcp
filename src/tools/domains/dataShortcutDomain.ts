@@ -2,7 +2,11 @@ import { z } from "zod";
 import { withApplicationConnection } from "../../utils/ConnectionManager.js";
 import type { DomainToolDefinition } from "../domainRuntime.js";
 
-const DataShortcutObjectTypeSchema = z.enum([
+// A function, not a shared const: zod-to-json-schema turns a schema instance reused across
+// multiple fields into a `$ref` for every occurrence after the first, which some MCP clients
+// don't resolve — the field then looks untyped. objectType/shortcutType below both need their
+// own instance.
+const dataShortcutObjectTypeSchema = () => z.enum([
   "surface",
   "alignment",
   "profile",
@@ -29,12 +33,12 @@ const canonicalInputShape = {
   sourceDrawing: z.string().optional().describe("Source drawing name the reference comes from (create_reference)."),
   entityName: z.string().optional().describe("Name of the surface/alignment/etc. to reference (create_reference)."),
   entityType: z.string().optional().describe("Data shortcut entity type, e.g. 'Surface', 'Alignment' (create_reference)."),
-  objectType: DataShortcutObjectTypeSchema.optional().describe("Data shortcut object type (create)."),
+  objectType: dataShortcutObjectTypeSchema().optional().describe("Data shortcut object type (create)."),
   objectName: z.string().optional().describe("Object name to publish as a shortcut (create)."),
   description: z.string().optional().describe("Shortcut description (create)."),
   projectFolder: z.string().optional().describe("Data Shortcuts project folder (create/reference/sync)."),
   shortcutName: z.string().optional().describe("Shortcut name (reference/promote)."),
-  shortcutType: DataShortcutObjectTypeSchema.optional().describe("Shortcut type (reference/promote)."),
+  shortcutType: dataShortcutObjectTypeSchema().optional().describe("Shortcut type (reference/promote)."),
   layer: z.string().optional().describe("Target layer for the new reference (reference)."),
   newName: z.string().optional().describe("New local name after promotion (promote)."),
   shortcutNames: z.array(z.string()).optional().describe("Filter to specific shortcut names (sync)."),
@@ -117,7 +121,7 @@ export const DATA_SHORTCUT_DOMAIN_DEFINITION: DomainToolDefinition = {
       action: "create",
       inputSchema: z.object({
         action: z.literal("create"),
-        objectType: DataShortcutObjectTypeSchema,
+        objectType: dataShortcutObjectTypeSchema(),
         objectName: z.string(),
         description: z.string().optional(),
         projectFolder: z.string().optional(),
@@ -142,7 +146,7 @@ export const DATA_SHORTCUT_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("reference"),
         projectFolder: z.string(),
         shortcutName: z.string(),
-        shortcutType: DataShortcutObjectTypeSchema,
+        shortcutType: dataShortcutObjectTypeSchema(),
         layer: z.string().optional(),
       }),
       capabilities: ["create", "manage"],
@@ -185,7 +189,7 @@ export const DATA_SHORTCUT_DOMAIN_DEFINITION: DomainToolDefinition = {
       inputSchema: z.object({
         action: z.literal("promote"),
         shortcutName: z.string(),
-        shortcutType: DataShortcutObjectTypeSchema,
+        shortcutType: dataShortcutObjectTypeSchema(),
         newName: z.string().optional(),
       }),
       capabilities: ["create", "manage"],

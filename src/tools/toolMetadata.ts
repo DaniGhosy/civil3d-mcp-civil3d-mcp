@@ -53,7 +53,8 @@ export type ToolDomain =
   | "quantity_takeoff"
   | "standards"
   | "job"
-  | "docs";
+  | "docs"
+  | "settings";
 
 /** Catalog entry describing a registered tool */
 export interface ToolCatalogEntry {

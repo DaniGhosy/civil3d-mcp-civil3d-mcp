@@ -13,6 +13,8 @@ const PipeActionSchema = z.enum([
   "add_pipe",
   "add_structure",
   "list_parts_lists",
+  "list_parts",
+  "get_part",
   "get_rule_set",
   "get_overridden_rules",
   "check_interference",
@@ -45,6 +47,9 @@ const canonicalInputShape = {
   maxVelocity: z.number().optional().describe("Maximum velocity check, ft/s (hydraulic_analysis)."),
   minSlope: z.number().optional().describe("Minimum slope check, percent (hydraulic_analysis)."),
   structureName: z.string().optional().describe("Structure name (structure_properties)."),
+  partsListName: z.string().optional().describe("Parts list name — enumerate its catalog directly, no network required (list_parts/get_part)."),
+  partName: z.string().optional().describe("Exact part/size name within a parts list (get_part)."),
+  domain: z.enum(["pipe", "structure"]).optional().describe("Restrict to pipe or structure parts; omit for both (list_parts/get_part)."),
 };
 
 export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
@@ -224,6 +229,39 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
           await c.sendCommand("listPartsLists", {})
         ),
     },
+    list_parts: {
+      action: "list_parts",
+      inputSchema: z.object({
+        action: z.literal("list_parts"),
+        partsListName: z.string(),
+        domain: z.enum(["pipe", "structure"]).optional(),
+      }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listParts"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listParts", { partsListName: args.partsListName, domain: args.domain })
+        ),
+    },
+    get_part: {
+      action: "get_part",
+      inputSchema: z.object({
+        action: z.literal("get_part"),
+        partsListName: z.string(),
+        partName: z.string(),
+        domain: z.enum(["pipe", "structure"]).optional(),
+      }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getPart"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getPart", { partsListName: args.partsListName, partName: args.partName, domain: args.domain })
+        ),
+    },
     get_rule_set: {
       action: "get_rule_set",
       inputSchema: z.object({
@@ -380,19 +418,22 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
       displayName: "Civil 3D Pipe Network",
       description:
         "Manage gravity pipe networks. Actions: list_networks, get_network, list_pipes, " +
-        "get_pipe (by handle), list_structures, get_structure (by handle), get_rule_set " +
-        "(whether a pipe overrides its network rule set), get_overridden_rules (a pipe's " +
-        "overridden design rules), resize_pipe, hgl_calculate (Manning's-based HGL backwater " +
-        "walk), hydraulic_analysis (capacity/velocity/slope checks per pipe), " +
-        "structure_properties (rim/sump/connected pipes by structure name) are real. Note: " +
-        "create_network, add_structure, add_pipe, list_parts_lists, and check_interference are " +
-        "not yet implemented — the compiler confirmed the guessed signatures/type names don't " +
-        "match reality (e.g. Network.AddStructure exists but takes part family/size ObjectIds, " +
-        "not strings, plus a rotation and a ref/bool pair). They return a 'planned' status with " +
-        "the real signature fragments discovered so far, until confirmed against a live Civil " +
-        "3D drawing. For real pipe cover depth, combine get_pipe/get_structure (gives " +
-        "elevations) with civil3d_surface's get_elevation (gives ground elevation at that X,Y) " +
-        "— subtract instead of a dedicated command.",
+        "get_pipe (by handle), list_structures, get_structure (by handle), list_parts_lists " +
+        "(catalog names available in the document), list_parts (families+sizes within a named " +
+        "parts list, optionally filtered to domain pipe/structure — no network needs to exist " +
+        "yet, this is what to call before create_network/add_pipe to know valid part names), " +
+        "get_part (full detail for one exact part name), get_rule_set (whether a pipe overrides " +
+        "its network rule set), get_overridden_rules (a pipe's overridden design rules), " +
+        "resize_pipe, hgl_calculate (Manning's-based HGL backwater walk), hydraulic_analysis " +
+        "(capacity/velocity/slope checks per pipe), structure_properties (rim/sump/connected " +
+        "pipes by structure name) are real. Note: create_network, add_structure, add_pipe, and " +
+        "check_interference are not yet implemented — the compiler confirmed the guessed " +
+        "signatures/type names don't match reality (e.g. Network.AddStructure exists but takes " +
+        "part family/size ObjectIds, not strings, plus a rotation and a ref/bool pair). They " +
+        "return a 'planned' status with the real signature fragments discovered so far, until " +
+        "confirmed against a live Civil 3D drawing. For real pipe cover depth, combine " +
+        "get_pipe/get_structure (gives elevations) with civil3d_surface's get_elevation (gives " +
+        "ground elevation at that X,Y) — subtract instead of a dedicated command.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list_networks",
@@ -405,6 +446,8 @@ export const PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "add_pipe",
         "add_structure",
         "list_parts_lists",
+        "list_parts",
+        "get_part",
         "get_rule_set",
         "get_overridden_rules",
         "check_interference",

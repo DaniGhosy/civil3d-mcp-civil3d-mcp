@@ -2,7 +2,11 @@ import { z } from "zod";
 import { withApplicationConnection } from "../../utils/ConnectionManager.js";
 import type { DomainToolDefinition } from "../domainRuntime.js";
 
-const AreaUnitsSchema = z.enum(["acres", "hectares"]);
+// A function, not a shared const: zod-to-json-schema turns a schema instance reused across
+// multiple fields into a `$ref` for every occurrence after the first, which some MCP clients
+// don't resolve — the field then looks untyped. areaUnits/runoffAreaUnits below both need their
+// own instance.
+const areaUnitsSchema = () => z.enum(["acres", "hectares"]);
 const IntensityUnitsSchema = z.enum(["in_per_hr", "mm_per_hr"]);
 const DetentionMethodSchema = z.enum(["modified_rational", "triangular_hydrograph"]);
 const OutletTypeSchema = z.enum(["orifice", "weir", "riser"]);
@@ -48,7 +52,7 @@ const canonicalHydrologyInputShape = {
   drainageArea: z.number().optional(),
   runoffCoefficient: z.number().optional(),
   rainfallIntensity: z.number().optional(),
-  areaUnits: AreaUnitsSchema.optional(),
+  areaUnits: areaUnitsSchema().optional(),
   intensityUnits: IntensityUnitsSchema.optional(),
   groupName: z.string().optional(),
   catchmentName: z.string().optional(),
@@ -74,7 +78,7 @@ const canonicalHydrologyInputShape = {
   overwrite: z.boolean().optional(),
   findLowPointSampleSpacing: z.number().optional(),
   catchmentSampleSpacing: z.number().optional(),
-  runoffAreaUnits: AreaUnitsSchema.optional(),
+  runoffAreaUnits: areaUnitsSchema().optional(),
   allowableOutflow: z.number().optional(),
   stormDuration: z.number().optional(),
   detentionMethod: DetentionMethodSchema.optional(),
@@ -154,7 +158,7 @@ export const HYDROLOGY_DOMAIN_DEFINITION: DomainToolDefinition = {
         drainageArea: z.number().positive(),
         runoffCoefficient: z.number().min(0).max(1),
         rainfallIntensity: z.number().positive(),
-        areaUnits: AreaUnitsSchema,
+        areaUnits: areaUnitsSchema(),
         intensityUnits: IntensityUnitsSchema,
       }),
       capabilities: ["query", "analyze"],
@@ -459,7 +463,7 @@ export const HYDROLOGY_DOMAIN_DEFINITION: DomainToolDefinition = {
         runoffCoefficient: z.number().min(0).max(1),
         rainfallIntensity: z.number().positive(),
         intensityUnits: IntensityUnitsSchema,
-        runoffAreaUnits: AreaUnitsSchema.optional(),
+        runoffAreaUnits: areaUnitsSchema().optional(),
       }).superRefine((value, ctx) => {
         const hasOutletX = value.outletX != null;
         const hasOutletY = value.outletY != null;
@@ -497,7 +501,7 @@ export const HYDROLOGY_DOMAIN_DEFINITION: DomainToolDefinition = {
       inputSchema: z.object({
         action: z.literal("runoff_detention_workflow"),
         drainageArea: z.number().positive(),
-        areaUnits: AreaUnitsSchema,
+        areaUnits: areaUnitsSchema(),
         runoffCoefficient: z.number().min(0).max(1),
         rainfallIntensity: z.number().positive(),
         intensityUnits: IntensityUnitsSchema,
@@ -561,7 +565,7 @@ export const HYDROLOGY_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("runoff_pipe_workflow"),
         networkName: z.string(),
         drainageArea: z.number().positive(),
-        areaUnits: AreaUnitsSchema,
+        areaUnits: areaUnitsSchema(),
         runoffCoefficient: z.number().min(0).max(1),
         rainfallIntensity: z.number().positive(),
         intensityUnits: IntensityUnitsSchema,

@@ -4,6 +4,8 @@ import type { DomainToolDefinition } from "../domainRuntime.js";
 
 const SheetProductionActionSchema = z.enum([
   "list_view_frames",
+  "list_view_frame_groups",
+  "get_view_frame_group",
   "list_match_lines",
   "list_sheet_sets",
   "get_sheet_set_info",
@@ -17,7 +19,7 @@ const SheetProductionActionSchema = z.enum([
 
 const canonicalInputShape = {
   action: SheetProductionActionSchema.describe("The sheet production operation to perform."),
-  name: z.string().optional().describe("Sheet set name (get_sheet_set_info)."),
+  name: z.string().optional().describe("Sheet set name (get_sheet_set_info) or view frame group name (get_view_frame_group)."),
   sheetSetName: z.string().optional().describe("Sheet set name (add_sheet/get_sheet_properties/set_sheet_title_block/update_plan_profile_sheet_alignment)."),
   sheetName: z.string().optional().describe("Sheet name."),
   sheetNumber: z.string().optional().describe("Sheet number, default '1' (add_sheet)."),
@@ -47,6 +49,30 @@ export const SHEET_PRODUCTION_DOMAIN_DEFINITION: DomainToolDefinition = {
       execute: async () =>
         await withApplicationConnection(async (c) =>
           await c.sendCommand("listViewFrames", {})
+        ),
+    },
+    list_view_frame_groups: {
+      action: "list_view_frame_groups",
+      inputSchema: z.object({ action: z.literal("list_view_frame_groups") }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listViewFrameGroups"],
+      execute: async () =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listViewFrameGroups", {})
+        ),
+    },
+    get_view_frame_group: {
+      action: "get_view_frame_group",
+      inputSchema: z.object({ action: z.literal("get_view_frame_group"), name: z.string() }),
+      capabilities: ["query", "inspect"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["getViewFrameGroup"],
+      execute: async (args: any) =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("getViewFrameGroup", { name: args.name })
         ),
     },
     list_match_lines: {
@@ -227,7 +253,11 @@ export const SHEET_PRODUCTION_DOMAIN_DEFINITION: DomainToolDefinition = {
         "Manage Civil 3D plan production. list_view_frames/list_match_lines read view frame " +
         "and match line objects already created via the Civil 3D UI — creating those is NOT " +
         "possible via the .NET API (confirmed Autodesk limitation, open feature request). " +
-        "Separately, list_sheet_sets/get_sheet_set_info/add_sheet/get_sheet_properties/" +
+        "list_view_frame_groups/get_view_frame_group (by name) read the Prospector 'View Frame " +
+        "Groups' container itself — the parent object list_view_frames' individual frames " +
+        "belong to — via CivilDocument.GetViewFrameGroupIds(); get_view_frame_group also " +
+        "returns the member view frames for that group. Separately, " +
+        "list_sheet_sets/get_sheet_set_info/add_sheet/get_sheet_properties/" +
         "set_sheet_title_block/update_plan_profile_sheet_alignment/create_sheet_view/" +
         "set_sheet_view_scale manage sheet SETs (a higher-level Sheet Set Manager abstraction) " +
         "and are real — sheet sets themselves must already exist (created via Sheet Set " +
@@ -235,6 +265,8 @@ export const SHEET_PRODUCTION_DOMAIN_DEFINITION: DomainToolDefinition = {
       inputShape: canonicalInputShape,
       supportedActions: [
         "list_view_frames",
+        "list_view_frame_groups",
+        "get_view_frame_group",
         "list_match_lines",
         "list_sheet_sets",
         "get_sheet_set_info",

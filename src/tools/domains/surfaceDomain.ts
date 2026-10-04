@@ -2,7 +2,12 @@ import { z } from "zod";
 import { withApplicationConnection } from "../../utils/ConnectionManager.js";
 import type { DomainToolDefinition } from "../domainRuntime.js";
 
-const Point2DSchema = z.object({ x: z.number(), y: z.number() });
+// A function, not a shared const: zod-to-json-schema turns a schema instance reused across
+// multiple fields into a `$ref` for every occurrence after the first, which some MCP clients
+// don't resolve — the field then looks untyped and gets sent as a plain string instead of an
+// object (confirmed root cause of the startPoint/endPoint bug below). Point3DSchema below is
+// only referenced once in this file's exposed shape, so it's left as a plain const.
+const point2DSchema = () => z.object({ x: z.number(), y: z.number() });
 const Point3DSchema = z.object({ x: z.number(), y: z.number(), z: z.number() });
 
 const SurfaceActionSchema = z.enum([
@@ -58,7 +63,7 @@ const canonicalInputShape = {
   description: z.string().optional().describe("Description text."),
   breaklineType: z.enum(["standard", "wall", "proximity"]).optional(),
   boundaryType: z.enum(["show", "hide", "outer", "data_clip"]).optional(),
-  boundaryPoints: z.array(Point2DSchema).optional().describe("Boundary polygon points."),
+  boundaryPoints: z.array(point2DSchema()).optional().describe("Boundary polygon points."),
   minorInterval: z.number().optional().describe("Minor contour interval."),
   majorInterval: z.number().optional().describe("Major contour interval."),
   baseSurface: z.string().optional().describe("Base surface for volume calculation."),
@@ -85,18 +90,18 @@ const canonicalInputShape = {
   minimumTriangleArea: z.number().optional().describe("Minimum triangle area build option (set_build_options)."),
   method: z.string().optional().describe("Volume method label, informational only (volume_calculate)."),
   format: z.enum(["summary", "detailed"]).optional().describe("Report format (volume_report)."),
-  boundary: z.array(Point2DSchema).min(3).optional().describe("Region boundary polygon, at least 3 points (volume_by_region)."),
+  boundary: z.array(point2DSchema()).min(3).optional().describe("Region boundary polygon, at least 3 points (volume_by_region)."),
   numRanges: z.number().int().positive().optional().describe("Requested number of analysis ranges — informational only, Civil 3D's stored ranges are always returned (analyze_slope/analyze_elevation/analyze_directions)."),
   ranges: z.array(z.any()).optional().describe("Requested custom ranges — informational only (analyze_slope/analyze_elevation)."),
   depthThreshold: z.number().optional().describe("Minimum depth to register a watershed, default 0.1 (watershed_add)."),
   mergeAdjacentWatersheds: z.boolean().optional().describe("Merge adjacent watersheds (watershed_add)."),
   samplingMethod: z.enum(["grid", "points", "transect"]).optional().describe("Sampling method (sample_elevations)."),
   gridSpacing: z.number().optional().describe("Grid spacing (sample_elevations method=grid)."),
-  elevationSamplePoints: z.array(Point2DSchema).optional().describe("Points to sample (sample_elevations method=points)."),
+  elevationSamplePoints: z.array(point2DSchema()).optional().describe("Points to sample (sample_elevations method=points)."),
   filePath: z.string().optional().describe("DEM file path — .dem/.tif/.tiff/.asc/.adf (create_from_dem)."),
   coordinateSystem: z.string().optional().describe("Not supported — always returns a capability error (create_from_dem)."),
-  startPoint: Point2DSchema.optional().describe("Transect start point (sample_elevations method=transect)."),
-  endPoint: Point2DSchema.optional().describe("Transect end point (sample_elevations method=transect)."),
+  startPoint: point2DSchema().optional().describe("Transect start point (sample_elevations method=transect)."),
+  endPoint: point2DSchema().optional().describe("Transect end point (sample_elevations method=transect)."),
   numSamples: z.number().int().min(2).optional().describe("Number of transect samples, default 50 (sample_elevations method=transect)."),
 };
 
@@ -251,7 +256,7 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("add_boundary"),
         name: z.string(),
         boundaryType: z.enum(["show", "hide", "outer", "data_clip"]),
-        boundaryPoints: z.array(Point2DSchema),
+        boundaryPoints: z.array(point2DSchema()),
       }),
       capabilities: ["edit"],
       requiresActiveDrawing: true,
@@ -400,7 +405,7 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
       inputSchema: z.object({
         action: z.literal("delete_points"),
         name: z.string(),
-        points: z.array(Point2DSchema).optional(),
+        points: z.array(point2DSchema()).optional(),
         tolerance: z.number().optional(),
       }),
       capabilities: ["delete"],
@@ -640,7 +645,7 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("volume_by_region"),
         baseSurface: z.string(),
         comparisonSurface: z.string(),
-        boundary: z.array(Point2DSchema).min(3),
+        boundary: z.array(point2DSchema()).min(3),
       }),
       capabilities: ["query", "analyze"],
       requiresActiveDrawing: true,
@@ -766,10 +771,10 @@ export const SURFACE_DOMAIN_DEFINITION: DomainToolDefinition = {
         name: z.string(),
         samplingMethod: z.enum(["grid", "points", "transect"]),
         gridSpacing: z.number().optional(),
-        boundary: z.array(Point2DSchema).optional(),
-        elevationSamplePoints: z.array(Point2DSchema).optional(),
-        startPoint: Point2DSchema.optional(),
-        endPoint: Point2DSchema.optional(),
+        boundary: z.array(point2DSchema()).optional(),
+        elevationSamplePoints: z.array(point2DSchema()).optional(),
+        startPoint: point2DSchema().optional(),
+        endPoint: point2DSchema().optional(),
         numSamples: z.number().int().min(2).optional(),
       }),
       capabilities: ["query", "analyze"],

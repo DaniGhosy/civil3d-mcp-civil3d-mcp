@@ -69,7 +69,7 @@ public static class PressurePipeCommands
       {
         ["name"] = CivilObjectUtils.GetName(network) ?? networkName,
         ["handle"] = CivilObjectUtils.GetHandle(network),
-        ["partsList"] = ResolveObjectName(transaction, GetAnyObjectId(network, "PartsListId", "CatalogId")),
+        ["partsList"] = ResolveObjectName(transaction, GetPressureNetworkPartsListId(network)),
         ["pipes"] = pipes,
         ["fittings"] = fittings,
         ["appurtenances"] = appurtenances,
@@ -78,20 +78,123 @@ public static class PressurePipeCommands
   }
 
   // -------------------------------------------------------------------------
-  // listPressureParts / getPressurePart — this repo's own part-catalog
-  // enumeration by handle; not solved by the ported source project, stays a
-  // documented stub.
+  // listPressurePartsLists / listPressureParts / getPressurePart — this
+  // repo's own part-catalog enumeration, previously a documented stub. Not a
+  // rejected-guess situation: FindPressurePartsListId/FindPressurePart below
+  // already enumerate this exact catalog successfully (used internally by
+  // add_pipe/add_fitting/add_appurtenance) — this just exposes that already-
+  // working logic as public read actions, addressable by partsListName
+  // directly (no network needs to exist yet) as well as by networkName
+  // (resolves the network's assigned parts list, for backward compatibility
+  // with the pre-existing networkName-scoped schema).
   // -------------------------------------------------------------------------
 
-  public static Task<object?> ListPressurePartsAsync(JsonObject? parameters)
-    => Task.FromResult<object?>(new
+  public static Task<object?> ListPressurePartsListsAsync()
+  {
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, database, transaction) =>
     {
-      status = "planned",
-      note = "Enumerating a pressure network's assigned parts-list catalog (by handle) is not yet implemented — use getPressureNetwork's partsList field for the assigned catalog name in the meantime."
+      var partsLists = new List<object>();
+      foreach (ObjectId objectId in ((CivilDocument)civilDoc).Styles.GetPressurePartLists())
+      {
+        var list = CivilObjectUtils.GetRequiredObject<PressurePartList>(transaction, objectId, OpenMode.ForRead);
+        partsLists.Add(new { name = list.Name, handle = list.Handle.ToString() });
+      }
+
+      return new Dictionary<string, object?> { ["partsLists"] = partsLists };
     });
+  }
+
+  public static Task<object?> ListPressurePartsAsync(JsonObject? parameters)
+  {
+    var partsListName = PluginRuntime.GetOptionalString(parameters, "partsListName");
+    var networkName = PluginRuntime.GetOptionalString(parameters, "networkName");
+    var partType = PluginRuntime.GetOptionalString(parameters, "partType");
+    if (string.IsNullOrWhiteSpace(partsListName) && string.IsNullOrWhiteSpace(networkName))
+    {
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Either 'partsListName' or 'networkName' is required.");
+    }
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, database, transaction) =>
+    {
+      var partsListId = ResolvePressurePartsListId(civilDoc, transaction, partsListName, networkName);
+      var partsList = CivilObjectUtils.GetRequiredObject<PressurePartList>(transaction, partsListId, OpenMode.ForRead);
+      var types = ResolvePressurePartTypeFilter(partType);
+
+      var parts = types
+        .SelectMany(type => partsList.GetParts(type).Select(part => new { type, part }))
+        .Where(entry => entry.part.IsValid)
+        .Select(entry => (object)new
+        {
+          partType = entry.type.ToString(),
+          partName = entry.part.Description,
+        })
+        .ToList();
+
+      return new Dictionary<string, object?> { ["partsListName"] = partsList.Name, ["parts"] = parts };
+    });
+  }
 
   public static Task<object?> GetPressurePartAsync(JsonObject? parameters)
-    => Task.FromResult<object?>(new { status = "planned", note = "Depends on listPressureParts — see its note." });
+  {
+    var partsListName = PluginRuntime.GetOptionalString(parameters, "partsListName");
+    var networkName = PluginRuntime.GetOptionalString(parameters, "networkName");
+    var partName = PluginRuntime.GetRequiredString(parameters, "partName");
+    var partType = PluginRuntime.GetOptionalString(parameters, "partType");
+    if (string.IsNullOrWhiteSpace(partsListName) && string.IsNullOrWhiteSpace(networkName))
+    {
+      throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", "Either 'partsListName' or 'networkName' is required.");
+    }
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, database, transaction) =>
+    {
+      var partsListId = ResolvePressurePartsListId(civilDoc, transaction, partsListName, networkName);
+      var part = FindPressurePart(transaction, partsListId, partName, ResolvePressurePartTypeFilter(partType));
+
+      return new Dictionary<string, object?>
+      {
+        ["partsListName"] = partsListName,
+        ["networkName"] = networkName,
+        ["partName"] = part.Description,
+        ["isValid"] = part.IsValid,
+      };
+    });
+  }
+
+  private static ObjectId ResolvePressurePartsListId(object civilDoc, Transaction transaction, string? partsListName, string? networkName)
+  {
+    if (!string.IsNullOrWhiteSpace(partsListName))
+    {
+      return FindPressurePartsListId(civilDoc, transaction, partsListName);
+    }
+
+    var network = FindPressureNetworkByName(civilDoc, transaction, networkName!, OpenMode.ForRead);
+    var partsListId = GetPressureNetworkPartsListId(network);
+    if (partsListId.IsNull)
+    {
+      throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Pressure network '{networkName}' does not have a parts list assigned.");
+    }
+    return partsListId;
+  }
+
+  private static PressurePartType[] ResolvePressurePartTypeFilter(string? partType)
+  {
+    if (string.IsNullOrWhiteSpace(partType))
+    {
+      return new[]
+      {
+        PressurePartType.PressurePipe, PressurePartType.Elbow, PressurePartType.Tee, PressurePartType.Wye,
+        PressurePartType.Cross, PressurePartType.Cap, PressurePartType.Coupling, PressurePartType.Plug,
+        PressurePartType.Reducer, PressurePartType.Valve, PressurePartType.Pump, PressurePartType.Hydrant,
+      };
+    }
+
+    if (Enum.TryParse<PressurePartType>(partType, ignoreCase: true, out var parsed))
+    {
+      return new[] { parsed };
+    }
+
+    throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"Unsupported partType '{partType}'.");
+  }
 
   // -------------------------------------------------------------------------
   // createPressureNetwork
@@ -235,7 +338,7 @@ public static class PressurePipeCommands
       {
         ["networkName"] = networkName,
         ["handle"] = CivilObjectUtils.GetHandle(network),
-        ["partsList"] = ResolveObjectName(transaction, GetAnyObjectId(network, "PartsListId", "CatalogId")),
+        ["partsList"] = ResolveObjectName(transaction, GetPressureNetworkPartsListId(network)),
         ["pipes"] = pipes,
         ["fittings"] = fittings,
         ["appurtenances"] = appurtenances,
@@ -513,7 +616,7 @@ public static class PressurePipeCommands
       ["pipeCount"] = pipeIds.Count,
       ["fittingCount"] = fittingIds.Count,
       ["appurtenanceCount"] = appIds.Count,
-      ["partsList"] = ResolveObjectName(transaction, GetAnyObjectId(network, "PartsListId", "CatalogId")),
+      ["partsList"] = ResolveObjectName(transaction, GetPressureNetworkPartsListId(network)),
     };
   }
 
@@ -597,7 +700,11 @@ public static class PressurePipeCommands
     return data;
   }
 
-  private static ObjectId AddPressurePipeToNetwork(AcDbObject network, Transaction transaction, string partName, Point3d startPoint, Point3d endPoint, double? diameter)
+  // internal (not private): reused verbatim by PressureNetworkBulkImportCommand.cs (EPANETIMPORT)
+  // to loop the exact same tested creation logic outside the MCP wrapper, in one local
+  // Transaction — see that file's header for why (300+ approved MCP calls per network is not
+  // viable). No creation logic is duplicated; only the access modifier changed here.
+  internal static ObjectId AddPressurePipeToNetwork(AcDbObject network, Transaction transaction, string partName, Point3d startPoint, Point3d endPoint, double? diameter)
   {
     var pressureNetwork = (PressurePipeNetwork)network;
     var part = FindPressurePart(transaction, pressureNetwork.PartsListId, partName, PressurePartType.PressurePipe);
@@ -612,7 +719,8 @@ public static class PressurePipeCommands
     return id;
   }
 
-  private static ObjectId AddPressureComponentToNetwork(AcDbObject network, Transaction transaction, string partName, Point3d position, double rotation, bool isFitting)
+  // internal (not private): reused verbatim by PressureNetworkBulkImportCommand.cs (EPANETIMPORT).
+  internal static ObjectId AddPressureComponentToNetwork(AcDbObject network, Transaction transaction, string partName, Point3d position, double rotation, bool isFitting)
   {
     _ = rotation;
     var pressureNetwork = (PressurePipeNetwork)network;
@@ -625,7 +733,8 @@ public static class PressurePipeCommands
       : pressureNetwork.AddAppurtenance(position, part);
   }
 
-  private static ObjectId FindPressurePartsListId(object civilDoc, Transaction transaction, string partsListName)
+  // internal (not private): reused verbatim by PressureNetworkBulkImportCommand.cs (EPANETIMPORT).
+  internal static ObjectId FindPressurePartsListId(object civilDoc, Transaction transaction, string partsListName)
   {
     foreach (ObjectId objectId in ((CivilDocument)civilDoc).Styles.GetPressurePartLists())
     {
@@ -709,6 +818,19 @@ public static class PressurePipeCommands
     }
 
     return ObjectId.Null;
+  }
+
+  /// <summary>
+  /// CreatePressureNetworkAsync sets `network.PartsListId` via a direct, statically-typed
+  /// property access (confirmed compiling and — per the managed API contract — readable back the
+  /// same way). Reading it back via GetAnyObjectId's reflection helper was observed live to return
+  /// ObjectId.Null even right after a network was created with an explicit parts list — a
+  /// reflection-vs-direct-call discrepancy, not evidence the assignment didn't take. Read directly
+  /// off the typed PressurePipeNetwork instead of guessing a second property name.
+  /// </summary>
+  private static ObjectId GetPressureNetworkPartsListId(AcDbObject network)
+  {
+    return network is PressurePipeNetwork pressureNetwork ? pressureNetwork.PartsListId : ObjectId.Null;
   }
 
   private static double? GetAnyDouble(object? value, params string[] propertyNames)

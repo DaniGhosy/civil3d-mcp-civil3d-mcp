@@ -2,11 +2,18 @@ import { z } from "zod";
 import { withApplicationConnection } from "../../utils/ConnectionManager.js";
 import type { DomainToolDefinition } from "../domainRuntime.js";
 
-const Point3DSchema = z.object({ x: z.number(), y: z.number(), z: z.number() });
+// A function, not a shared const: zod-to-json-schema dedupes reused schema INSTANCES into
+// `$ref` pointers (confirmed: reusing one z.object() across multiple fields turns every
+// occurrence after the first into `{ "$ref": "#/properties/firstField" }` in the JSON Schema
+// sent to the MCP client). Some clients don't resolve that $ref, so the field looks untyped —
+// this is exactly what broke startPoint/endPoint/position for add_pipe/add_fitting/
+// add_appurtenance. Calling this factory gives every field its own schema instance.
+const point3DSchema = () => z.object({ x: z.number(), y: z.number(), z: z.number() });
 
 const PressurePipeActionSchema = z.enum([
   "list_networks",
   "get_network",
+  "list_parts_lists",
   "list_parts",
   "get_part",
   "create_network",
@@ -27,7 +34,8 @@ const PressurePipeActionSchema = z.enum([
 const canonicalInputShape = {
   action: PressurePipeActionSchema.describe("The pressure pipe network operation to perform."),
   networkName: z.string().optional().describe("Pressure pipe network name."),
-  partHandle: z.string().optional().describe("Pressure part handle (pipe, fitting, or appurtenance) — list_parts/get_part only."),
+  partsListName: z.string().optional().describe("Pressure parts list (catalog) name — list_parts/get_part, resolves the catalog directly without needing a network yet."),
+  partType: z.string().optional().describe("Filter to one PressurePartType (PressurePipe, Elbow, Tee, Wye, Cross, Cap, Coupling, Plug, Reducer, Valve, Pump, Hydrant) — list_parts/get_part only, defaults to all types."),
   partsList: z.string().optional().describe("Pressure parts list (catalog) name (create_network/assign_parts_list)."),
   layer: z.string().optional().describe("Layer for the new network (create_network)."),
   referenceSurface: z.string().optional().describe("Reference surface name (create_network)."),
@@ -37,14 +45,14 @@ const canonicalInputShape = {
   includeCoordinates: z.boolean().optional().describe("Include start/end/position coordinates (export)."),
   targetNetwork: z.string().optional().describe("Target network to merge into (connect_networks)."),
   sourceNetwork: z.string().optional().describe("Source network to merge from (connect_networks)."),
-  partName: z.string().optional().describe("Catalog part description to place (add_pipe/add_fitting/add_appurtenance)."),
-  startPoint: Point3DSchema.optional().describe("Pipe start point (add_pipe)."),
-  endPoint: Point3DSchema.optional().describe("Pipe end point (add_pipe)."),
+  partName: z.string().optional().describe("Catalog part description — required to place a part (add_pipe/add_fitting/add_appurtenance) or to look one up (get_part)."),
+  startPoint: point3DSchema().optional().describe("Pipe start point (add_pipe)."),
+  endPoint: point3DSchema().optional().describe("Pipe end point (add_pipe)."),
   diameter: z.number().optional().describe("Expected inner diameter, validated against the catalog part (add_pipe)."),
   pipeName: z.string().optional().describe("Pipe name (get_pipe_properties/resize_pipe)."),
   newPartName: z.string().optional().describe("New catalog part description (resize_pipe)."),
   newDiameter: z.number().optional().describe("New inner diameter (resize_pipe)."),
-  position: Point3DSchema.optional().describe("Fitting/appurtenance position (add_fitting/add_appurtenance)."),
+  position: point3DSchema().optional().describe("Fitting/appurtenance position (add_fitting/add_appurtenance)."),
   rotation: z.number().optional().describe("Rotation — must be 0, not supported by the managed API (add_fitting/add_appurtenance)."),
   fittingName: z.string().optional().describe("Fitting name (get_fitting_properties)."),
   onPipeName: z.string().optional().describe("Snap the appurtenance to this pipe's midpoint (add_appurtenance)."),
@@ -77,24 +85,51 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
           await c.sendCommand("getPressureNetwork", { networkName: args.networkName })
         ),
     },
+    list_parts_lists: {
+      action: "list_parts_lists",
+      inputSchema: z.object({ action: z.literal("list_parts_lists") }),
+      capabilities: ["query"],
+      requiresActiveDrawing: true,
+      safeForRetry: true,
+      pluginMethods: ["listPressurePartsLists"],
+      execute: async () =>
+        await withApplicationConnection(async (c) =>
+          await c.sendCommand("listPressurePartsLists", {})
+        ),
+    },
     list_parts: {
       action: "list_parts",
-      inputSchema: z.object({ action: z.literal("list_parts"), networkName: z.string() }),
+      inputSchema: z.object({
+        action: z.literal("list_parts"),
+        networkName: z.string().optional(),
+        partsListName: z.string().optional(),
+        partType: z.string().optional(),
+      }).refine((v) => v.networkName || v.partsListName, {
+        message: "Either 'networkName' or 'partsListName' is required.",
+      }),
       capabilities: ["query"],
       requiresActiveDrawing: true,
       safeForRetry: true,
       pluginMethods: ["listPressureParts"],
       execute: async (args: any) =>
         await withApplicationConnection(async (c) =>
-          await c.sendCommand("listPressureParts", { networkName: args.networkName })
+          await c.sendCommand("listPressureParts", {
+            networkName: args.networkName,
+            partsListName: args.partsListName,
+            partType: args.partType,
+          })
         ),
     },
     get_part: {
       action: "get_part",
       inputSchema: z.object({
         action: z.literal("get_part"),
-        networkName: z.string(),
-        partHandle: z.string(),
+        networkName: z.string().optional(),
+        partsListName: z.string().optional(),
+        partName: z.string(),
+        partType: z.string().optional(),
+      }).refine((v) => v.networkName || v.partsListName, {
+        message: "Either 'networkName' or 'partsListName' is required.",
       }),
       capabilities: ["query", "inspect"],
       requiresActiveDrawing: true,
@@ -104,7 +139,9 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         await withApplicationConnection(async (c) =>
           await c.sendCommand("getPressurePart", {
             networkName: args.networkName,
-            partHandle: args.partHandle,
+            partsListName: args.partsListName,
+            partName: args.partName,
+            partType: args.partType,
           })
         ),
     },
@@ -238,8 +275,8 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("add_pipe"),
         networkName: z.string(),
         partName: z.string(),
-        startPoint: Point3DSchema,
-        endPoint: Point3DSchema,
+        startPoint: point3DSchema(),
+        endPoint: point3DSchema(),
         diameter: z.number().optional(),
       }),
       capabilities: ["create", "edit"],
@@ -302,7 +339,7 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("add_fitting"),
         networkName: z.string(),
         partName: z.string(),
-        position: Point3DSchema,
+        position: point3DSchema(),
         rotation: z.number().optional(),
       }),
       capabilities: ["create", "edit"],
@@ -341,7 +378,7 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         action: z.literal("add_appurtenance"),
         networkName: z.string(),
         partName: z.string(),
-        position: Point3DSchema,
+        position: point3DSchema(),
         rotation: z.number().optional(),
         onPipeName: z.string().optional(),
       }),
@@ -369,16 +406,20 @@ export const PRESSURE_PIPE_DOMAIN_DEFINITION: DomainToolDefinition = {
         "Manage Civil 3D pressure pipe networks (a separate object model from gravity pipe " +
         "networks). list_networks/get_network/create_network/delete_network/" +
         "assign_parts_list/export/add_pipe/get_pipe_properties/add_fitting/" +
-        "get_fitting_properties/add_appurtenance are real. Note: list_parts/get_part (this " +
-        "server's own part-catalog enumeration by handle) stay 'planned' — use get_network's " +
-        "partsList field for the assigned catalog name in the meantime. set_cover, validate, " +
-        "connect_networks, and resize_pipe always return a capability error — the managed API " +
-        "does not expose network-level cover setters, safe validation criteria, network " +
-        "merging, or pipe resize/part-swap.",
+        "get_fitting_properties/add_appurtenance are real. list_parts_lists (catalog names " +
+        "available in the document), list_parts, and get_part (by exact partName) are real too " +
+        "— pass either 'partsListName' directly (no network needed yet, this is what to call " +
+        "before create_network/add_pipe to know valid part names) or 'networkName' to resolve " +
+        "the catalog already assigned to that network; optionally filter by 'partType' " +
+        "(PressurePipe, Elbow, Tee, Wye, Cross, Cap, Coupling, Plug, Reducer, Valve, Pump, " +
+        "Hydrant). set_cover, validate, connect_networks, and resize_pipe always return a " +
+        "capability error — the managed API does not expose network-level cover setters, safe " +
+        "validation criteria, network merging, or pipe resize/part-swap.",
       inputShape: canonicalInputShape,
       supportedActions: [
         "list_networks",
         "get_network",
+        "list_parts_lists",
         "list_parts",
         "get_part",
         "create_network",

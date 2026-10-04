@@ -51,6 +51,67 @@ public static class SheetProductionCommands
     });
   }
 
+  public static Task<object?> ListViewFrameGroupsAsync()
+  {
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var groups = new List<object>();
+      foreach (ObjectId id in civilDoc.GetViewFrameGroupIds())
+      {
+        var group = tr.GetObject(id, OpenMode.ForRead) as ViewFrameGroup;
+        if (group == null) continue;
+
+        groups.Add(new
+        {
+          name = CivilObjectUtils.GetName(group),
+          handle = group.Handle.ToString(),
+          viewFrameCount = group.GetViewFrameIds().Count,
+        });
+      }
+
+      return new { viewFrameGroups = groups };
+    });
+  }
+
+  public static Task<object?> GetViewFrameGroupAsync(JsonObject? parameters)
+  {
+    var name = PluginRuntime.GetRequiredString(parameters, "name");
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      ViewFrameGroup? match = null;
+      foreach (ObjectId id in civilDoc.GetViewFrameGroupIds())
+      {
+        var group = tr.GetObject(id, OpenMode.ForRead) as ViewFrameGroup;
+        if (group != null && string.Equals(CivilObjectUtils.GetName(group), name, StringComparison.OrdinalIgnoreCase))
+        {
+          match = group;
+          break;
+        }
+      }
+
+      if (match == null)
+      {
+        throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"View frame group '{name}' was not found.");
+      }
+
+      var viewFrames = new List<object>();
+      foreach (ObjectId vfId in match.GetViewFrameIds())
+      {
+        var vf = tr.GetObject(vfId, OpenMode.ForRead) as ViewFrame;
+        if (vf == null) continue;
+        viewFrames.Add(new { name = vf.Name, handle = vf.Handle.ToString() });
+      }
+
+      return new Dictionary<string, object?>
+      {
+        ["name"] = CivilObjectUtils.GetName(match),
+        ["handle"] = match.Handle.ToString(),
+        ["viewFrames"] = viewFrames,
+      };
+    });
+  }
+
   public static Task<object?> ListMatchLinesAsync()
   {
     return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>

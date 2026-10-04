@@ -12,12 +12,17 @@ const LabelActionSchema = z.enum([
   "add_label",
 ]);
 
-const PointSchema = z.object({ x: z.number(), y: z.number(), z: z.number().optional() });
+// Factory functions, not shared consts: zod-to-json-schema turns a schema instance reused
+// across multiple fields (anywhere in the tree, any depth) into a `$ref` for every occurrence
+// after the first, which some MCP clients don't resolve — the field then looks untyped. texts
+// and geometry below both need their own PositionedItem (and, inside it, its own point) schema
+// instance, not a shared one.
+const pointSchema = () => z.object({ x: z.number(), y: z.number(), z: z.number().optional() });
 
-const PositionedItemSchema = z.object({
+const positionedItemSchema = () => z.object({
   handle: z.string(),
   label: z.string().optional().describe("Text or name to carry through into the match result."),
-  position: PointSchema,
+  position: pointSchema(),
 });
 
 const LabelPointSchema = z.object({ x: z.number(), y: z.number() });
@@ -26,11 +31,11 @@ const canonicalInputShape = {
   action: LabelActionSchema.describe("The text/annotation-reading operation to perform."),
   layer: z.string().optional().describe("Layer name to filter results by (extract_text_entities, extract_dimensions)."),
   texts: z
-    .array(PositionedItemSchema)
+    .array(positionedItemSchema())
     .optional()
     .describe("Text items already extracted (e.g. from extract_text_entities) — match_text_to_nearby_geometry."),
   geometry: z
-    .array(PositionedItemSchema)
+    .array(positionedItemSchema())
     .optional()
     .describe("Geometry items already extracted (e.g. from civil3d_blocks) — match_text_to_nearby_geometry."),
   radius: z
@@ -133,8 +138,8 @@ export const LABEL_DOMAIN_DEFINITION: DomainToolDefinition = {
       action: "match_text_to_nearby_geometry",
       inputSchema: z.object({
         action: z.literal("match_text_to_nearby_geometry"),
-        texts: z.array(PositionedItemSchema),
-        geometry: z.array(PositionedItemSchema),
+        texts: z.array(positionedItemSchema()),
+        geometry: z.array(positionedItemSchema()),
         radius: z.number().optional(),
       }),
       capabilities: ["analyze"],

@@ -366,8 +366,41 @@ internal static class Civil3DCompatibility
     return PropertyCache.GetOrAdd(key, static item =>
     {
       var flags = BindingFlags.Public | (item.IsStatic ? BindingFlags.Static : BindingFlags.Instance);
-      return new CachedProperty(item.Type.GetProperty(item.Name, flags));
+      return new CachedProperty(FindMostDerivedProperty(item.Type, item.Name, flags));
     }).Value;
+  }
+
+  /// <summary>
+  /// A derived type can hide a base type's same-named property with `new` — a pattern seen in
+  /// Civil 3D's typed settings-value wrappers (a generic Value on a base class, redeclared with a
+  /// specific type on each leaf subclass, confirmed live: civil3d_settings.list_settings_tree hit
+  /// "Ambiguous match found" on every settings tree tested). Plain Type.GetProperty(name, flags)
+  /// throws AmbiguousMatchException the instant both show up as matching candidates. Walking the
+  /// hierarchy with DeclaredOnly at each level sidesteps the ambiguity and returns the most-derived
+  /// declaration, matching normal C# member-hiding semantics.
+  /// </summary>
+  private static PropertyInfo? FindMostDerivedProperty(Type type, string name, BindingFlags flags)
+  {
+    for (var current = type; current != null; current = current.BaseType)
+    {
+      PropertyInfo? property;
+      try
+      {
+        property = current.GetProperty(name, flags | BindingFlags.DeclaredOnly);
+      }
+      catch (AmbiguousMatchException)
+      {
+        // Even DeclaredOnly can be ambiguous for indexers or generic overrides at the same level —
+        // fall back to the first candidate rather than propagating.
+        property = current.GetProperties(flags | BindingFlags.DeclaredOnly)
+          .FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.Ordinal));
+      }
+      if (property != null)
+      {
+        return property;
+      }
+    }
+    return null;
   }
 
   private static bool TryInvokeCandidates(

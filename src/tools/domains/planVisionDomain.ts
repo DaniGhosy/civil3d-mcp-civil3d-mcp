@@ -21,7 +21,12 @@ const PlanVisionActionSchema = z.enum([
   "calibrate_scale_from_dimension",
 ]);
 
-const PixelPointSchema = z.object({ x: z.number(), y: z.number() });
+// A function, not a shared const: zod-to-json-schema turns a schema instance reused across
+// multiple fields into a `$ref` for every occurrence after the first, which some MCP clients
+// don't resolve — the field then looks untyped. pixelPointA/pixelPointB below both need their
+// own instance. RegionSchema is only referenced once in this file's exposed shape, so it's
+// left as a plain const.
+const pixelPointSchema = () => z.object({ x: z.number(), y: z.number() });
 const RegionSchema = z.object({ x: z.number(), y: z.number(), width: z.number(), height: z.number() });
 
 const canonicalInputShape = {
@@ -42,8 +47,8 @@ const canonicalInputShape = {
   scales: z.array(z.number()).optional().describe("Scale factors to sweep. Default ±15% in 5% steps (detect_symbols_cv)."),
   rotations: z.array(z.number()).optional().describe("Rotation angles in degrees to sweep. Default [0, 90, 180, 270] (detect_symbols_cv)."),
   minConfidence: z.number().optional().describe("Minimum OCR confidence (0-100) to keep a result. Default 0 (extract_legend_templates, ocr_extract_labels)."),
-  pixelPointA: PixelPointSchema.optional().describe("First pixel point of a known dimension (calibrate_scale_from_dimension)."),
-  pixelPointB: PixelPointSchema.optional().describe("Second pixel point of a known dimension (calibrate_scale_from_dimension)."),
+  pixelPointA: pixelPointSchema().optional().describe("First pixel point of a known dimension (calibrate_scale_from_dimension)."),
+  pixelPointB: pixelPointSchema().optional().describe("Second pixel point of a known dimension (calibrate_scale_from_dimension)."),
   realDistance: z.number().optional().describe("The real-world distance between pixelPointA and pixelPointB, in whatever unit you want the result expressed in (calibrate_scale_from_dimension)."),
 };
 
@@ -168,8 +173,8 @@ export const PLAN_VISION_DOMAIN_DEFINITION: DomainToolDefinition = {
       action: "calibrate_scale_from_dimension",
       inputSchema: z.object({
         action: z.literal("calibrate_scale_from_dimension"),
-        pixelPointA: PixelPointSchema,
-        pixelPointB: PixelPointSchema,
+        pixelPointA: pixelPointSchema(),
+        pixelPointB: pixelPointSchema(),
         realDistance: z.number(),
       }),
       capabilities: ["analyze"],

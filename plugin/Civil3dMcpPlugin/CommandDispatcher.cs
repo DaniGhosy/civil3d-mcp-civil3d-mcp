@@ -149,6 +149,8 @@ public static class CommandDispatcher
       "listPipes" => PipeNetworkCommands.ListPipesAsync(parameters),
       "listStructures" => PipeNetworkCommands.ListStructuresAsync(parameters),
       "listPartsLists" => PipeNetworkCommands.ListPartsListsAsync(),
+      "listParts" => PipeNetworkCommands.ListPartsAsync(parameters),
+      "getPart" => PipeNetworkCommands.GetPartAsync(parameters),
       "getPipeRuleSet" => PipeNetworkCommands.GetPipeRuleSetAsync(parameters),
       "getPipeOverriddenRules" => PipeNetworkCommands.GetPipeOverriddenRulesAsync(parameters),
       "resizePipeInNetwork" => PipeNetworkCommands.ResizePipeInNetworkAsync(parameters),
@@ -159,6 +161,7 @@ public static class CommandDispatcher
       // Pressure Pipe Networks
       "listPressureNetworks" => PressurePipeCommands.ListPressureNetworksAsync(),
       "getPressureNetwork" => PressurePipeCommands.GetPressureNetworkAsync(parameters),
+      "listPressurePartsLists" => PressurePipeCommands.ListPressurePartsListsAsync(),
       "listPressureParts" => PressurePipeCommands.ListPressurePartsAsync(parameters),
       "getPressurePart" => PressurePipeCommands.GetPressurePartAsync(parameters),
       "createPressureNetwork" => PressurePipeCommands.CreatePressureNetworkAsync(parameters),
@@ -174,6 +177,7 @@ public static class CommandDispatcher
       "addPressureFitting" => PressurePipeCommands.AddPressureFittingAsync(parameters),
       "getPressureFittingProperties" => PressurePipeCommands.GetPressureFittingPropertiesAsync(parameters),
       "addPressureAppurtenance" => PressurePipeCommands.AddPressureAppurtenanceAsync(parameters),
+      "importPressureNetworkFromFile" => PressureNetworkBulkImportCommand.ImportPressureNetworkFromFileAsync(parameters),
 
       // Sample Lines / Section Views / Mass Haul / QTO
       "createSampleLineGroup" => SampleLineCommands.CreateSampleLineGroupAsync(parameters),
@@ -195,6 +199,8 @@ public static class CommandDispatcher
 
       // Sheet Production (view frames / match lines — read-only, creation not exposed by .NET API)
       "listViewFrames" => SheetProductionCommands.ListViewFramesAsync(),
+      "listViewFrameGroups" => SheetProductionCommands.ListViewFrameGroupsAsync(),
+      "getViewFrameGroup" => SheetProductionCommands.GetViewFrameGroupAsync(parameters),
       "listMatchLines" => SheetProductionCommands.ListMatchLinesAsync(),
       "listSheetSets" => SheetProductionCommands.ListSheetSetsAsync(),
       "getSheetSetInfo" => SheetProductionCommands.GetSheetSetInfoAsync(parameters),
@@ -321,6 +327,10 @@ public static class CommandDispatcher
       "addLabel" => LabelStyleCommands.AddLabelAsync(parameters),
       "listStyles" => StyleCommands.ListStylesAsync(parameters),
       "getStyle" => StyleCommands.GetStyleAsync(parameters),
+
+      // Settings
+      "listSettingsTree" => SettingsCommands.ListSettingsTreeAsync(parameters),
+      "setFeatureSetting" => SettingsCommands.SetFeatureSettingAsync(parameters),
 
       "listSurveyFigureStyles" => SurveyCommands.ListSurveyFigureStylesAsync(),
       "listSurveyNetworks" => CogoCommands.ListSurveyNetworksAsync(parameters),

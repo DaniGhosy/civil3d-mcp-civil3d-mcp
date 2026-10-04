@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Text.Json.Nodes;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
+using AcDbObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 
 namespace Civil3DMcpPlugin;
 
@@ -194,15 +196,80 @@ public static class PipeNetworkCommands
       note = "Network.AddPipe does not exist under that name — confirmed by the compiler. The real pipe-creation member needs to be confirmed against a live Civil 3D drawing."
     });
 
-  // listPartsLists: civilDoc.Styles.PartsListSet SÍ existe (confirmado — no
-  // dio error), pero el tipo "PartsList" no se encontró con ese nombre.
-  // Stub documentado hasta confirmar el tipo real de sus elementos.
+  // listPartsLists: la nota anterior decía que "PartsList" no resolvía como
+  // tipo de elemento de PartsListSet — pero ese mismo tipo SÍ resuelve y
+  // compila en este archivo (ver FindPartForNetwork más abajo, vía
+  // network.PartsListId). El hueco real no era el tipo, era no saber si
+  // PartsListSet itera ObjectIds (como las colecciones de civil3d_style) o
+  // objetos PartsList directos (lo que sugiere la documentación de Autodesk
+  // sobre PartsListCollection). En vez de adivinar cuál de las dos formas es
+  // la real, se enumera como IEnumerable no genérico y se resuelve cada
+  // elemento por runtime-type-check — compila sin importar cuál sea.
   public static Task<object?> ListPartsListsAsync()
-    => Task.FromResult<object?>(new
+  {
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
     {
-      status = "planned",
-      note = "civilDoc.Styles.PartsListSet exists (confirmed) but the element type is not 'PartsList' under that exact name — confirmed by the compiler. Needs the real type confirmed against a live Civil 3D drawing (try civil3d_object list_by_type/get_properties on a parts list object as a workaround in the meantime)."
+      var partsLists = GetAllPartsLists(civilDoc, tr)
+        .Select(partsList => (object)new { name = partsList.Name, handle = partsList.Handle.ToString() })
+        .ToList();
+
+      return new { partsLists };
     });
+  }
+
+  // listParts / getPart: reusan la misma cadena PartsList -> GetPartFamilyIdsByDomain
+  // -> PartFamily -> PartSize ya confirmada compilando en FindPartForNetwork,
+  // pero enumerando todo en vez de buscar un match exacto.
+  public static Task<object?> ListPartsAsync(JsonObject? p)
+  {
+    var partsListName = PluginRuntime.GetRequiredString(p, "partsListName");
+    var domainFilter = PluginRuntime.GetOptionalString(p, "domain");
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var partsList = FindPartsListByName(civilDoc, tr, partsListName);
+      var parts = EnumeratePartsListSizes(tr, partsList, ResolveDomainFilter(domainFilter))
+        .Select(entry => (object)new
+        {
+          domain = entry.Domain.ToString(),
+          familyName = entry.Family.Name,
+          partName = entry.SizeName,
+          handle = entry.SizeObject.Handle.ToString(),
+        })
+        .ToList();
+
+      return new { partsListName, parts };
+    });
+  }
+
+  public static Task<object?> GetPartAsync(JsonObject? p)
+  {
+    var partsListName = PluginRuntime.GetRequiredString(p, "partsListName");
+    var partName = PluginRuntime.GetRequiredString(p, "partName");
+    var domainFilter = PluginRuntime.GetOptionalString(p, "domain");
+
+    return CivilExecution.ReadAsync<object?>((doc, civilDoc, db, tr) =>
+    {
+      var partsList = FindPartsListByName(civilDoc, tr, partsListName);
+      var match = EnumeratePartsListSizes(tr, partsList, ResolveDomainFilter(domainFilter))
+        .FirstOrDefault(entry => string.Equals(entry.SizeName, partName, StringComparison.OrdinalIgnoreCase));
+
+      if (match.SizeObject == null)
+      {
+        throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Part '{partName}' was not found in parts list '{partsListName}'.");
+      }
+
+      var details = GenericObjectCommands.SerializeSimpleProperties(match.SizeObject);
+      return new Dictionary<string, object?>(details)
+      {
+        ["partsListName"] = partsListName,
+        ["domain"] = match.Domain.ToString(),
+        ["familyName"] = match.Family.Name,
+        ["partName"] = match.SizeName,
+        ["handle"] = match.SizeObject.Handle.ToString(),
+      };
+    });
+  }
 
   // ─────────────────────────────────────────────
   // Reglas de diseño hidráulico (Mes 5): OverrideRuleSet/RuleSetStyleId/
@@ -318,6 +385,63 @@ public static class PipeNetworkCommands
     }
 
     throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Exact {domain} size '{partName}' was not found in the parts list for network '{network.Name}'.");
+  }
+
+  private readonly record struct PartSizeEntry(DomainType Domain, PartFamily Family, AcDbObject SizeObject, string? SizeName);
+
+  private static IEnumerable<PartSizeEntry> EnumeratePartsListSizes(Transaction tr, PartsList partsList, IReadOnlyList<DomainType> domains)
+  {
+    foreach (var domain in domains)
+    {
+      foreach (ObjectId familyId in partsList.GetPartFamilyIdsByDomain(domain))
+      {
+        var family = CivilObjectUtils.GetRequiredObject<PartFamily>(tr, familyId, OpenMode.ForRead);
+        for (var index = 0; index < family.PartSizeCount; index++)
+        {
+          var sizeId = family[index];
+          var size = tr.GetObject(sizeId, OpenMode.ForRead);
+          var sizeName = CivilObjectUtils.GetName(size) ?? CivilObjectUtils.GetStringProperty(size, "Description");
+          yield return new PartSizeEntry(domain, family, size, sizeName);
+        }
+      }
+    }
+  }
+
+  private static IReadOnlyList<DomainType> ResolveDomainFilter(string? domainFilter)
+    => domainFilter?.ToLowerInvariant() switch
+    {
+      "pipe" => new[] { DomainType.Pipe },
+      "structure" => new[] { DomainType.Structure },
+      null or "" => new[] { DomainType.Pipe, DomainType.Structure },
+      _ => throw new JsonRpcDispatchException("CIVIL3D.INVALID_INPUT", $"Unsupported domain '{domainFilter}'. Valid values: pipe, structure."),
+    };
+
+  // civilDoc.Styles.PartsListSet is confirmed to exist and compile, but whether it enumerates
+  // ObjectIds (like civil3d_style's collections) or PartsList objects directly is unconfirmed —
+  // Autodesk's own docs describe it as a "PartsListCollection", which forum evidence suggests
+  // yields typed objects, not ObjectIds. Enumerating as non-generic IEnumerable and resolving each
+  // element by runtime type sidesteps the guess entirely: compiles either way.
+  private static IEnumerable<PartsList> GetAllPartsLists(dynamic civilDoc, Transaction tr)
+  {
+    foreach (object item in (System.Collections.IEnumerable)civilDoc.Styles.PartsListSet)
+    {
+      PartsList? partsList = item as PartsList;
+      if (partsList == null && item is ObjectId id && !id.IsNull)
+      {
+        partsList = tr.GetObject(id, OpenMode.ForRead) as PartsList;
+      }
+      if (partsList != null) yield return partsList;
+    }
+  }
+
+  private static PartsList FindPartsListByName(dynamic civilDoc, Transaction tr, string name)
+  {
+    foreach (var partsList in GetAllPartsLists(civilDoc, tr))
+    {
+      if (string.Equals(partsList.Name, name, StringComparison.OrdinalIgnoreCase)) return partsList;
+    }
+
+    throw new JsonRpcDispatchException("CIVIL3D.OBJECT_NOT_FOUND", $"Parts list '{name}' was not found.");
   }
 
   // ── Helpers ──
